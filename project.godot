@@ -14,6 +14,17 @@ config/name="ModularAssetPlacer"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[asset_placer]
+
+general/preview_material="res://addons/asset_placer/utils/preview_material.tres"
+general/plane_material="res://addons/asset_placer/ui/plane_preview/plane_preview_material.tres"
+general/asset_library_path="user://asset_library.json"
+internal/last_int=0
+
+[autoload]
+
+SceneRenderManager="res://addons/scene_texture/SceneRenderManager.gd"
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/modular_asset_placer/plugin.cfg")
+enabled=PackedStringArray("res://addons/GdSpawn/plugin.cfg", "res://addons/scene_texture/plugin.cfg")

@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdhhsg18wk17j"]
+
+[ext_resource type="Script" uid="uid://dofj220avtmve" path="res://addons/GdSpawn/ui/asset_button.gd" id="1_j1dts"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_y0jdw"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Environment" id="Environment_y0jdw"]
+
+[sub_resource type="World3D" id="World3D_ykqnq"]
+environment = SubResource("Environment_y0jdw")
+
+[node name="AssetButton" type="Button" node_paths=PackedStringArray("texture_rect", "button_container", "name_label", "subviewport", "scene_parent", "camera")]
+custom_minimum_size = Vector2(128, 128)
+offset_right = 128.0
+offset_bottom = 160.0
+toggle_mode = true
+script = ExtResource("1_j1dts")
+texture_rect = NodePath("VBoxContainer/TextureRect")
+button_container = NodePath("VBoxContainer")
+name_label = NodePath("VBoxContainer/Name")
+subviewport = NodePath("SubViewport")
+scene_parent = NodePath("SubViewport/Node3D/Scene")
+camera = NodePath("SubViewport/Node3D/CameraPivot/Camera3D")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = SubResource("ViewportTexture_y0jdw")
+stretch_mode = 3
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Inner Wall"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="SubViewport" type="SubViewport" parent="."]
+own_world_3d = true
+world_3d = SubResource("World3D_ykqnq")
+transparent_bg = true
+size = Vector2i(128, 128)
+render_target_update_mode = 1
+
+[node name="Node3D" type="Node3D" parent="SubViewport"]
+
+[node name="CameraPivot" type="Node3D" parent="SubViewport/Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewport/Node3D/CameraPivot"]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 2, 2, 2)
+
+[node name="Scene" type="Node3D" parent="SubViewport/Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewport"]
+transform = Transform3D(0.353553, -0.866025, -0.353553, 0.707107, -3.09086e-08, 0.707107, -0.612373, -0.5, 0.612372, -2, 2, 2)
+light_energy = 5.0
+shadow_enabled = true

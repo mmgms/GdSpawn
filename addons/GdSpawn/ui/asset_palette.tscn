@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3 uid="uid://bhj0afo267ais"]
+
+[ext_resource type="Script" uid="uid://xp7m6cmfbgeo" path="res://addons/GdSpawn/ui/asset_palette_manager.gd" id="1_ich3l"]
+[ext_resource type="Script" uid="uid://2mlktu213nnj" path="res://addons/GdSpawn/scripts/library_element.gd" id="2_cqot4"]
+[ext_resource type="Script" uid="uid://c3rtfhd3sxdcu" path="res://addons/GdSpawn/scripts/library.gd" id="3_1ppuu"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="4_1ppuu"]
+[ext_resource type="PackedScene" uid="uid://bdhhsg18wk17j" path="res://addons/GdSpawn/ui/asset_button.tscn" id="4_fjipj"]
+
+[sub_resource type="Resource" id="Resource_c05p8"]
+script = ExtResource("3_1ppuu")
+name = "[Empty]"
+elements = Array[ExtResource("2_cqot4")]([])
+size = null
+
+[sub_resource type="Texture2D" id="Texture2D_c05p8"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("4_1ppuu")
+icon_name = &"Search"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q7rnk"]
+
+[node name="[Empty]" type="Control" node_paths=PackedStringArray("match_selected_button", "asset_previews_cotainer", "search_field")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ich3l")
+match_selected_button = NodePath("AssetPalette/SearchOptions/MatchSelected")
+asset_previews_cotainer = NodePath("AssetPalette/ScrollContainer/PreviewsContainer")
+scene_library = SubResource("Resource_c05p8")
+search_field = NodePath("AssetPalette/SearchOptions/Search")
+asset_button_scene = ExtResource("4_fjipj")
+
+[node name="AssetPalette" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_tab_index = 0
+
+[node name="SearchOptions" type="HBoxContainer" parent="AssetPalette"]
+layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="AssetPalette/SearchOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Filter Assets"
+
+[node name="TextureRect" type="TextureRect" parent="AssetPalette/SearchOptions/Search"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -22.0
+offset_top = -7.5
+offset_right = -6.0
+offset_bottom = 8.5
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("Texture2D_c05p8")
+
+[node name="PanelContainer" type="PanelContainer" parent="AssetPalette/SearchOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_q7rnk")
+
+[node name="MatchSelected" type="Button" parent="AssetPalette/SearchOptions"]
+layout_mode = 2
+text = "Match Selected"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="AssetPalette"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PreviewsContainer" type="HFlowContainer" parent="AssetPalette/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

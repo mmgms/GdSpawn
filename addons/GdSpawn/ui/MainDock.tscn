@@ -1,0 +1,229 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq58hnib4q4ri"]
+
+[ext_resource type="PackedScene" uid="uid://bhj0afo267ais" path="res://addons/GdSpawn/ui/asset_palette.tscn" id="1_gn6wi"]
+[ext_resource type="Script" uid="uid://dhx0lj4ql5frx" path="res://addons/GdSpawn/ui/libraries_manager.gd" id="4_80nxl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ajnsn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wbhi7"]
+
+[node name="MainDock" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SpawnOptions" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/Header"]
+layout_mode = 2
+text = "GdSpawn 0.1.0"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ajnsn")
+
+[node name="HelpButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+layout_mode = 2
+text = "Help"
+
+[node name="DetachButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+layout_mode = 2
+text = "Detach"
+
+[node name="SpawnParent" type="HBoxContainer" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SpawnParent"]
+layout_mode = 2
+text = "Spawn Under: "
+
+[node name="ParentLabel" type="Label" parent="HBoxContainer/SpawnOptions/SpawnParent"]
+layout_mode = 2
+text = "Parent"
+
+[node name="PlacementMode" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Placement Mode:"
+
+[node name="PlacementOptions" type="OptionButton" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlanePlacementOptions" type="PanelContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions"]
+layout_mode = 2
+
+[node name="PlaneSelection" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneSelection"]
+layout_mode = 2
+text = "Plane"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneSelection"]
+layout_mode = 2
+
+[node name="PlaneOffset" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneOffset"]
+layout_mode = 2
+text = "Position"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneOffset"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+text = "Snapping"
+
+[node name="SnappingOptions" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = " Enabled"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit2" type="LineEdit" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+layout_mode = 2
+text = "Offset:"
+
+[node name="OffsetInfo" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/OffsetInfo"]
+layout_mode = 2
+text = "x:"
+
+[node name="x_offset" type="LineEdit" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/OffsetInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/OffsetInfo"]
+layout_mode = 2
+text = "z:"
+
+[node name="z_offset" type="LineEdit" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/OffsetInfo"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_wbhi7")
+
+[node name="AssetPalette" type="PanelContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/AssetPalette"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/AssetPalette/VBoxContainer"]
+layout_mode = 2
+text = "Assets"
+
+[node name="TabContainer" type="TabContainer" parent="HBoxContainer/AssetPalette/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+drag_to_rearrange_enabled = true
+
+[node name="LibraryOptions" type="HBoxContainer" parent="HBoxContainer/AssetPalette/VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveLibrary" type="Button" parent="HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions"]
+layout_mode = 2
+text = "Save Library"
+
+[node name="LoadLibrary" type="Button" parent="HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions"]
+layout_mode = 2
+text = "Load Library"
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreviewSizeSlider" type="HSlider" parent="HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.1
+value = 0.5
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/AssetPalette"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+
+[node name="NewLibrary" type="Button" parent="HBoxContainer/AssetPalette/MarginContainer"]
+custom_minimum_size = Vector2(42, 42)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 24
+text = "+"
+
+[node name="LibrariesManager" type="Node" parent="." node_paths=PackedStringArray("save_library_button", "load_library_button", "new_library_button", "file_dialog", "libraries_container", "add_new_library_button", "preview_size_slider")]
+script = ExtResource("4_80nxl")
+save_library_button = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/SaveLibrary")
+load_library_button = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/LoadLibrary")
+new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer/NewLibrary")
+file_dialog = NodePath("../FileDialog")
+libraries_container = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/TabContainer")
+add_new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer/NewLibrary")
+asset_palette_scene = ExtResource("1_gn6wi")
+preview_size_slider = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/PreviewSizeSlider")
+max_size = null
+min_size = null
+
+[node name="FileDialog" type="FileDialog" parent="."]
+initial_position = 2
+filters = PackedStringArray("*.tres")

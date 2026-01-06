@@ -1,3 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+/assets/
+/addons/asset_placer/
+/addons/scene_texture/
+/resources/
+/materials/
+/scenes/
