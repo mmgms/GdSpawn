@@ -2,13 +2,17 @@
 extends Node
 class_name GdSpawnSpawnManager
 
-@export var window_manager: GdSpawnMainDockManager
 @export var libraries_manager: GdSpawnLibrariesManager
 @export var spawn_under_label: GdSpawnSpawnUnderLabel
 @export var spawn_under_choose_selected_button: Button
 
 @export var spawn_option_button: OptionButton
 @export var spawn_option_parent: Control
+
+@export var snap_enable: CheckBox
+@export var snap_step: SpinBox
+@export var snap_shift_step: SpinBox
+
 
 @export var spawn_node: Node
 
@@ -23,11 +27,24 @@ var undo_redo: EditorUndoRedoManager
 
 var node_history: Array
 
+var editor_plugin
+
+class GdSpawnSnapInfo:
+	var enabled: bool = false
+	var step: float = 1.0
+	var shift_step: float = 0.1
+
+var current_snap_info = GdSpawnSnapInfo.new()
+
 func _ready() -> void:
-	undo_redo = window_manager.editor_plugin.get_undo_redo()
+
+	snap_enable.toggled.connect(func(toggled): current_snap_info.enabled = toggled)
+	snap_step.value_changed.connect(func(value): current_snap_info.step = value)
+	snap_shift_step.value_changed.connect(func(value): current_snap_info.shift_step = value)
+	undo_redo = editor_plugin.get_undo_redo()
 
 	change_spawn_node(EditorInterface.get_edited_scene_root())
-	window_manager.editor_plugin.scene_changed.connect(func (scene_root): change_spawn_node(scene_root))
+	editor_plugin.scene_changed.connect(func (scene_root): change_spawn_node(scene_root))
 	spawn_under_label.node_changed.connect(func (node): change_spawn_node(node))
 
 	for key in GdSpawnPlacementMode.keys():
@@ -75,10 +92,13 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 
 	preview_scene = item.scene.instantiate()
 	spawn_node.add_child(preview_scene)
+	EditorInterface.edit_node(spawn_node)
 
 
-func on_move(camera: Camera3D):
-	var position = current_placement_mode_manager.on_move(camera)
+func on_move(camera: Camera3D, mouse_position: Vector2):
+	if not preview_scene:
+		return
+	var position = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info)
 	preview_scene.global_position = position
 
 func on_confirm():
@@ -89,15 +109,23 @@ func on_confirm():
 	undo_redo.add_undo_method(self, "_undo_placement", spawn_node)
 	undo_redo.commit_action()
 
+	#TODO clear history when plugin disabled
+
 func _do_placement(new_node, root: Node3D, transform: Transform3D):
 	root.add_child(new_node, true)
 	new_node.global_transform = transform
 	new_node.owner = EditorInterface.get_edited_scene_root()
 	node_history.push_front(new_node)
 
+func on_rotate_y():
+	if not preview_scene:
+		return
+		
+	preview_scene.rotate_y(deg_to_rad(90))
+
 func _undo_placement(root: Node3D):
 	var last_added = node_history.pop_front()
-	last_added.queue_free()
+	root.remove_child(last_added)
 
 func on_cancel():
 	preview_scene.queue_free()

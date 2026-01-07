@@ -64,16 +64,22 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-		main_dock.spawn_manager.on_move(viewport_camera)
+		main_dock.spawn_manager.on_move(viewport_camera, event.position)
 		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		main_dock.spawn_manager.on_confirm()
 		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
-	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.is_pressed():
-		main_dock.spawn_manager.on_cancel()
-		return EditorPlugin.AFTER_GUI_INPUT_STOP
+	if event is InputEventKey and event.is_pressed():
+		if event.keycode == KEY_ESCAPE:
+			main_dock.spawn_manager.on_cancel()
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+		elif event.keycode == KEY_S:
+			main_dock.spawn_manager.on_rotate_y()
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
 
 	
 	

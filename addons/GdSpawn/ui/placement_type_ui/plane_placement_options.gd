@@ -23,17 +23,17 @@ func _ready() -> void:
 func on_plane_type_selected(idx):
 	current_plane_type = idx
 
-func on_move(camera: Camera3D) -> Vector3:
-
-	var mouse_pos = DisplayServer.mouse_get_position()
-
+func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpawnManager.GdSpawnSnapInfo) -> Vector3:
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_direction = camera.project_ray_normal(mouse_pos)
 
-	var ground_plane = current_plane
 
-	var intersection_point = ground_plane.intersects_ray(ray_origin, ray_direction)
+	var intersection_point = current_plane.intersects_ray(ray_origin, ray_direction)
+
 
 	if intersection_point != null:
+		var final_position = intersection_point as Vector3
+		if current_snap_info.enabled:
+			intersection_point = intersection_point.snapped(Vector3.ONE * current_snap_info.step)
 		return intersection_point
 	return Vector3()

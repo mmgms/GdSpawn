@@ -16,6 +16,9 @@ var is_detached: bool = false
 
 var detached_window: Window
 
+func _enter_tree() -> void:
+	spawn_manager.editor_plugin = editor_plugin
+
 func _ready() -> void:
 
 	detach_button.pressed.connect(on_detach_button_pressed)

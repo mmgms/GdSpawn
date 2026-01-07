@@ -1,5 +1,428 @@
-[gd_scene format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=6 format=3 uid="uid://brjmlw33t6bld"]
+
+[ext_resource type="PackedScene" uid="uid://by441f3qt8cjg" path="res://scenes/walls_modular/InnerWall.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/walls_modular/InnerFloor.tscn" id="2_0xm2m"]
+[ext_resource type="Material" uid="uid://08fpp1jxbsgl" path="res://materials/atlas02.tres" id="2_h2yge"]
+[ext_resource type="ArrayMesh" uid="uid://bymx6ba2ywotv" path="res://assets/walls_modular/inner_wall_straight.res" id="3_1bvp3"]
+[ext_resource type="ArrayMesh" uid="uid://bm17mvuecsuy5" path="res://assets/walls_modular/inner_floor.res" id="3_h2yge"]
 
 [node name="Main" type="Node3D"]
 
 [node name="Floor" type="Node3D" parent="."]
+
+[node name="InnerFloor2" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor3" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor4" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor5" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor6" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor7" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor8" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor9" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor10" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerFloor11" type="MeshInstance3D" parent="Floor" instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+skeleton = NodePath("../..")
+
+[node name="InnerWallStraight2" type="MeshInstance3D" parent="Floor" instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+skeleton = NodePath("../..")
+
+[node name="InnerWallStraight3" type="MeshInstance3D" parent="Floor" instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+skeleton = NodePath("../..")
+
+[node name="InnerWallStraight2" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight3" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight4" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight5" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight6" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight7" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 1, 0, -10)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight8" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 3, 0, -10)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight9" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 4, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight10" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 4, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight11" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 5, 0, -6)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerFloor2" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor3" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor4" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor5" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor6" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor7" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor8" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor9" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor10" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor11" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor12" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor13" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor14" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor15" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerWallStraight12" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, -6)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight13" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 8, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight14" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 8, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight15" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 9, 0, -10)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight16" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 11, 0, -10)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight17" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 12, 0, -9)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight18" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 12, 0, -7)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight19" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 12, 0, -5)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight20" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 12, 0, -3)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight21" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 11, 0, -2)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight22" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 9, 0, -2)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight23" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 8, 0, -1)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight24" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 7, 0, 0)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerWallStraight25" type="MeshInstance3D" parent="." instance=ExtResource("1_ig7tw")]
+transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, 5, 0, 0)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_1bvp3")
+
+[node name="InnerFloor16" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor17" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor18" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor19" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor20" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor21" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -15)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor22" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor23" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor24" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor25" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor26" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor27" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, -16)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor28" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor29" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor30" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor31" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor32" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor33" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor34" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor35" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor36" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor37" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor38" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor39" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor40" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 0, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor41" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 2, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor42" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 2, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor43" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor44" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor45" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 6, 0, -20)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
+
+[node name="InnerFloor46" type="MeshInstance3D" parent="." instance=ExtResource("2_0xm2m")]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 6, 0, -18)
+material_override = ExtResource("2_h2yge")
+mesh = ExtResource("3_h2yge")
