@@ -44,6 +44,12 @@ func _ready() -> void:
 	on_new_library()
 
 
+func update_save_library():
+	var library = get_selected_library()
+	if not library:
+		return
+	ResourceSaver.save(library, library.resource_path)
+
 func on_save_library(copy: bool = false):
 	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_dialog.popup_centered()
@@ -136,6 +142,7 @@ func show_tab_contextual_menu(tab, library):
 	options_menu.add_icon_item(EditorIconTexture2D.new("ShowInFileSystem"), "Show In FileSystem")
 	options_menu.add_icon_item(EditorIconTexture2D.new("Reload"), "Reload All Previews")
 	options_menu.add_icon_item(EditorIconTexture2D.new("Reload"), "Reset All Preview Perspective")
+	options_menu.add_icon_item(null, "Generate Asset Zoo")
 	options_menu.add_submenu_item("Preview Perspective", preview_options.name)
 	options_menu.index_pressed.connect(func(index):
 		match index:
@@ -149,33 +156,42 @@ func show_tab_contextual_menu(tab, library):
 			2:
 				EditorInterface.select_file(library.resource_path)
 			3:
-				var selected_palette = get_selected_asset_palette()
-				if not selected_palette:
-					return
-				selected_palette.update_previews()
+				update_selected_palette_previews()
 			4:
-				pass
+				library.preview_mode = SceneLibraryItem.PreviewMode.Default
+				for element in library.elements:
+					element.preview_mode = SceneLibraryItem.PreviewMode.Default
+
+				update_save_library()
+				update_selected_palette_previews()
 				
 			_: pass
 	)
 	EditorInterface.popup_dialog(options_menu, Rect2(mouse_pos, options_menu.get_contents_minimum_size()))
 
-
 func create_preview_options(tab, library):
 	var preview_options_menu := PopupMenu.new()
 	preview_options_menu.name = "PreviewMenu"
-	for option in SceneLibraryItem.PreviewMode.keys():
+	for option in SceneLibraryItem.PreviewMode.keys().slice(0, -1):
 		preview_options_menu.add_icon_radio_check_item(null, option)
 	
-	#preview_options_menu.set_item_checked(item.preview_mode, true)
-	#preview_options_menu.index_pressed.connect(func(index): on_preview_option_index_pressed(item, index, button))
+	preview_options_menu.set_item_checked(library.preview_mode, true)
+	preview_options_menu.index_pressed.connect(func(index): on_preview_option_index_pressed(index, library))
 
 	return preview_options_menu
 
-func on_preview_option_index_pressed(item, index, button: AssetButton):
+func on_preview_option_index_pressed(index, library):
 	if index == null: 
 		return
-	pass
+	library.preview_mode = index
+	update_selected_palette_previews()
+	update_save_library()
+
+func update_selected_palette_previews():
+	var selected_palette = get_selected_asset_palette()
+	if not selected_palette:
+		return
+	selected_palette.update_previews()
 
 func get_selected_asset_palette():
 	if libraries_container.get_child_count() == 0:

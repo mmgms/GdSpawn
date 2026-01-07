@@ -23,7 +23,7 @@ internal/last_int=0
 
 [autoload]
 
-SceneRenderManager="res://addons/scene_texture/SceneRenderManager.gd"
+SceneRenderManager="*res://addons/scene_texture/SceneRenderManager.gd"
 
 [editor_plugins]
 

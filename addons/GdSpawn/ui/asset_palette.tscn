@@ -1,16 +1,18 @@
-[gd_scene load_steps=9 format=3 uid="uid://bhj0afo267ais"]
+[gd_scene load_steps=10 format=3 uid="uid://bhj0afo267ais"]
 
 [ext_resource type="Script" uid="uid://xp7m6cmfbgeo" path="res://addons/GdSpawn/ui/asset_palette_manager.gd" id="1_ich3l"]
 [ext_resource type="Script" uid="uid://2mlktu213nnj" path="res://addons/GdSpawn/scripts/library_element.gd" id="2_cqot4"]
 [ext_resource type="Script" uid="uid://c3rtfhd3sxdcu" path="res://addons/GdSpawn/scripts/library.gd" id="3_1ppuu"]
 [ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="4_1ppuu"]
 [ext_resource type="PackedScene" uid="uid://bdhhsg18wk17j" path="res://addons/GdSpawn/ui/asset_button.tscn" id="4_fjipj"]
+[ext_resource type="PackedScene" uid="uid://d112x5qh1kvo5" path="res://addons/GdSpawn/ui/DynamicPreviewPopup.tscn" id="5_4chkk"]
 
 [sub_resource type="Resource" id="Resource_c05p8"]
 script = ExtResource("3_1ppuu")
 name = "[Empty]"
 elements = Array[ExtResource("2_cqot4")]([])
-size = null
+size = 96
+preview_mode = 0
 
 [sub_resource type="Texture2D" id="Texture2D_c05p8"]
 resource_local_to_scene = false
@@ -36,6 +38,7 @@ asset_previews_cotainer = NodePath("AssetPalette/ScrollContainer/PreviewsContain
 scene_library = SubResource("Resource_c05p8")
 search_field = NodePath("AssetPalette/SearchOptions/Search")
 asset_button_scene = ExtResource("4_fjipj")
+dynamic_preview_popup_scene = ExtResource("5_4chkk")
 
 [node name="AssetPalette" type="VBoxContainer" parent="."]
 layout_mode = 1

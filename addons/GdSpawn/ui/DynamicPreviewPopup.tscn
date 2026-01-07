@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://d112x5qh1kvo5"]
+
+[ext_resource type="Script" uid="uid://2xdsxsn22ej1" path="res://addons/GdSpawn/ui/dynamic_preview_popup.gd" id="1_wk7b0"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="2_cd0h0"]
+
+[sub_resource type="Texture2D" id="Texture2D_45e5r"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("2_cd0h0")
+icon_name = &"Close"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Environment" id="Environment_wk7b0"]
+
+[sub_resource type="World3D" id="World3D_cd0h0"]
+environment = SubResource("Environment_wk7b0")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd0h0"]
+
+[node name="DynamicPreviewPopup" type="PopupPanel" node_paths=PackedStringArray("camera", "scene_parent", "scene_name_label", "close_button", "update_thumbnail_button")]
+size = Vector2i(250, 300)
+visible = true
+max_size = Vector2i(250, 300)
+script = ExtResource("1_wk7b0")
+camera = NodePath("PanelContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D/Camera3D")
+scene_parent = NodePath("PanelContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D/SceneParent")
+scene_name_label = NodePath("PanelContainer/VBoxContainer/HBoxContainer/SceneName")
+close_button = NodePath("PanelContainer/VBoxContainer/HBoxContainer/CloseButton")
+update_thumbnail_button = NodePath("PanelContainer/VBoxContainer/HBoxContainer2/UpdatePreviewButton")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SceneName" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "SceneName.tscn"
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_45e5r")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/VBoxContainer/SubViewportContainer"]
+own_world_3d = true
+world_3d = SubResource("World3D_cd0h0")
+handle_input_locally = false
+size = Vector2i(242, 229)
+render_target_update_mode = 4
+
+[node name="Node3D" type="Node3D" parent="PanelContainer/VBoxContainer/SubViewportContainer/SubViewport"]
+
+[node name="SceneParent" type="Node3D" parent="PanelContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="PanelContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D"]
+transform = Transform3D(0.353553, -0.866026, -0.353554, 0.707107, -5.36671e-07, 0.707107, -0.612373, -0.5, 0.612372, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="PanelContainer/VBoxContainer/SubViewportContainer/SubViewport/Node3D"]
+current = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_cd0h0")
+
+[node name="UpdatePreviewButton" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "UpdateThumbnail"

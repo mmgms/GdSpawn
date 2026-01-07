@@ -11,6 +11,8 @@ class_name  AssetPaletteManager
 
 @export var asset_button_scene: PackedScene
 
+@export var dynamic_preview_popup_scene: PackedScene
+
 
 func _ready() -> void:
 	match_selected_button.pressed.connect(on_match_selected_pressed)
@@ -29,7 +31,7 @@ func refresh_children():
 	for element in scene_library.elements:
 		var asset_button = asset_button_scene.instantiate() as AssetButton
 		asset_previews_cotainer.add_child(asset_button)
-		asset_button.set_library_item(element, scene_library.size)
+		asset_button.set_library_item(element, scene_library)
 		asset_button.right_clicked.connect(func(item): show_asset_menu(item, asset_button))
 
 func update_previews():
@@ -97,7 +99,7 @@ func show_asset_menu(item: SceneLibraryItem, button: AssetButton):
 	options_menu.add_icon_item(EditorIconTexture2D.new("Remove"), "Remove")
 	options_menu.add_icon_item(EditorIconTexture2D.new("ShowInFileSystem"), "Show In FileSystem")
 	options_menu.add_icon_item(EditorIconTexture2D.new("Reload"), "Reload Preview")
-	
+	options_menu.add_icon_item(null, "Open Dynamic Preview")
 	options_menu.add_submenu_item("Preview Perspective", preview_options.name)
 	options_menu.index_pressed.connect(func(index):
 		match index:
@@ -112,6 +114,8 @@ func show_asset_menu(item: SceneLibraryItem, button: AssetButton):
 				EditorInterface.select_file(item.scene.resource_path)
 			3:
 				button.update_preview()
+			4: 
+				open_dynamic_preview(item, button)
 			_: pass
 	)
 	EditorInterface.popup_dialog(options_menu, Rect2(mouse_pos, options_menu.get_contents_minimum_size()))
@@ -130,7 +134,12 @@ func create_preview_options(item, button: AssetButton):
 func on_preview_option_index_pressed(item, index, button: AssetButton):
 	if index == null: 
 		return
+
+	var prev_camera_position = button.get_preview_camera_position() 
 	item.preview_mode = index
+	if item.preview_mode == SceneLibraryItem.PreviewMode.Custom and item.custom_camera_position.is_zero_approx():
+		item.custom_camera_position = prev_camera_position
+
 	button.update_preview()
 	save_library()	
 
@@ -140,3 +149,13 @@ func update_size(size):
 	for child in asset_previews_cotainer.get_children():
 		var asset_button = child as AssetButton
 		asset_button.update_size(size)
+
+
+func open_dynamic_preview(item: SceneLibraryItem, button: AssetButton):
+	var dynamic_preview_popup = dynamic_preview_popup_scene.instantiate() as DynamicPreviewPopup
+
+	var mouse_pos = DisplayServer.mouse_get_position()
+	EditorInterface.popup_dialog(dynamic_preview_popup, Rect2(mouse_pos, dynamic_preview_popup.get_contents_minimum_size()))
+
+	dynamic_preview_popup.set_library_item(item, button)
+	dynamic_preview_popup.thumbnail_updated.connect(func (): save_library(); button.update_preview())

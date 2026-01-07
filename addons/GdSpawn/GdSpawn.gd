@@ -13,7 +13,7 @@ func _enter_tree() -> void:
 
 	add_control_to_bottom_panel(main_dock, "GdSpawn")
 	_add_setting("%sPreview Perspective" % BASE_SETTING, SceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
-		get_enum_hint_string(SceneLibraryItem.PreviewMode) )
+		", ".join(SceneLibraryItem.PreviewMode.keys().slice(0, -1)))
 
 
 func _exit_tree() -> void:

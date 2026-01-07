@@ -3,10 +3,11 @@ extends Resource
 class_name SceneLibraryItem
 
 
-enum PreviewMode {Default, Front, Back, Top, Bottom, Left, Right}
+enum PreviewMode {Default, Front, Back, Top, Bottom, Left, Right, Custom}
 
 @export var scene: PackedScene
 
+@export var is_custom_preview: bool = false
 
 @export var preview_mode: PreviewMode = PreviewMode.Default
-@export var preview_info: PreviewInfo
+@export var custom_camera_position: Vector3 = Vector3.ZERO

@@ -221,8 +221,6 @@ libraries_container = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/TabC
 add_new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer/NewLibrary")
 asset_palette_scene = ExtResource("1_gn6wi")
 preview_size_slider = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/PreviewSizeSlider")
-max_size = null
-min_size = null
 
 [node name="FileDialog" type="FileDialog" parent="."]
 initial_position = 2

@@ -9,7 +9,6 @@ class_name SceneLibrary
 
 
 @export var preview_mode: SceneLibraryItem.PreviewMode = SceneLibraryItem.PreviewMode.Default
-@export var preview_info: PreviewInfo
 
 func add_element(path: String):
 	var scene = load(path)

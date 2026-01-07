@@ -9,11 +9,16 @@ class_name AssetButton
 @export var name_label: Label
 
 
-@export var library_item: SceneLibraryItem
 
 @export var subviewport: SubViewport
 @export var scene_parent: Node3D
 @export var camera: Camera3D
+
+
+@export var library: SceneLibrary
+@export var library_item: SceneLibraryItem
+
+
 
 signal left_clicked(library_item: SceneLibraryItem)
 signal right_clicked(library_item: SceneLibraryItem)
@@ -27,8 +32,11 @@ func _set_new_size(size):
 	subviewport.size = viewport_size
 	self.custom_minimum_size = button_container.get_combined_minimum_size()
 
-func set_library_item(_library_item, size):
+func set_library_item(_library_item, _scene_library):
 	library_item = _library_item
+	library = _scene_library
+
+	var size = _scene_library.size
 
 	_set_new_size(size)
 	update_preview()
@@ -69,35 +77,54 @@ func setup_preview_scene():
 	var aabb = Utilities.calculate_spatial_bounds(scene_parent.get_child(0))
 	var aabb_center = aabb.get_center()
 	var max_size = max(aabb.size.x, aabb.size.y, aabb.size.z)
-	match library_item.preview_mode:
-		SceneLibraryItem.PreviewMode.Default:
-			camera.projection = Camera3D.PROJECTION_PERSPECTIVE
-			camera.position = aabb_center + Vector3.ONE.normalized() * max_size * size_multiplier
-		SceneLibraryItem.PreviewMode.Top:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.MODEL_TOP * max_size * size_multiplier
-			camera.size = max_size
-		SceneLibraryItem.PreviewMode.Bottom:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.MODEL_BOTTOM * max_size * size_multiplier
-			camera.size = max_size
-		SceneLibraryItem.PreviewMode.Right:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.RIGHT * max_size * size_multiplier
-			camera.size = max_size
-		SceneLibraryItem.PreviewMode.Left:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.LEFT * max_size * size_multiplier
-			camera.size = max_size
-		SceneLibraryItem.PreviewMode.Front:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.MODEL_FRONT * max_size * size_multiplier
-			camera.size = max_size
-		SceneLibraryItem.PreviewMode.Back:
-			camera.projection = Camera3D.PROJECTION_ORTHOGONAL
-			camera.position = aabb_center + Vector3.MODEL_REAR * max_size * size_multiplier
-			camera.size = max_size
-		_:
-			camera.projection = Camera3D.PROJECTION_PERSPECTIVE
-			camera.position = aabb_center + library_item.preview_info.camera_position
+	
+	camera.projection = Camera3D.PROJECTION_PERSPECTIVE
+	camera.position = _get_preview_camera_position(library, library_item, aabb)
 	camera.look_at(aabb_center)
+
+func get_preview_camera_position():
+	var aabb = Utilities.calculate_spatial_bounds(scene_parent.get_child(0))
+	var aabb_center = aabb.get_center()
+	var max_size = max(aabb.size.x, aabb.size.y, aabb.size.z)
+	
+	return _get_preview_camera_position(library, library_item, aabb)
+
+
+
+func _get_preview_camera_position(library: SceneLibrary, library_item: SceneLibraryItem, scene_aabb: AABB):
+	var aabb_center = scene_aabb.get_center()
+	var max_size = max(scene_aabb.size.x, scene_aabb.size.y, scene_aabb.size.z)
+
+	var global_preview_mode = ProjectSettings.get_setting("GdSpawn/Settings/Preview Perspective") as SceneLibraryItem.PreviewMode
+
+	var final_preview_mode: SceneLibraryItem.PreviewMode
+
+	if library_item.preview_mode == SceneLibraryItem.PreviewMode.Default:
+		if library.preview_mode == SceneLibraryItem.PreviewMode.Default:
+			if global_preview_mode == SceneLibraryItem.PreviewMode.Default:
+				return aabb_center + Vector3.ONE.normalized() * max_size * size_multiplier
+			final_preview_mode = global_preview_mode
+		else:
+			final_preview_mode = library.preview_mode
+	else:
+		final_preview_mode = library_item.preview_mode
+
+	var position
+	match final_preview_mode:
+		SceneLibraryItem.PreviewMode.Top:
+			position = aabb_center + Vector3.MODEL_TOP * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Bottom:
+			position = aabb_center + Vector3.MODEL_BOTTOM * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Right:
+			position = aabb_center + Vector3.RIGHT * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Left:
+			position = aabb_center + Vector3.LEFT * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Front:
+			position = aabb_center + Vector3.MODEL_FRONT * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Back:
+			position = aabb_center + Vector3.MODEL_REAR * max_size * size_multiplier
+		SceneLibraryItem.PreviewMode.Custom:
+			position = aabb_center + library_item.custom_camera_position
+
+
+	return position
