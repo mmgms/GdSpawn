@@ -1,4 +1,4 @@
-class_name Utilities
+class_name GdSpawnUtilities
 
 
 

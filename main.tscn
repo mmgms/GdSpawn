@@ -1,52 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://brjmlw33t6bld"]
-
-[ext_resource type="PackedScene" uid="uid://by441f3qt8cjg" path="res://scenes/walls_modular/InnerWall.tscn" id="1_ig7tw"]
-[ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/walls_modular/InnerFloor.tscn" id="2_0xm2m"]
+[gd_scene format=3 uid="uid://brjmlw33t6bld"]
 
 [node name="Main" type="Node3D"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
-shadow_enabled = true
-
-[node name="InnerWallStraight2" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 0)
-
-[node name="InnerWallStraight3" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 0)
-
-[node name="InnerWallStraight4" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 2, 1)
-
-[node name="InnerWallStraight5" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 2, 3)
-
-[node name="InnerWallStraight6" parent="." instance=ExtResource("1_ig7tw")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5, 2, 5)
-
-[node name="InnerFloor2" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 1)
-
-[node name="InnerFloor3" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 1)
-
-[node name="InnerFloor4" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 3)
-
-[node name="InnerFloor5" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 5)
-
-[node name="InnerFloor10" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 7)
-
-[node name="InnerFloor11" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 7)
-
-[node name="InnerFloor6" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 5)
-
-[node name="InnerFloor7" parent="." instance=ExtResource("2_0xm2m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 3)
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 3, 0)
+[node name="Floor" type="Node3D" parent="."]

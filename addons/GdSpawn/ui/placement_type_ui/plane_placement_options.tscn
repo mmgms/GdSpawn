@@ -1,0 +1,65 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctyldc3irrd5f"]
+
+[ext_resource type="Script" uid="uid://u1bblwrygxvx" path="res://addons/GdSpawn/ui/placement_type_ui/plane_placement_options.gd" id="1_uaecf"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="2_6o7e1"]
+
+[sub_resource type="Texture2D" id="Texture2D_0lj7p"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("2_6o7e1")
+icon_name = &"Reload"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_m1mu5"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("2_6o7e1")
+icon_name = &"EditPivot"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[node name="PlanePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("plane_select")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_uaecf")
+plane_select = NodePath("HBoxContainer/PlaneSelection/OptionButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PlaneSelection" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaneSelection"]
+layout_mode = 2
+text = "Plane"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer/PlaneSelection"]
+layout_mode = 2
+
+[node name="PlaneOffset" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PlaneOffset"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+layout_mode = 2
+text = "Position"
+
+[node name="Revert" type="Button" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_0lj7p")
+
+[node name="MatchSelected" type="Button" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_m1mu5")
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer/PlaneOffset"]
+layout_mode = 2

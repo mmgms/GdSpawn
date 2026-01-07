@@ -1,18 +1,58 @@
-[gd_scene load_steps=5 format=3 uid="uid://cq58hnib4q4ri"]
+[gd_scene load_steps=15 format=3 uid="uid://cq58hnib4q4ri"]
 
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="1_aoh2j"]
 [ext_resource type="PackedScene" uid="uid://bhj0afo267ais" path="res://addons/GdSpawn/ui/asset_palette.tscn" id="1_gn6wi"]
+[ext_resource type="Script" uid="uid://dcbncmuoncb1b" path="res://addons/GdSpawn/scripts/SpawnUnderLabel.gd" id="2_43vh5"]
 [ext_resource type="Script" uid="uid://dhx0lj4ql5frx" path="res://addons/GdSpawn/ui/libraries_manager.gd" id="4_80nxl"]
+[ext_resource type="PackedScene" uid="uid://ctyldc3irrd5f" path="res://addons/GdSpawn/ui/placement_type_ui/plane_placement_options.tscn" id="4_k2ook"]
+[ext_resource type="Script" uid="uid://bjhh71u5mfknq" path="res://addons/GdSpawn/ui/window_manager.gd" id="4_m8qjy"]
+[ext_resource type="Script" uid="uid://pctylkklcwin" path="res://addons/GdSpawn/ui/spawn_manager.gd" id="5_bu4qg"]
+[ext_resource type="PackedScene" uid="uid://dx2i8srcww4hd" path="res://addons/GdSpawn/ui/placement_type_ui/surface_placement_options.tscn" id="8_64fbb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ajnsn"]
 
+[sub_resource type="Texture2D" id="Texture2D_43vh5"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_aoh2j")
+icon_name = &"Help"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_m8qjy"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_aoh2j")
+icon_name = &"Window"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_bu4qg"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_aoh2j")
+icon_name = &"Node3D"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_k2ook"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_aoh2j")
+icon_name = &"ListSelect"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wbhi7"]
 
-[node name="MainDock" type="PanelContainer"]
+[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("main_node", "detach_button", "help_button", "spawn_manager", "libraries_manager")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("4_m8qjy")
+main_node = NodePath(".")
+detach_button = NodePath("HBoxContainer/SpawnOptions/Header/DetachButton")
+help_button = NodePath("HBoxContainer/SpawnOptions/Header/HelpButton")
+spawn_manager = NodePath("SpawnManager")
+libraries_manager = NodePath("LibrariesManager")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -26,7 +66,10 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/Header"]
 layout_mode = 2
+mouse_filter = 0
 text = "GdSpawn 0.1.0"
+script = ExtResource("2_43vh5")
+metadata/_custom_type_script = "uid://dcbncmuoncb1b"
 
 [node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions/Header"]
 layout_mode = 2
@@ -35,11 +78,15 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ajnsn")
 
 [node name="HelpButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
 layout_mode = 2
-text = "Help"
+icon = SubResource("Texture2D_43vh5")
+
+[node name="About" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+layout_mode = 2
+text = "About"
 
 [node name="DetachButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
 layout_mode = 2
-text = "Detach"
+icon = SubResource("Texture2D_m8qjy")
 
 [node name="SpawnParent" type="HBoxContainer" parent="HBoxContainer/SpawnOptions"]
 layout_mode = 2
@@ -48,54 +95,48 @@ layout_mode = 2
 layout_mode = 2
 text = "Spawn Under: "
 
-[node name="ParentLabel" type="Label" parent="HBoxContainer/SpawnOptions/SpawnParent"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions/SpawnParent"]
 layout_mode = 2
-text = "Parent"
+size_flags_horizontal = 3
 
-[node name="PlacementMode" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SpawnParent/PanelContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer"]
+layout_mode = 2
+texture = SubResource("Texture2D_bu4qg")
+stretch_mode = 3
+
+[node name="ParentLabel" type="Label" parent="HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 0
+text = "MainDock"
+script = ExtResource("2_43vh5")
+metadata/_custom_type_script = "uid://dcbncmuoncb1b"
+
+[node name="ChooseSelected" type="Button" parent="HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_k2ook")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Placement Mode:"
 
-[node name="PlacementOptions" type="OptionButton" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/HBoxContainer"]
+[node name="PlacementOptions" type="OptionButton" parent="HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlanePlacementOptions" type="PanelContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer"]
+[node name="PlacementModeOptionsParent" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions"]
-layout_mode = 2
-
-[node name="PlaneSelection" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneSelection"]
-layout_mode = 2
-text = "Plane"
-
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneSelection"]
-layout_mode = 2
-
-[node name="PlaneOffset" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneOffset"]
-layout_mode = 2
-text = "Position"
-
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer/SpawnOptions/PlacementMode/VBoxContainer/PlanePlacementOptions/HBoxContainer/PlaneOffset"]
+[node name="PlanePlacementOptions" parent="HBoxContainer/SpawnOptions/PlacementModeOptionsParent" instance=ExtResource("4_k2ook")]
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions"]
@@ -211,6 +252,10 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 24
 text = "+"
 
+[node name="FileDialog" type="FileDialog" parent="."]
+initial_position = 2
+filters = PackedStringArray("*.tres")
+
 [node name="LibrariesManager" type="Node" parent="." node_paths=PackedStringArray("save_library_button", "load_library_button", "new_library_button", "file_dialog", "libraries_container", "add_new_library_button", "preview_size_slider")]
 script = ExtResource("4_80nxl")
 save_library_button = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/SaveLibrary")
@@ -222,6 +267,16 @@ add_new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer
 asset_palette_scene = ExtResource("1_gn6wi")
 preview_size_slider = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/PreviewSizeSlider")
 
-[node name="FileDialog" type="FileDialog" parent="."]
-initial_position = 2
-filters = PackedStringArray("*.tres")
+[node name="SpawnManager" type="Node" parent="." node_paths=PackedStringArray("window_manager", "libraries_manager", "spawn_under_label", "spawn_under_choose_selected_button", "spawn_option_button", "spawn_option_parent", "spawn_node")]
+script = ExtResource("5_bu4qg")
+window_manager = NodePath("..")
+libraries_manager = NodePath("../LibrariesManager")
+spawn_under_label = NodePath("../HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer/ParentLabel")
+spawn_under_choose_selected_button = NodePath("../HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer/ChooseSelected")
+spawn_option_button = NodePath("../HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer/PlacementOptions")
+spawn_option_parent = NodePath("../HBoxContainer/SpawnOptions/PlacementModeOptionsParent")
+spawn_node = NodePath("..")
+placement_mode_to_ui = Dictionary[int, PackedScene]({
+0: ExtResource("4_k2ook"),
+1: ExtResource("8_64fbb")
+})

@@ -15,6 +15,7 @@ custom_minimum_size = Vector2(128, 128)
 offset_right = 128.0
 offset_bottom = 160.0
 toggle_mode = true
+keep_pressed_outside = true
 script = ExtResource("1_j1dts")
 texture_rect = NodePath("VBoxContainer/TextureRect")
 button_container = NodePath("VBoxContainer")

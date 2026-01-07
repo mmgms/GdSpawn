@@ -1,6 +1,6 @@
 @tool
 extends Resource
-class_name SceneLibraryItem
+class_name GdSpawnSceneLibraryItem
 
 
 enum PreviewMode {Default, Front, Back, Top, Bottom, Left, Right, Custom}

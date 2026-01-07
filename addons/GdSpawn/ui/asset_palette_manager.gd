@@ -1,11 +1,11 @@
 @tool
 extends Control
-class_name  AssetPaletteManager
+class_name  GdSpawnAssetPaletteManager
 
 @export var match_selected_button: Button
 
 @export var asset_previews_cotainer: Container
-@export var scene_library: SceneLibrary
+@export var scene_library: GdSpawnSceneLibrary
 
 @export var search_field: LineEdit
 
@@ -13,12 +13,17 @@ class_name  AssetPaletteManager
 
 @export var dynamic_preview_popup_scene: PackedScene
 
+signal asset_button_pressed(item: GdSpawnSceneLibraryItem)
+
+var button_group: ButtonGroup
 
 func _ready() -> void:
+	button_group = ButtonGroup.new()
+	button_group.allow_unpress = true
 	match_selected_button.pressed.connect(on_match_selected_pressed)
 	search_field.text_changed.connect(on_search_text_changed)
 
-func set_library(_scene_library: SceneLibrary):
+func set_library(_scene_library: GdSpawnSceneLibrary):
 	scene_library = _scene_library
 	name = scene_library.name
 	refresh_children()
@@ -29,14 +34,29 @@ func refresh_children():
 		child.queue_free()
 
 	for element in scene_library.elements:
-		var asset_button = asset_button_scene.instantiate() as AssetButton
+		var asset_button = asset_button_scene.instantiate() as GdSpawnAssetButton
 		asset_previews_cotainer.add_child(asset_button)
 		asset_button.set_library_item(element, scene_library)
 		asset_button.right_clicked.connect(func(item): show_asset_menu(item, asset_button))
+		asset_button.toggled.connect(func (toggled_on): on_asset_button_toggled(toggled_on, element, asset_button) )
+		asset_button.button_group = button_group
+
+func deselect():
+	if current_selected_button:
+		current_selected_button.set_pressed_no_signal(false)
+
+var current_selected_button: Button = null
+func on_asset_button_toggled(toggled_on, element, button):
+	if toggled_on:
+		current_selected_button = button
+		asset_button_pressed.emit(element)
+	else:
+		current_selected_button = null
+		asset_button_pressed.emit(null)
 
 func update_previews():
 	for child in asset_previews_cotainer.get_children():
-		(child as AssetButton).update_preview()
+		(child as GdSpawnAssetButton).update_preview()
 
 func save_library():
 	if scene_library.name.begins_with("[Empty]"):
@@ -56,7 +76,7 @@ func on_search_text_changed(text):
 		return
 
 	for child in asset_previews_cotainer.get_children():
-		var asset_button = child as AssetButton
+		var asset_button = child as GdSpawnAssetButton
 		if not asset_button.name_label.text.to_lower().contains(text.to_lower()):
 			asset_button.hide()
 		else:
@@ -81,16 +101,13 @@ func add_assets_or_folders(files: PackedStringArray):
 	for file in files:
 		add_asset(file, "")
 		
-
-
-
 func add_asset(path: String, folder_path: String):
 	scene_library.add_element(path)
 	refresh_children()
 	save_library()
 
 
-func show_asset_menu(item: SceneLibraryItem, button: AssetButton):
+func show_asset_menu(item: GdSpawnSceneLibraryItem, button: GdSpawnAssetButton):
 	var options_menu := PopupMenu.new()
 	var preview_options = create_preview_options(item, button)
 	options_menu.add_child(preview_options)
@@ -107,6 +124,8 @@ func show_asset_menu(item: SceneLibraryItem, button: AssetButton):
 				EditorInterface.open_scene_from_path(item.scene.resource_path)
 				EditorInterface.set_main_screen_editor("3D")
 			1: 
+				if button.pressed:
+					asset_button_pressed.emit(null)
 				scene_library.delete_element(item)
 				save_library()
 				refresh_children()
@@ -120,10 +139,10 @@ func show_asset_menu(item: SceneLibraryItem, button: AssetButton):
 	)
 	EditorInterface.popup_dialog(options_menu, Rect2(mouse_pos, options_menu.get_contents_minimum_size()))
 
-func create_preview_options(item, button: AssetButton):
+func create_preview_options(item, button: GdSpawnAssetButton):
 	var preview_options_menu := PopupMenu.new()
 	preview_options_menu.name = "PreviewMenu"
-	for option in SceneLibraryItem.PreviewMode.keys():
+	for option in GdSpawnSceneLibraryItem.PreviewMode.keys():
 		preview_options_menu.add_icon_radio_check_item(null, option)
 	
 	preview_options_menu.set_item_checked(item.preview_mode, true)
@@ -131,13 +150,13 @@ func create_preview_options(item, button: AssetButton):
 
 	return preview_options_menu
 
-func on_preview_option_index_pressed(item, index, button: AssetButton):
+func on_preview_option_index_pressed(item, index, button: GdSpawnAssetButton):
 	if index == null: 
 		return
 
 	var prev_camera_position = button.get_preview_camera_position() 
 	item.preview_mode = index
-	if item.preview_mode == SceneLibraryItem.PreviewMode.Custom and item.custom_camera_position.is_zero_approx():
+	if item.preview_mode == GdSpawnSceneLibraryItem.PreviewMode.Custom and item.custom_camera_position.is_zero_approx():
 		item.custom_camera_position = prev_camera_position
 
 	button.update_preview()
@@ -147,15 +166,16 @@ func update_size(size):
 	scene_library.size = size
 	save_library()
 	for child in asset_previews_cotainer.get_children():
-		var asset_button = child as AssetButton
+		var asset_button = child as GdSpawnAssetButton
 		asset_button.update_size(size)
 
 
-func open_dynamic_preview(item: SceneLibraryItem, button: AssetButton):
-	var dynamic_preview_popup = dynamic_preview_popup_scene.instantiate() as DynamicPreviewPopup
+func open_dynamic_preview(item: GdSpawnSceneLibraryItem, button: GdSpawnAssetButton):
+	var dynamic_preview_popup = dynamic_preview_popup_scene.instantiate() as GdSpawnDynamicPreviewPopup
 
 	var mouse_pos = DisplayServer.mouse_get_position()
-	EditorInterface.popup_dialog(dynamic_preview_popup, Rect2(mouse_pos, dynamic_preview_popup.get_contents_minimum_size()))
+	
+	EditorInterface.popup_dialog(dynamic_preview_popup, Rect2(mouse_pos-Vector2i(0, +200), dynamic_preview_popup.get_contents_minimum_size()))#dynamic_preview_popup.get_contents_minimum_size()
 
 	dynamic_preview_popup.set_library_item(item, button)
 	dynamic_preview_popup.thumbnail_updated.connect(func (): save_library(); button.update_preview())

@@ -1,6 +1,6 @@
 @tool
 extends Popup
-class_name DynamicPreviewPopup
+class_name GdSpawnDynamicPreviewPopup
 
 
 @export var camera: Camera3D
@@ -12,8 +12,8 @@ class_name DynamicPreviewPopup
 @export var update_thumbnail_button: Button
 
 
-@export var scene_library_item: SceneLibraryItem
-@export var asset_button: AssetButton
+@export var scene_library_item: GdSpawnSceneLibraryItem
+@export var asset_button: GdSpawnAssetButton
 
 
 @export var orbit_sensitivity := 0.005
@@ -39,7 +39,7 @@ func on_close():
 
 func on_update_thumbnail():
 	scene_library_item.custom_camera_position = camera.global_position - pivot
-	scene_library_item.preview_mode = SceneLibraryItem.PreviewMode.Custom
+	scene_library_item.preview_mode = GdSpawnSceneLibraryItem.PreviewMode.Custom
 	thumbnail_updated.emit()
 	queue_free()
 
@@ -80,7 +80,7 @@ func update_camera_transform():
 	camera.look_at(pivot, Vector3.UP)
 
 
-func set_library_item(_lib_item: SceneLibraryItem, _asset_button: AssetButton):
+func set_library_item(_lib_item: GdSpawnSceneLibraryItem, _asset_button: GdSpawnAssetButton):
 	asset_button = _asset_button
 	scene_library_item = _lib_item
 	for child in scene_parent.get_children():
@@ -92,7 +92,7 @@ func set_library_item(_lib_item: SceneLibraryItem, _asset_button: AssetButton):
 
 	await get_tree().process_frame
 
-	var aabb = Utilities.calculate_spatial_bounds(instanced_scene)
+	var aabb = GdSpawnUtilities.calculate_spatial_bounds(instanced_scene)
 
 	var max_size = max(aabb.size.x, aabb.size.y, aabb.size.z)
 

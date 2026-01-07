@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2p0yea1m31bs"]
+
+[ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/walls_modular/InnerFloor.tscn" id="1_csi8y"]
+[ext_resource type="Material" uid="uid://08fpp1jxbsgl" path="res://materials/atlas02.tres" id="2_fje67"]
+[ext_resource type="ArrayMesh" uid="uid://bm17mvuecsuy5" path="res://assets/walls_modular/inner_floor.res" id="3_am00n"]
+[ext_resource type="PackedScene" uid="uid://by441f3qt8cjg" path="res://scenes/walls_modular/InnerWall.tscn" id="4_758as"]
+[ext_resource type="ArrayMesh" uid="uid://bymx6ba2ywotv" path="res://assets/walls_modular/inner_wall_straight.res" id="5_i1xgr"]
+[ext_resource type="PackedScene" uid="uid://17834yhsapc0" path="res://scenes/walls_modular/prop.tscn" id="6_ohtdi"]
+
+[node name="AssetZoo" type="Node3D"]
+
+[node name="InnerFloor" type="MeshInstance3D" parent="." instance=ExtResource("1_csi8y")]
+material_override = ExtResource("2_fje67")
+mesh = ExtResource("3_am00n")
+
+[node name="InnerWallStraight" type="MeshInstance3D" parent="." instance=ExtResource("4_758as")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+material_override = ExtResource("2_fje67")
+mesh = ExtResource("5_i1xgr")
+
+[node name="Prop" type="Node3D" parent="." instance=ExtResource("6_ohtdi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8.34375)

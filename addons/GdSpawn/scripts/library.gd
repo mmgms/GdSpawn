@@ -1,14 +1,14 @@
 @tool
 extends Resource
-class_name SceneLibrary
+class_name GdSpawnSceneLibrary
 
 
 @export var name: String
-@export var elements: Array[SceneLibraryItem]
+@export var elements: Array[GdSpawnSceneLibraryItem]
 @export var size: int = 96
 
 
-@export var preview_mode: SceneLibraryItem.PreviewMode = SceneLibraryItem.PreviewMode.Default
+@export var preview_mode: GdSpawnSceneLibraryItem.PreviewMode = GdSpawnSceneLibraryItem.PreviewMode.Default
 
 func add_element(path: String):
 	var scene = load(path)
@@ -16,7 +16,7 @@ func add_element(path: String):
 		if element.scene == scene:
 			return
 
-	var item = SceneLibraryItem.new()
+	var item = GdSpawnSceneLibraryItem.new()
 	item.scene = scene
 
 	var preview = SceneTexture.new()
@@ -26,5 +26,5 @@ func add_element(path: String):
 	elements.append(item)
 
 
-func delete_element(element: SceneLibraryItem):
+func delete_element(element: GdSpawnSceneLibraryItem):
 	elements.erase(element)

@@ -2,26 +2,39 @@
 extends EditorPlugin
 
 
-var main_dock: Control
+var main_dock: GdSpawnMainDockManager
 
 const BASE_SETTING = "GdSpawn/Settings/"
 
 
 func _enter_tree() -> void:
 
-	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate()
+	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate() as GdSpawnMainDockManager
+	main_dock.editor_plugin = self
 
 	add_control_to_bottom_panel(main_dock, "GdSpawn")
-	_add_setting("%sPreview Perspective" % BASE_SETTING, SceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
-		", ".join(SceneLibraryItem.PreviewMode.keys().slice(0, -1)))
+	
+	_add_setting("%sPreview Perspective" % BASE_SETTING, GdSpawnSceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
+		", ".join(GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1)))
+
+
+	project_settings_changed.connect(on_project_settings_changed)
 
 
 func _exit_tree() -> void:
-	
 	remove_control_from_bottom_panel(main_dock)
 	main_dock.free()
 
 
+func on_project_settings_changed():
+	## TODO
+	pass
+
+func attach_to_bottom_panel():
+	add_control_to_bottom_panel(main_dock, "GdSpawn")
+
+func remove_from_bottom_panel():
+	remove_control_from_bottom_panel(main_dock)
 
 func _add_setting(property_name: String, default: Variant, type = -1, hint = -1, hint_string = ""):
 	if not ProjectSettings.has_setting(property_name):
@@ -44,3 +57,29 @@ func _add_setting(property_name: String, default: Variant, type = -1, hint = -1,
 func get_enum_hint_string(enum_dict):
 	return ", ".join(enum_dict.keys())
 
+
+func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
+
+	if main_dock.libraries_manager.current_selected_scene_library_item == null:
+		return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
+		main_dock.spawn_manager.on_move(viewport_camera)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		main_dock.spawn_manager.on_confirm()
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event is InputEventKey and event.keycode == KEY_ESCAPE and event.is_pressed():
+		main_dock.spawn_manager.on_cancel()
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	
+	
+	return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+
+func _handles(object):
+	return object is Node3D
+	

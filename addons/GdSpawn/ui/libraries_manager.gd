@@ -1,6 +1,6 @@
 @tool
 extends Node
-
+class_name GdSpawnLibrariesManager
 
 @export var save_library_button: Button
 @export var load_library_button: Button
@@ -19,9 +19,13 @@ extends Node
 @export var max_size: int = 128
 @export var min_size: int = 64
 
-enum SaveMode {Save, SaveAs}
+enum GdSpawnSaveMode {Save, SaveAs}
 
-var save_mode = SaveMode.Save
+var save_mode = GdSpawnSaveMode.Save
+
+signal selected_item_changed(item: GdSpawnSceneLibraryItem)
+
+var current_selected_scene_library_item: GdSpawnSceneLibraryItem = null
 
 
 func _ready() -> void:
@@ -54,9 +58,9 @@ func on_save_library(copy: bool = false):
 	file_dialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
 	file_dialog.popup_centered()
 	if copy:
-		save_mode = SaveMode.SaveAs
+		save_mode = GdSpawnSaveMode.SaveAs
 		return
-	save_mode = SaveMode.Save
+	save_mode = GdSpawnSaveMode.Save
 
 
 func on_load_library():
@@ -68,9 +72,9 @@ func on_new_library():
 	var library  = get_selected_library()
 	if library and library.name.begins_with("[Empty]"):
 		return
-	var empty_library = SceneLibrary.new()
+	var empty_library = GdSpawnSceneLibrary.new()
 	empty_library.name = "[Empty]"
-	var palette = asset_palette_scene.instantiate() as AssetPaletteManager
+	var palette = asset_palette_scene.instantiate() as GdSpawnAssetPaletteManager
 	libraries_container.add_child(palette)
 	palette.set_library(empty_library)
 	libraries_container.current_tab = libraries_container.get_child_count()-1
@@ -85,7 +89,7 @@ func on_confirmed(path):
 	if file_dialog.file_mode == FileDialog.FILE_MODE_OPEN_FILE:
 		load_library(path)
 	else:
-		if save_mode == SaveMode.Save:
+		if save_mode == GdSpawnSaveMode.Save:
 			save_library(path)
 		else:
 			save_library(path, true)
@@ -93,7 +97,7 @@ func on_confirmed(path):
 
 
 func save_library(path: String, copy: bool=false):
-	var library: SceneLibrary = (libraries_container.get_child(libraries_container.current_tab) as AssetPaletteManager).scene_library
+	var library: GdSpawnSceneLibrary = (libraries_container.get_child(libraries_container.current_tab) as GdSpawnAssetPaletteManager).scene_library
 	if copy:
 		library = library.duplicate()
 	library.name = path.get_file().get_basename()
@@ -104,29 +108,30 @@ func save_library(path: String, copy: bool=false):
 
 func load_library(path):
 
-	var library = load(path) as SceneLibrary
+	var library = load(path) as GdSpawnSceneLibrary
 	for idx in libraries_container.get_children().size():
 		var child = libraries_container.get_children()[idx]
-		var asset_palette = child as AssetPaletteManager
+		var asset_palette = child as GdSpawnAssetPaletteManager
 
 		if asset_palette.scene_library == library:
 			libraries_container.current_tab = idx
 			return
 
-	var current_asset_palette = (libraries_container.get_child(libraries_container.current_tab) as AssetPaletteManager)
+	var current_asset_palette = (libraries_container.get_child(libraries_container.current_tab) as GdSpawnAssetPaletteManager)
 	if current_asset_palette.scene_library.elements.is_empty():
 		current_asset_palette.queue_free()
 
 	
-	var palette = asset_palette_scene.instantiate() as AssetPaletteManager
+	var palette = asset_palette_scene.instantiate() as GdSpawnAssetPaletteManager
 	libraries_container.add_child(palette)
 	palette.set_library(library)
 	libraries_container.current_tab = libraries_container.get_child_count()-1
+	palette.asset_button_pressed.connect(on_palette_item_selected)
 
 
 
 func on_tab_clicked(tab):
-	var library = (libraries_container.get_child(libraries_container.current_tab) as AssetPaletteManager).scene_library
+	var library = (libraries_container.get_child(libraries_container.current_tab) as GdSpawnAssetPaletteManager).scene_library
 	if library.name.begins_with("[Empty]"):
 		return
 	show_tab_contextual_menu(tab, library)
@@ -158,12 +163,15 @@ func show_tab_contextual_menu(tab, library):
 			3:
 				update_selected_palette_previews()
 			4:
-				library.preview_mode = SceneLibraryItem.PreviewMode.Default
+				library.preview_mode = GdSpawnSceneLibraryItem.PreviewMode.Default
 				for element in library.elements:
-					element.preview_mode = SceneLibraryItem.PreviewMode.Default
+					element.preview_mode = GdSpawnSceneLibraryItem.PreviewMode.Default
 
 				update_save_library()
 				update_selected_palette_previews()
+
+			5: 
+				generate_asset_zoo()
 				
 			_: pass
 	)
@@ -172,7 +180,7 @@ func show_tab_contextual_menu(tab, library):
 func create_preview_options(tab, library):
 	var preview_options_menu := PopupMenu.new()
 	preview_options_menu.name = "PreviewMenu"
-	for option in SceneLibraryItem.PreviewMode.keys().slice(0, -1):
+	for option in GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1):
 		preview_options_menu.add_icon_radio_check_item(null, option)
 	
 	preview_options_menu.set_item_checked(library.preview_mode, true)
@@ -196,13 +204,13 @@ func update_selected_palette_previews():
 func get_selected_asset_palette():
 	if libraries_container.get_child_count() == 0:
 		return null
-	var library = (libraries_container.get_child(libraries_container.current_tab) as AssetPaletteManager)
+	var library = (libraries_container.get_child(libraries_container.current_tab) as GdSpawnAssetPaletteManager)
 	return library
 
 func get_selected_library():
 	if libraries_container.get_child_count() == 0:
 		return null
-	var library = (libraries_container.get_child(libraries_container.current_tab) as AssetPaletteManager).scene_library
+	var library = (libraries_container.get_child(libraries_container.current_tab) as GdSpawnAssetPaletteManager).scene_library
 	return library
 
 
@@ -213,11 +221,105 @@ func on_preview_size_changed(value):
 		return
 	selected_palette.update_size(size)
 
+func on_palette_item_selected(item):
+	current_selected_scene_library_item = item
+	selected_item_changed.emit(item)
 
 func on_tab_changed(_idx):
-	var library = get_selected_library() as SceneLibrary
+	current_selected_scene_library_item = null
+	var library = get_selected_library() as GdSpawnSceneLibrary
 	
 	if not library:
 		return
 	var slider_value = float(library.size - min_size)/(max_size-min_size)
 	preview_size_slider.set_value_no_signal(slider_value)
+
+func generate_asset_zoo():
+	var library = get_selected_library() as GdSpawnSceneLibrary
+	if not library:
+		return
+
+	var parent_node := Node3D.new()
+	parent_node.name = "AssetZoo"
+
+	var padding := 1.0
+
+	# --- Collect instances and bounds ---
+	var items := []
+
+	for library_item in library.elements:
+		if not library_item.scene:
+			continue
+
+		var instance := library_item.scene.instantiate() as Node3D
+		parent_node.add_child(instance)
+		instance.owner = parent_node
+
+		await get_tree().process_frame
+
+		var aabb: AABB = GdSpawnUtilities.calculate_spatial_bounds(instance)
+
+		items.append({
+			"node": instance,
+			"aabb": aabb,
+			"footprint": max(aabb.size.x, aabb.size.z)
+		})
+
+	if items.is_empty():
+		return
+
+	# --- Sort by footprint so similar-sized assets cluster ---
+	items.sort_custom(func(a, b):
+		return a["footprint"] < b["footprint"]
+	)
+
+	# --- Grid heuristics ---
+	var target_items_per_row := int(ceil(sqrt(items.size())))
+
+	var cursor_x := 0.0
+	var cursor_z := 0.0
+	var row_max_depth := 0.0
+	var items_in_row := 0
+
+	# --- Layout ---
+	for item in items:
+		var node: Node3D = item["node"]
+		var aabb: AABB = item["aabb"]
+
+		var size_x := aabb.size.x
+		var size_z := aabb.size.z
+
+		# Start new row if row is "full"
+		if items_in_row >= target_items_per_row:
+			cursor_x = 0.0
+			cursor_z += size_z + padding
+			items_in_row = 0
+
+		node.position = Vector3(cursor_x, 0.0, cursor_z)
+
+		# Advance cursor
+		cursor_x += size_x + padding
+		items_in_row += 1
+
+	# --- Save & open ---
+	var path := "res://temp_asset_zoo.tscn"
+	save_node_as_scene(parent_node, path)
+	EditorInterface.open_scene_from_path(path)
+	EditorInterface.set_main_screen_editor("3D")
+
+
+func save_node_as_scene(node: Node, path: String) -> void:
+	var packed_scene := PackedScene.new()
+
+	var result = packed_scene.pack(node)
+	if result != OK:
+		return
+
+	var save_result = ResourceSaver.save(packed_scene, path)
+
+
+func deselect():
+	current_selected_scene_library_item = null
+	var asset_palette = get_selected_asset_palette()
+	if asset_palette:
+		asset_palette.deselect()
