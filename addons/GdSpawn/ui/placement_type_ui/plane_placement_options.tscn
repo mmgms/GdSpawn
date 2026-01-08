@@ -17,7 +17,7 @@ script = ExtResource("2_6o7e1")
 icon_name = &"EditPivot"
 metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
-[node name="PlanePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("plane_select")]
+[node name="PlanePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("plane_select", "position_along_normal_spin_box", "reset_position_along_normal", "match_selected_posiiton_along_normal")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -27,6 +27,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_uaecf")
 plane_select = NodePath("HBoxContainer/PlaneSelection/OptionButton")
+position_along_normal_spin_box = NodePath("HBoxContainer/PlaneOffset/SpinBox")
+reset_position_along_normal = NodePath("HBoxContainer/PlaneOffset/HBoxContainer/Revert")
+match_selected_posiiton_along_normal = NodePath("HBoxContainer/PlaneOffset/HBoxContainer/MatchSelected")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -41,6 +44,14 @@ text = "Plane"
 
 [node name="OptionButton" type="OptionButton" parent="HBoxContainer/PlaneSelection"]
 layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "XZ"
+popup/item_0/id = 0
+popup/item_1/text = "XY"
+popup/item_1/id = 1
+popup/item_2/text = "YZ"
+popup/item_2/id = 2
 
 [node name="PlaneOffset" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2

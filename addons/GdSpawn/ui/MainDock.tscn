@@ -329,7 +329,7 @@ snap_enable = NodePath("../HBoxContainer/SpawnOptions/SnappingOptions/VBoxContai
 snap_step = NodePath("../HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer2/SnapStep")
 snap_shift_step = NodePath("../HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer2/SnapShiftStep")
 spawn_node = NodePath("..")
-placement_mode_to_ui = Dictionary[int, PackedScene]({
+placement_mode_to_ui_scene = Dictionary[int, PackedScene]({
 0: ExtResource("4_k2ook"),
 1: ExtResource("8_64fbb")
 })

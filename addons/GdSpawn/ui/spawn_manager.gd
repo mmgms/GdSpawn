@@ -20,7 +20,8 @@ enum GdSpawnPlacementMode {Plane, Surface}
 
 var current_placement_mode: GdSpawnPlacementMode
 
-@export var placement_mode_to_ui: Dictionary[GdSpawnPlacementMode, PackedScene]
+@export var placement_mode_to_ui_scene: Dictionary[GdSpawnPlacementMode, PackedScene]
+var placement_mode_to_ui: Dictionary[GdSpawnPlacementMode, Control]
 
 var current_placement_mode_manager: Node
 var undo_redo: EditorUndoRedoManager
@@ -50,22 +51,30 @@ func _ready() -> void:
 	for key in GdSpawnPlacementMode.keys():
 		spawn_option_button.add_item(key)
 
-
 	spawn_option_button.item_selected.connect(on_spawn_option_selected)
-	on_spawn_option_selected(0)
-
 
 	spawn_under_choose_selected_button.pressed.connect(on_choose_selected)
 
 	libraries_manager.selected_item_changed.connect(on_selected_item_changed)
 
+	if spawn_option_parent.get_child_count() > 0:
+		spawn_option_parent.get_child(0).queue_free()
+
+	for placement_mode in placement_mode_to_ui_scene.keys():
+		var ui_instance = placement_mode_to_ui_scene[placement_mode].instantiate()
+		spawn_option_parent.add_child(ui_instance)
+		placement_mode_to_ui[placement_mode] = ui_instance
+	
+	on_spawn_option_selected(0)
+
 
 func on_spawn_option_selected(idx):
 	current_placement_mode = idx
-	if spawn_option_parent.get_child_count() > 0:
-		spawn_option_parent.get_child(0).queue_free()
-	current_placement_mode_manager = placement_mode_to_ui[current_placement_mode].instantiate()
-	spawn_option_parent.add_child(current_placement_mode_manager)
+
+	for child in spawn_option_parent.get_children():
+		child.hide()
+	current_placement_mode_manager = placement_mode_to_ui[current_placement_mode]
+	current_placement_mode_manager.show()
 
 
 func on_choose_selected():
@@ -77,6 +86,8 @@ func on_choose_selected():
 
 	
 func change_spawn_node(node):
+	if not node:
+		return
 	spawn_node = node
 	spawn_under_label.text = spawn_node.name
 
@@ -98,8 +109,8 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 func on_move(camera: Camera3D, mouse_position: Vector2):
 	if not preview_scene:
 		return
-	var position = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info)
-	preview_scene.global_position = position
+	var new_transform = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info, preview_scene.global_transform)
+	preview_scene.global_transform = new_transform
 
 func on_confirm():
 	var instanced_scene = libraries_manager.current_selected_scene_library_item.scene.instantiate()

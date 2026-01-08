@@ -1,6 +1,8 @@
-[gd_scene format=3 uid="uid://dx2i8srcww4hd"]
+[gd_scene load_steps=2 format=3 uid="uid://dx2i8srcww4hd"]
 
-[node name="SurfacePlacementOptions" type="PanelContainer"]
+[ext_resource type="Script" uid="uid://b45ueufqhhxh8" path="res://addons/GdSpawn/ui/placement_type_ui/surface_placement_options.gd" id="1_1bxxx"]
+
+[node name="SurfacePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("align_to_surface_normal_check_box", "alignment_options_select")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -8,6 +10,9 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_1bxxx")
+align_to_surface_normal_check_box = NodePath("VBoxContainer/HBoxContainer/AlignToNormalCheckBox")
+alignment_options_select = NodePath("VBoxContainer/VBoxContainer/AlignmentDirectionSelect")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -15,7 +20,7 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+[node name="AlignToNormalCheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
@@ -29,5 +34,5 @@ layout_mode = 2
 layout_mode = 2
 text = "Alignment Direction"
 
-[node name="OptionButton" type="OptionButton" parent="VBoxContainer/VBoxContainer"]
+[node name="AlignmentDirectionSelect" type="OptionButton" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
