@@ -18,7 +18,11 @@ var current_plane: Plane
 var current_position_along_normal: float = 0.0
 var current_normal: Vector3 = Vector3.UP
 
+var default_transform: Transform3D
+
 func _ready() -> void:
+
+	default_transform = Transform3D()
 
 	current_plane = Plane(Vector3.UP)
 	for key in GdSpawnPlaneType.keys():
@@ -38,7 +42,7 @@ func on_match_selected_position_along_normal():
 	var selected_node = selection.get_selected_nodes()[0]
 	if not selected_node is Node3D:
 		return
-		
+
 	position_along_normal_spin_box.value = current_plane.distance_to(selected_node.global_position)
 	
 
@@ -62,14 +66,14 @@ func on_plane_type_selected(idx):
 
 	current_plane = Plane(current_normal, Vector3.ZERO + current_normal * current_position_along_normal)
 
-func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpawnManager.GdSpawnSnapInfo, original_transform: Transform3D) -> Transform3D:
+func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpawnManager.GdSpawnSnapInfo) -> Transform3D:
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_direction = camera.project_ray_normal(mouse_pos)
 
 
 	var intersection_point = current_plane.intersects_ray(ray_origin, ray_direction)
 
-	var new_transform = original_transform
+	var new_transform = default_transform
 
 	if intersection_point != null:
 		var final_position = intersection_point as Vector3
@@ -77,4 +81,10 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpa
 			intersection_point = intersection_point.snapped(Vector3.ONE * current_snap_info.step)
 		new_transform.origin = intersection_point
 		return new_transform
-	return original_transform
+	return new_transform
+
+func on_rotate_y(shift_pressed):
+	var deg_to_rotate = 90
+	if shift_pressed:
+		deg_to_rotate = 45
+	default_transform = default_transform.rotated_local(Vector3.UP, deg_to_rad(deg_to_rotate))

@@ -65,7 +65,23 @@ func save_library():
 	ResourceSaver.save(scene_library)
 
 func on_match_selected_pressed():
-	pass
+	var selection = EditorInterface.get_selection()
+	if selection.get_selected_nodes().size() == 0:
+		return
+	
+	var selected_node = selection.get_selected_nodes()[0]
+	if not selected_node is Node3D:
+		return
+
+	var scene_path = selected_node.scene_file_path
+	if not scene_path or scene_path.is_empty():
+		return
+	
+	for child in asset_previews_cotainer.get_children():
+		var asset_button = child as GdSpawnAssetButton
+		if asset_button.library_item.scene.resource_path == scene_path:
+			asset_button.set_pressed(true)
+			return
 
 
 func on_search_text_changed(text):

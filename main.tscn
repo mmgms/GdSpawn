@@ -1,9 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=18 format=3 uid="uid://brjmlw33t6bld"]
 
 [ext_resource type="PackedScene" uid="uid://d4mj0o6m30s0t" path="res://scenes/suburban_modular/ExteriorWindowLarge.tscn" id="1_074og"]
 [ext_resource type="Material" uid="uid://buvejml4q1x2h" path="res://materials/atlas01.tres" id="2_cegan"]
 [ext_resource type="Material" uid="uid://08fpp1jxbsgl" path="res://materials/atlas02.tres" id="2_h2yge"]
-[ext_resource type="ArrayMesh" uid="uid://cksdkgqcayp13" path="res://assets/walls_modular/suburb_house_set_exterior_window_opening_large.res" id="3_82xsv"]
 [ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/suburban_modular/InnerFloor.tscn" id="4_getpj"]
 [ext_resource type="ArrayMesh" uid="uid://cl1buiteuarh6" path="res://assets/walls_modular/suburb_house_set_interior_floor.res" id="6_ryguw"]
 [ext_resource type="PackedScene" uid="uid://dp46t7gobl6py" path="res://scenes/suburban_modular/InnerWallOuterCorner.tscn" id="7_d13ii"]
@@ -11,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://di7qtt4eub4nq" path="res://scenes/suburban_modular/OuterCornerWall.tscn" id="11_a6jrf"]
 [ext_resource type="PackedScene" uid="uid://dna1hd47b3y8u" path="res://scenes/test/ExampleTerrain.tscn" id="12_dg77c"]
 [ext_resource type="PackedScene" uid="uid://44gk1nmbc7wg" path="res://scenes/suburban_modular/InnerWallOneSided.tscn" id="13_qsp4k"]
-[ext_resource type="ArrayMesh" uid="uid://d2s2p5qrpclro" path="res://assets/walls_modular/suburb_house_set_interior_wall.res" id="14_kq58d"]
+[ext_resource type="ArrayMesh" uid="uid://bbx5cximhtda6" path="res://assets/walls_modular/suburb_house_set_exterior_window_opening.res" id="14_vivmo"]
 [ext_resource type="PackedScene" uid="uid://dftdue82n672h" path="res://scenes/suburban_modular/OuterDoor.tscn" id="15_seu75"]
 [ext_resource type="PackedScene" uid="uid://l4o3fhv80k5j" path="res://scenes/suburban_modular/OuterWall.tscn" id="17_jq2sk"]
 [ext_resource type="ArrayMesh" uid="uid://bapxru7m6nggj" path="res://assets/walls_modular/suburb_house_set_exterior_wall.res" id="18_4k2k6"]
@@ -21,964 +20,1103 @@
 
 [node name="Main" type="Node3D"]
 
-[node name="Floor1" type="Node3D" parent="."]
+[node name="ExampleTerrain" parent="." instance=ExtResource("12_dg77c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 0, 0)
 
-[node name="InnerFloor2" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="House" type="Node3D" parent="."]
+
+[node name="Floor1" type="Node3D" parent="House"]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
+
+[node name="InnerFloor2" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor3" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor3" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor4" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor4" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor5" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor5" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor6" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor6" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor7" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor7" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor8" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor8" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor9" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor9" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOuterCorner2" parent="Floor1" instance=ExtResource("7_d13ii")]
+[node name="InnerWallOuterCorner2" parent="House/Floor1" instance=ExtResource("7_d13ii")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="ExteriorWindow3" parent="Floor1" instance=ExtResource("9_0odxb")]
+[node name="ExteriorWindow3" parent="House/Floor1" instance=ExtResource("9_0odxb")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="ExteriorWindow4" parent="Floor1" instance=ExtResource("9_0odxb")]
+[node name="ExteriorWindow4" parent="House/Floor1" instance=ExtResource("9_0odxb")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterCornerWall2" parent="Floor1" instance=ExtResource("11_a6jrf")]
+[node name="OuterCornerWall2" parent="House/Floor1" instance=ExtResource("11_a6jrf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor10" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor10" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor11" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor11" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor12" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor12" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor13" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor13" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor14" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor14" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor15" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor15" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor16" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor16" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor17" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor17" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor18" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor18" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided3" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided3" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -2, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided4" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided4" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, -3, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterDoor2" parent="Floor1" instance=ExtResource("15_seu75")]
+[node name="OuterDoor2" parent="House/Floor1" instance=ExtResource("15_seu75")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall4" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall4" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterCornerWall3" parent="Floor1" instance=ExtResource("11_a6jrf")]
+[node name="OuterCornerWall3" parent="House/Floor1" instance=ExtResource("11_a6jrf")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -2, 0, 0)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall5" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall5" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -2, 0, -1)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor19" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor19" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor20" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor20" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor21" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor21" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor22" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor22" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor23" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor23" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor24" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor24" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor25" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor25" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided7" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided7" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided8" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided8" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided17" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided17" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -12, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided18" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided18" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -12, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided19" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided19" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -12, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided20" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided20" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, -11, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor26" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor26" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor27" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor27" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor28" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor28" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerDoor2" parent="Floor1" instance=ExtResource("19_getpj")]
+[node name="InnerDoor2" parent="House/Floor1" instance=ExtResource("19_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor29" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor29" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor30" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor30" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor31" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor31" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor32" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor32" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor33" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor33" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor34" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor34" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor35" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor35" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor36" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor36" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor37" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor37" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor38" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor38" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor39" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor39" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor40" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor40" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor41" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor41" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor42" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor42" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor43" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor43" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor44" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor44" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight14" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight14" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight15" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight15" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight16" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight16" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor45" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor45" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor46" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor46" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor47" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor47" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor48" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor48" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor49" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor49" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor50" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor50" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor51" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor51" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor52" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor52" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor53" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor53" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor54" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor54" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor55" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor55" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor56" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor56" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor57" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor57" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor58" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor58" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor59" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor59" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerFloor60" parent="Floor1" instance=ExtResource("4_getpj")]
+[node name="InnerFloor60" parent="House/Floor1" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall7" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall7" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall8" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall8" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall9" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall9" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall10" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall10" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -11, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterCornerWall4" parent="Floor1" instance=ExtResource("11_a6jrf")]
+[node name="OuterCornerWall4" parent="House/Floor1" instance=ExtResource("11_a6jrf")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -2)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall11" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall11" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -3)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall12" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall12" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -5)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall13" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall13" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -7)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall14" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall14" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall17" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall17" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="ExteriorWindow5" parent="Floor1" instance=ExtResource("1_074og")]
+[node name="ExteriorWindow5" parent="House/Floor1" instance=ExtResource("1_074og")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -12, 0, -12)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall16" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall16" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -11)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall20" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall20" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -13)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="OuterWall21" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall21" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 0, -15)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallOneSided11" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided11" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12, 0, -9)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight2" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight2" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight3" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight3" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -8)
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="InnerWallStraight4" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight4" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -8)
 
-[node name="InnerWallStraight5" parent="Floor1" instance=ExtResource("21_d13ii")]
+[node name="InnerWallStraight5" parent="House/Floor1" instance=ExtResource("21_d13ii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -8)
 
-[node name="InnerWallOneSided9" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided9" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -9)
 
-[node name="InnerWallOneSided10" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided10" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -11)
 
-[node name="InnerWallOneSided12" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided12" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -13)
 
-[node name="InnerWallOneSided13" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided13" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 4, 0, -15)
 
-[node name="InnerWallOneSided14" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided14" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 3, 0, -16)
 
-[node name="InnerWallOneSided15" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided15" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, 1, 0, -16)
 
-[node name="InnerWallOneSided16" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided16" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -1, 0, -16)
 
-[node name="InnerWallOneSided21" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided21" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -3, 0, -16)
 
-[node name="InnerWallOneSided22" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided22" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -5, 0, -16)
 
-[node name="InnerWallOneSided23" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided23" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -7, 0, -16)
 
-[node name="InnerWallOneSided24" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided24" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -9, 0, -16)
 
-[node name="InnerWallOneSided25" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided25" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(1, 0, 1.74846e-07, 0, 1, 0, -1.74846e-07, 0, 1, -11, 0, -16)
 
-[node name="InnerWallOneSided26" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided26" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, -12, 0, -15)
 
-[node name="OuterCornerWall5" parent="Floor1" instance=ExtResource("11_a6jrf")]
+[node name="OuterCornerWall5" parent="House/Floor1" instance=ExtResource("11_a6jrf")]
 transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -1, 0, -2.18557e-07, 4, 0, -16)
 
-[node name="OuterCornerWall6" parent="Floor1" instance=ExtResource("11_a6jrf")]
+[node name="OuterCornerWall6" parent="House/Floor1" instance=ExtResource("11_a6jrf")]
 transform = Transform3D(-1, 0, -2.62268e-07, 0, 1, 0, 2.62268e-07, 0, -1, -12, 0, -16)
 
-[node name="OuterWall15" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall15" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -11, 0, -16)
 
-[node name="OuterWall18" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall18" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -9, 0, -16)
 
-[node name="OuterWall19" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall19" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, -16)
 
-[node name="OuterWall22" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall22" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1, 0, -16)
 
-[node name="OuterWall23" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall23" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1, 0, -16)
 
-[node name="OuterWall24" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall24" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -3, 0, -16)
 
-[node name="OuterWall25" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall25" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5, 0, -16)
 
-[node name="OuterWall26" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall26" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -7, 0, -16)
 
-[node name="ExteriorWindow6" parent="Floor1" instance=ExtResource("9_0odxb")]
+[node name="ExteriorWindow6" parent="House/Floor1" instance=ExtResource("9_0odxb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -2)
 
-[node name="InnerWallOneSided5" parent="Floor1" instance=ExtResource("13_qsp4k")]
+[node name="InnerWallOneSided5" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -5, 0, -2)
 
-[node name="OuterWall2" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall2" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2)
 
-[node name="ExteriorWindow2" type="MeshInstance3D" parent="Floor1" instance=ExtResource("1_074og")]
-material_override = ExtResource("2_cegan")
-mesh = ExtResource("3_82xsv")
+[node name="ExteriorWindow2" parent="House/Floor1" instance=ExtResource("1_074og")]
 
-[node name="OuterWall3" type="MeshInstance3D" parent="Floor1" instance=ExtResource("17_jq2sk")]
+[node name="OuterWall3" parent="House/Floor1" instance=ExtResource("17_jq2sk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+
+[node name="InnerWallOneSided2" parent="House/Floor1" instance=ExtResource("13_qsp4k")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, 0)
+
+[node name="Ceiling1" type="Node3D" parent="House"]
+visible = false
+
+[node name="InnerCeiling2" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -3)
+
+[node name="InnerCeiling3" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -5)
+
+[node name="InnerCeiling4" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -7)
+
+[node name="InnerCeiling5" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -3)
+
+[node name="InnerCeiling6" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -5)
+
+[node name="InnerCeiling7" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -7)
+
+[node name="InnerCeiling8" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -7)
+
+[node name="InnerCeiling9" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -3)
+
+[node name="InnerCeiling10" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
+
+[node name="InnerCeiling11" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -3)
+
+[node name="InnerCeiling12" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
+
+[node name="InnerCeiling13" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -7)
+
+[node name="InnerCeiling14" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -3)
+
+[node name="InnerCeiling15" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5)
+
+[node name="InnerCeiling16" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -7)
+
+[node name="InnerCeiling17" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
+
+[node name="InnerCeiling18" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -5)
+
+[node name="InnerCeiling19" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -7)
+
+[node name="InnerCeiling20" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1)
+
+[node name="InnerCeiling21" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
+
+[node name="InnerCeiling22" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -3)
+
+[node name="InnerCeiling23" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -5)
+
+[node name="InnerCeiling24" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -7)
+
+[node name="InnerCeiling25" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
+
+[node name="InnerCeiling26" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
+
+[node name="InnerCeiling27" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
+
+[node name="InnerCeiling28" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -7)
+
+[node name="InnerCeiling29" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -9)
+
+[node name="InnerCeiling30" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -9)
+
+[node name="InnerCeiling31" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -9)
+
+[node name="InnerCeiling32" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -9)
+
+[node name="InnerCeiling33" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -9)
+
+[node name="InnerCeiling34" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -9)
+
+[node name="InnerCeiling35" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -9)
+
+[node name="InnerCeiling36" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
+
+[node name="InnerCeiling37" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -11)
+
+[node name="InnerCeiling38" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -13)
+
+[node name="InnerCeiling39" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -15)
+
+[node name="InnerCeiling40" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -11)
+
+[node name="InnerCeiling41" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -11)
+
+[node name="InnerCeiling42" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -11)
+
+[node name="InnerCeiling43" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -11)
+
+[node name="InnerCeiling44" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -11)
+
+[node name="InnerCeiling45" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -11)
+
+[node name="InnerCeiling46" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -11)
+
+[node name="InnerCeiling47" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -13)
+
+[node name="InnerCeiling48" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -15)
+
+[node name="InnerCeiling49" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -15)
+
+[node name="InnerCeiling50" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -13)
+
+[node name="InnerCeiling51" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -13)
+
+[node name="InnerCeiling52" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -13)
+
+[node name="InnerCeiling53" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -13)
+
+[node name="InnerCeiling54" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -13)
+
+[node name="InnerCeiling55" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -13)
+
+[node name="InnerCeiling56" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -15)
+
+[node name="InnerCeiling57" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -15)
+
+[node name="InnerCeiling58" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -15)
+
+[node name="InnerCeiling59" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -15)
+
+[node name="InnerCeiling60" parent="House/Ceiling1" instance=ExtResource("22_d13ii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -15)
+
+[node name="InnerFloor" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -9)
+
+[node name="InnerFloor2" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -9)
+
+[node name="InnerFloor3" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -11)
+
+[node name="InnerFloor4" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -11)
+
+[node name="InnerFloor5" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -9)
+
+[node name="InnerFloor6" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -11)
+
+[node name="InnerFloor7" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -13)
+
+[node name="InnerFloor8" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -13)
+
+[node name="InnerFloor9" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -13)
+
+[node name="InnerFloor10" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -15)
+
+[node name="InnerFloor11" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -15)
+
+[node name="InnerFloor12" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -15)
+
+[node name="InnerFloor13" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -15)
+
+[node name="InnerFloor14" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -15)
+
+[node name="InnerFloor15" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -15)
+
+[node name="InnerFloor16" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -15)
+
+[node name="InnerFloor17" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -15)
+
+[node name="InnerFloor18" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -13)
+
+[node name="InnerFloor19" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -13)
+
+[node name="InnerFloor20" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -13)
+
+[node name="InnerFloor21" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -13)
+
+[node name="InnerFloor22" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -13)
+
+[node name="InnerFloor23" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -7)
+
+[node name="InnerFloor24" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -5)
+
+[node name="InnerFloor25" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -3)
+
+[node name="InnerFloor26" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -1)
+
+[node name="InnerFloor27" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -7)
+
+[node name="InnerFloor28" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -7)
+
+[node name="InnerFloor29" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -5)
+
+[node name="InnerFloor30" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -5)
+
+[node name="InnerFloor31" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -3)
+
+[node name="InnerFloor32" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -1)
+
+[node name="InnerFloor33" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -1)
+
+[node name="InnerFloor34" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -3)
+
+[node name="InnerFloor35" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -3)
+
+[node name="InnerFloor36" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -3)
+
+[node name="InnerFloor37" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -3)
+
+[node name="InnerFloor38" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -3)
+
+[node name="InnerFloor39" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -3)
+
+[node name="InnerFloor40" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -11)
+
+[node name="InnerFloor41" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -11)
+
+[node name="InnerFloor42" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -11)
+
+[node name="InnerFloor43" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -11)
+
+[node name="InnerFloor44" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -11)
+
+[node name="InnerFloor45" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -9)
+
+[node name="InnerFloor46" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -9)
+
+[node name="InnerFloor47" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -7)
+
+[node name="InnerFloor48" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -5)
+
+[node name="InnerFloor49" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -5)
+
+[node name="InnerFloor50" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -5)
+
+[node name="InnerFloor51" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -7)
+
+[node name="InnerFloor52" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -5)
+
+[node name="InnerFloor53" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -5)
+
+[node name="InnerFloor54" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -9)
+
+[node name="InnerFloor55" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -9)
+
+[node name="InnerFloor56" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -9)
+
+[node name="InnerFloor57" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -7)
+
+[node name="InnerFloor58" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -7)
+
+[node name="InnerFloor59" parent="House/Ceiling1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -7)
+
+[node name="ExteriorWindow2" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-5.68248e-07, 0, 1, 0, 1, 0, -1, 0, -5.68248e-07, -25, 0, 0)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
+
+[node name="ExteriorWindow3" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-5.68248e-07, 0, 1, 0, 1, 0, -1, 0, -5.68248e-07, -25, 0, -2)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
+
+[node name="ExteriorWindow4" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-5.68248e-07, 0, 1, 0, 1, 0, -1, 0, -5.68248e-07, -25, 0, -4)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
+
+[node name="OuterWall2" type="MeshInstance3D" parent="." instance=ExtResource("17_jq2sk")]
+transform = Transform3D(-7.43094e-07, 0, 1, 0, 1, 0, -1, 0, -7.43094e-07, -25, 0, -6)
 material_override = ExtResource("2_cegan")
 mesh = ExtResource("18_4k2k6")
 
-[node name="InnerWallOneSided2" type="MeshInstance3D" parent="Floor1" instance=ExtResource("13_qsp4k")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 3, 0, 0)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("14_kq58d")
+[node name="ExteriorWindow5" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 8.74228e-07, 0, 1, 0, -8.74228e-07, 0, 1, -24, 0, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="Ceiling1" type="Node3D" parent="."]
-visible = false
+[node name="ExteriorWindow6" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 8.74228e-07, 0, 1, 0, -8.74228e-07, 0, 1, -22, 0, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling2" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -3)
+[node name="ExteriorWindow7" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 8.74228e-07, 0, 1, 0, -8.74228e-07, 0, 1, -20, 0, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling3" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -5)
+[node name="ExteriorWindow8" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-9.17939e-07, 0, 1, 0, 1, 0, -1, 0, -9.17939e-07, -25, 0, 2)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling4" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -7)
+[node name="OuterWall3" type="MeshInstance3D" parent="." instance=ExtResource("17_jq2sk")]
+transform = Transform3D(-1, 0, -9.61651e-07, 0, 1, 0, 9.61651e-07, 0, -1, -24, 0, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("18_4k2k6")
 
-[node name="InnerCeiling5" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -3)
+[node name="ExteriorWindow9" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -9.61651e-07, 0, 1, 0, 9.61651e-07, 0, -1, -22, 0, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling6" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -5)
+[node name="ExteriorWindow10" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -9.61651e-07, 0, 1, 0, 9.61651e-07, 0, -1, -20, 0, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling7" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -7)
+[node name="ExteriorWindow11" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -9.61651e-07, 0, 1, 0, 9.61651e-07, 0, -1, -18, 0, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling8" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -7)
+[node name="ExteriorWindow12" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -1.1365e-06, 0, 1, 0, 1.1365e-06, 0, -1, -18, 4, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling9" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -3)
+[node name="ExteriorWindow13" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -1.1365e-06, 0, 1, 0, 1.1365e-06, 0, -1, -20, 4, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling10" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -5)
+[node name="ExteriorWindow14" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1, 0, -1.1365e-06, 0, 1, 0, 1.1365e-06, 0, -1, -22, 4, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling11" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -3)
+[node name="ExteriorWindow15" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1.26763e-06, 0, 1, 0, 1, 0, -1, 0, -1.26763e-06, -25, 4, 2)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling12" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
+[node name="ExteriorWindow16" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1.26763e-06, 0, 1, 0, 1, 0, -1, 0, -1.26763e-06, -25, 4, 0)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling13" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -7)
+[node name="ExteriorWindow17" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1.26763e-06, 0, 1, 0, 1, 0, -1, 0, -1.26763e-06, -25, 4, -2)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling14" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -3)
+[node name="ExteriorWindow18" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(-1.26763e-06, 0, 1, 0, 1, 0, -1, 0, -1.26763e-06, -25, 4, -4)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling15" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -5)
+[node name="ExteriorWindow19" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 1.39876e-06, 0, 1, 0, -1.39876e-06, 0, 1, -24, 4, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling16" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -7)
+[node name="ExteriorWindow20" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 1.39876e-06, 0, 1, 0, -1.39876e-06, 0, 1, -22, 4, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling17" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
+[node name="ExteriorWindow21" type="MeshInstance3D" parent="." instance=ExtResource("9_0odxb")]
+transform = Transform3D(1, 0, 1.39876e-06, 0, 1, 0, -1.39876e-06, 0, 1, -20, 4, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("14_vivmo")
 
-[node name="InnerCeiling18" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -5)
+[node name="OuterWall4" type="MeshInstance3D" parent="." instance=ExtResource("17_jq2sk")]
+transform = Transform3D(-1, 0, -1.83588e-06, 0, 1, 0, 1.83588e-06, 0, -1, -24, 4, 3)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("18_4k2k6")
 
-[node name="InnerCeiling19" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -7)
+[node name="OuterWall5" type="MeshInstance3D" parent="." instance=ExtResource("17_jq2sk")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -25, 4, -6)
+material_override = ExtResource("2_cegan")
+mesh = ExtResource("18_4k2k6")
 
-[node name="InnerCeiling20" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1)
-
-[node name="InnerCeiling21" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
-
-[node name="InnerCeiling22" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -3)
-
-[node name="InnerCeiling23" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -5)
-
-[node name="InnerCeiling24" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -7)
-
-[node name="InnerCeiling25" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1)
-
-[node name="InnerCeiling26" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -3)
-
-[node name="InnerCeiling27" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
-
-[node name="InnerCeiling28" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -7)
-
-[node name="InnerCeiling29" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -9)
-
-[node name="InnerCeiling30" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -9)
-
-[node name="InnerCeiling31" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -9)
-
-[node name="InnerCeiling32" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -9)
-
-[node name="InnerCeiling33" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -9)
-
-[node name="InnerCeiling34" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -9)
-
-[node name="InnerCeiling35" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -9)
-
-[node name="InnerCeiling36" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -9)
-
-[node name="InnerCeiling37" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -11)
-
-[node name="InnerCeiling38" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -13)
-
-[node name="InnerCeiling39" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, -15)
-
-[node name="InnerCeiling40" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -11)
-
-[node name="InnerCeiling41" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -11)
-
-[node name="InnerCeiling42" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -11)
-
-[node name="InnerCeiling43" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -11)
-
-[node name="InnerCeiling44" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -11)
-
-[node name="InnerCeiling45" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -11)
-
-[node name="InnerCeiling46" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -11)
-
-[node name="InnerCeiling47" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -13)
-
-[node name="InnerCeiling48" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -15)
-
-[node name="InnerCeiling49" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -15)
-
-[node name="InnerCeiling50" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -13)
-
-[node name="InnerCeiling51" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -13)
-
-[node name="InnerCeiling52" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -13)
-
-[node name="InnerCeiling53" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -13)
-
-[node name="InnerCeiling54" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -13)
-
-[node name="InnerCeiling55" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -13)
-
-[node name="InnerCeiling56" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -15)
-
-[node name="InnerCeiling57" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -15)
-
-[node name="InnerCeiling58" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -15)
-
-[node name="InnerCeiling59" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -15)
-
-[node name="InnerCeiling60" parent="Ceiling1" instance=ExtResource("22_d13ii")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -15)
-
-[node name="InnerFloor" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -9)
+[node name="InnerFloor2" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -18, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor2" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -9)
+[node name="InnerFloor3" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -20, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor3" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -11)
+[node name="InnerFloor4" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor4" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -11)
+[node name="InnerFloor5" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor5" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -9)
+[node name="InnerFloor6" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor6" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -11)
+[node name="InnerFloor7" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, 2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor7" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -13)
+[node name="InnerFloor8" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, 0)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor8" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -13)
+[node name="InnerFloor9" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, -2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor9" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -13)
+[node name="InnerFloor10" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, -4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor10" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -15)
+[node name="InnerFloor11" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -26, 4, -6)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor11" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -15)
+[node name="InnerFloor12" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, 4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor12" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -15)
+[node name="InnerFloor13" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, 2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor13" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -15)
+[node name="InnerFloor14" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, 0)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor14" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -15)
+[node name="InnerFloor15" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, -2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor15" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -15)
+[node name="InnerFloor16" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, -4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor16" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -15)
+[node name="InnerFloor17" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -28, 4, -6)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor17" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -15)
+[node name="InnerFloor18" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 0, 2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor18" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -13)
+[node name="InnerFloor19" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 0, 0)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor19" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -13)
+[node name="InnerFloor20" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 0, -2)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor20" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -13)
+[node name="InnerFloor21" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 0, -4)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor21" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -13)
+[node name="InnerFloor22" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -24, 0, -6)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor22" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -13)
+[node name="InnerFloor23" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 0, -5)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor23" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -7)
+[node name="InnerFloor24" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 0, -3)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor24" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -5)
+[node name="InnerFloor25" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 0, -1)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor25" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -3)
+[node name="InnerFloor26" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 0, 1)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor26" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 4, -1)
+[node name="InnerFloor27" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -22, 0, 3)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor27" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -7)
+[node name="InnerFloor28" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -20, 0, 3)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
 
-[node name="InnerFloor28" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -7)
+[node name="InnerFloor29" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(-1.96701e-06, 0, 1, 0, 1, 0, -1, 0, -1.96701e-06, -20, 0, 1)
 material_override = ExtResource("2_h2yge")
 mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor29" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor30" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor31" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor32" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, -1)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor33" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -1)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor34" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor35" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor36" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor37" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor38" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor39" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -3)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor40" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -11)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor41" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -11)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor42" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -11)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor43" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -11)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor44" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -11)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor45" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -9)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor46" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -9)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor47" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -7)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor48" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor49" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor50" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor51" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -7)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor52" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor53" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -5)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor54" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -9)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor55" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -9)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor56" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -9)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor57" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -7)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor58" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -7)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="InnerFloor59" type="MeshInstance3D" parent="Ceiling1" instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 4, -7)
-material_override = ExtResource("2_h2yge")
-mesh = ExtResource("6_ryguw")
-
-[node name="ExampleTerrain" parent="." instance=ExtResource("12_dg77c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 0, 0)

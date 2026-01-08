@@ -77,12 +77,13 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 		elif event.keycode == KEY_S:
-			main_dock.spawn_manager.on_rotate_y()
+			var shift_pressed = false
+			if Input.is_key_pressed(KEY_SHIFT):
+				shift_pressed = true
+			main_dock.spawn_manager.on_rotate_y(viewport_camera, shift_pressed)
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 
-	
-	
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 

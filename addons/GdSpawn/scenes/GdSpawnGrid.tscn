@@ -1,14 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://dcgb6krwvmsny"]
+[gd_scene load_steps=3 format=3 uid="uid://dcgb6krwvmsny"]
 
 [ext_resource type="Script" uid="uid://dbyxcfryrbcky" path="res://addons/GdSpawn/scenes/gd_spawn_grid.gd" id="1_8nqob"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ejel"]
 shading_mode = 0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_4ejel"]
-size = Vector2(50, 50)
+albedo_color = Color(0.56, 0.956, 1, 1)
 
 [node name="GdSpawnGrid" type="MeshInstance3D"]
 material_override = SubResource("StandardMaterial3D_4ejel")
-mesh = SubResource("PlaneMesh_4ejel")
 script = ExtResource("1_8nqob")
