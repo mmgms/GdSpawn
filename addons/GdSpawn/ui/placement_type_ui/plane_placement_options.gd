@@ -25,6 +25,7 @@ func _ready() -> void:
 	default_transform = Transform3D()
 
 	current_plane = Plane(Vector3.UP)
+	plane_select.clear()
 	for key in GdSpawnPlaneType.keys():
 		plane_select.add_item(key)
 

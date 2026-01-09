@@ -7,7 +7,7 @@ var max_extent: float = 300.0
 func update_transform(_transform):
 	transform = _transform
 
-func update_grid(grid_size: float) -> void:
+func update_grid_snap(grid_size: float) -> void:
 	if grid_size <= 0.0:
 		return
 

@@ -51,7 +51,7 @@ var current_snap_info = GdSpawnSnapInfo.new()
 func _ready() -> void:
 
 	snap_enable.toggled.connect(func(toggled): current_snap_info.enabled = toggled)
-	snap_step.value_changed.connect(func(value): current_snap_info.step = value; update_grid())
+	snap_step.value_changed.connect(func(value): current_snap_info.step = value; update_gizmo_grid_snap())
 	snap_shift_step.value_changed.connect(func(value): current_snap_info.shift_step = value)
 
 	grid_offset_x.value_changed.connect(on_grid_offset_value_changed)
@@ -137,6 +137,7 @@ func on_move(camera: Camera3D, mouse_position: Vector2):
 	if not preview_scene:
 		return
 	preview_scene.global_transform = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info)
+	
 
 func on_confirm():
 	var instanced_scene = libraries_manager.current_selected_scene_library_item.scene.instantiate()
@@ -203,15 +204,21 @@ func add_or_update_grid(scene_root):
 	scene_root.add_child(grid_instance)
 	grid_instance.name = "GdSpawnGrid"
 	current_grid = grid_instance
-	current_grid.update_grid(current_snap_info.step)
+	current_grid.update_grid_snap(current_snap_info.step)
 
 
-func update_grid():
-	current_grid.update_grid(current_snap_info.step)
+func update_gizmo_grid_snap():
+	if not current_grid:
+		return
+	current_grid.update_grid_snap(current_snap_info.step)
 
 func show_grid():
+	if not current_grid:
+		return
 	current_grid.show()
 
 
 func hide_grid():
+	if not current_grid:
+		return
 	current_grid.hide()
