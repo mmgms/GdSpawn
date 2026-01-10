@@ -2,6 +2,10 @@
 extends Node
 class_name GdSpawnLibrariesManager
 
+
+@export var signal_routing: GdSpawnSignalRouting
+
+
 @export var save_library_button: Button
 @export var load_library_button: Button
 @export var new_library_button: Button
@@ -22,10 +26,6 @@ class_name GdSpawnLibrariesManager
 enum GdSpawnSaveMode {Save, SaveAs}
 
 var save_mode = GdSpawnSaveMode.Save
-
-signal selected_item_changed(item: GdSpawnSceneLibraryItem)
-
-var current_selected_scene_library_item: GdSpawnSceneLibraryItem = null
 
 
 func _ready() -> void:
@@ -76,7 +76,7 @@ func on_new_library():
 	empty_library.name = "[Empty]"
 	var palette = asset_palette_scene.instantiate() as GdSpawnAssetPaletteManager
 	libraries_container.add_child(palette)
-	palette.set_library(empty_library)
+	palette.set_library(empty_library, signal_routing)
 	libraries_container.current_tab = libraries_container.get_child_count()-1
 	preview_size_slider.set_value_no_signal(0.5)
 
@@ -124,9 +124,8 @@ func load_library(path):
 	
 	var palette = asset_palette_scene.instantiate() as GdSpawnAssetPaletteManager
 	libraries_container.add_child(palette)
-	palette.set_library(library)
+	palette.set_library(library, signal_routing)
 	libraries_container.current_tab = libraries_container.get_child_count()-1
-	palette.asset_button_pressed.connect(on_palette_item_selected)
 
 
 
@@ -221,12 +220,8 @@ func on_preview_size_changed(value):
 		return
 	selected_palette.update_size(size)
 
-func on_palette_item_selected(item):
-	current_selected_scene_library_item = item
-	selected_item_changed.emit(item)
 
 func on_tab_changed(_idx):
-	current_selected_scene_library_item = null
 	var library = get_selected_library() as GdSpawnSceneLibrary
 	
 	if not library:
@@ -316,10 +311,3 @@ func save_node_as_scene(node: Node, path: String) -> void:
 		return
 
 	var save_result = ResourceSaver.save(packed_scene, path)
-
-
-func deselect():
-	current_selected_scene_library_item = null
-	var asset_palette = get_selected_asset_palette()
-	if asset_palette:
-		asset_palette.deselect()

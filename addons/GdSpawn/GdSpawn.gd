@@ -7,6 +7,7 @@ var main_dock: GdSpawnMainDockManager
 const BASE_SETTING = "GdSpawn/Settings/"
 
 
+
 func _enter_tree() -> void:
 
 	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate() as GdSpawnMainDockManager
@@ -60,7 +61,7 @@ func get_enum_hint_string(enum_dict):
 
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 
-	if main_dock.libraries_manager.current_selected_scene_library_item == null:
+	if main_dock.signal_routing.last_item_selected == null:
 		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
@@ -73,7 +74,7 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 
 	if event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ESCAPE:
-			main_dock.spawn_manager.on_cancel()
+			main_dock.signal_routing.ItemSelect.emit(null)
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 		elif event.keycode == KEY_S:

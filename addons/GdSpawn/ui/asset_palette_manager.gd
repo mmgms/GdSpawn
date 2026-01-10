@@ -13,9 +13,9 @@ class_name  GdSpawnAssetPaletteManager
 
 @export var dynamic_preview_popup_scene: PackedScene
 
-signal asset_button_pressed(item: GdSpawnSceneLibraryItem)
-
 var button_group: ButtonGroup
+
+var signal_routing: GdSpawnSignalRouting
 
 func _ready() -> void:
 	button_group = ButtonGroup.new()
@@ -23,7 +23,8 @@ func _ready() -> void:
 	match_selected_button.pressed.connect(on_match_selected_pressed)
 	search_field.text_changed.connect(on_search_text_changed)
 
-func set_library(_scene_library: GdSpawnSceneLibrary):
+func set_library(_scene_library: GdSpawnSceneLibrary, _signal_routing: GdSpawnSignalRouting):
+	signal_routing = _signal_routing
 	scene_library = _scene_library
 	name = scene_library.name
 	refresh_children()
@@ -36,23 +37,10 @@ func refresh_children():
 	for element in scene_library.elements:
 		var asset_button = asset_button_scene.instantiate() as GdSpawnAssetButton
 		asset_previews_cotainer.add_child(asset_button)
-		asset_button.set_library_item(element, scene_library)
+		asset_button.set_library_item(element, scene_library, signal_routing)
 		asset_button.right_clicked.connect(func(item): show_asset_menu(item, asset_button))
-		asset_button.toggled.connect(func (toggled_on): on_asset_button_toggled(toggled_on, element, asset_button) )
-		asset_button.button_group = button_group
+		#asset_button.button_group = button_group
 
-func deselect():
-	if current_selected_button:
-		current_selected_button.set_pressed_no_signal(false)
-
-var current_selected_button: Button = null
-func on_asset_button_toggled(toggled_on, element, button):
-	if toggled_on:
-		current_selected_button = button
-		asset_button_pressed.emit(element)
-	else:
-		current_selected_button = null
-		asset_button_pressed.emit(null)
 
 func update_previews():
 	for child in asset_previews_cotainer.get_children():
@@ -141,7 +129,7 @@ func show_asset_menu(item: GdSpawnSceneLibraryItem, button: GdSpawnAssetButton):
 				EditorInterface.set_main_screen_editor("3D")
 			1: 
 				if button.pressed:
-					asset_button_pressed.emit(null)
+					signal_routing.ItemSelect.emit(null)
 				scene_library.delete_element(item)
 				save_library()
 				refresh_children()

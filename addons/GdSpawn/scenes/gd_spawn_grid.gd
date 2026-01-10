@@ -1,11 +1,16 @@
 @tool
-extends MeshInstance3D
+extends Node3D
 class_name GdSpawnGrid
 
 var max_extent: float = 300.0
+@export var mesh_instance: MeshInstance3D
 
 func update_transform(_transform):
 	transform = _transform
+
+
+func update_offset(_offset):
+	mesh_instance.transform.origin = _offset
 
 func update_grid_snap(grid_size: float) -> void:
 	if grid_size <= 0.0:
@@ -31,6 +36,6 @@ func update_grid_snap(grid_size: float) -> void:
 
 	immediate_mesh.surface_end()
 
-	mesh = immediate_mesh
+	mesh_instance.mesh = immediate_mesh
 
 

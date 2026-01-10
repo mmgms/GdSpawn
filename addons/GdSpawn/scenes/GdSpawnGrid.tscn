@@ -5,7 +5,13 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ejel"]
 shading_mode = 0
 albedo_color = Color(0.56, 0.956, 1, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 100.0
 
-[node name="GdSpawnGrid" type="MeshInstance3D"]
-material_override = SubResource("StandardMaterial3D_4ejel")
+[node name="GdSpawnGrid" type="Node3D" node_paths=PackedStringArray("mesh_instance")]
 script = ExtResource("1_8nqob")
+mesh_instance = NodePath("MeshInstance3D")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_4ejel")
+cast_shadow = 0

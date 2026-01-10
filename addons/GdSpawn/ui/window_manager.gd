@@ -10,7 +10,7 @@ class_name GdSpawnMainDockManager
 
 @export var spawn_manager: GdSpawnSpawnManager
 @export var libraries_manager: GdSpawnLibrariesManager
-
+@export var signal_routing: GdSpawnSignalRouting
 
 var is_detached: bool = false
 

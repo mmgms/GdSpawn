@@ -12,6 +12,8 @@ var should_align_to_surface_normal: bool = false
 
 var default_transform: Transform3D
 
+var signal_routing: GdSpawnSignalRouting
+
 func _ready() -> void:
 	default_transform = Transform3D()
 	alignment_options_select.item_selected.connect(on_aligment_option_selected)

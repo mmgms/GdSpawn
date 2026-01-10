@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cq58hnib4q4ri"]
+[gd_scene load_steps=19 format=3 uid="uid://cq58hnib4q4ri"]
 
 [ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="1_aoh2j"]
 [ext_resource type="PackedScene" uid="uid://bhj0afo267ais" path="res://addons/GdSpawn/ui/asset_palette.tscn" id="1_gn6wi"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://pctylkklcwin" path="res://addons/GdSpawn/ui/spawn_manager.gd" id="5_bu4qg"]
 [ext_resource type="PackedScene" uid="uid://dcgb6krwvmsny" path="res://addons/GdSpawn/scenes/GdSpawnGrid.tscn" id="8_8seq1"]
 [ext_resource type="PackedScene" uid="uid://dx2i8srcww4hd" path="res://addons/GdSpawn/ui/placement_type_ui/surface_placement_options.tscn" id="8_64fbb"]
+[ext_resource type="Script" uid="uid://36sx4ie4o83d" path="res://addons/GdSpawn/ui/signal_routing.gd" id="10_dj6qx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ajnsn"]
 
@@ -56,7 +57,7 @@ metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wbhi7"]
 
-[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("main_node", "detach_button", "help_button", "spawn_manager", "libraries_manager")]
+[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("main_node", "detach_button", "help_button", "spawn_manager", "libraries_manager", "signal_routing")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -68,6 +69,7 @@ detach_button = NodePath("HBoxContainer/SpawnOptions/Header/DetachButton")
 help_button = NodePath("HBoxContainer/SpawnOptions/Header/HelpButton")
 spawn_manager = NodePath("SpawnManager")
 libraries_manager = NodePath("LibrariesManager")
+signal_routing = NodePath("SignalRouting")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -202,6 +204,7 @@ value = 0.1
 allow_greater = true
 
 [node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HFlowContainer"]
@@ -217,6 +220,7 @@ layout_mode = 2
 icon = SubResource("Texture2D_8seq1")
 
 [node name="OffsetInfo" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/OffsetInfo"]
@@ -308,8 +312,9 @@ text = "+"
 initial_position = 2
 filters = PackedStringArray("*.tres")
 
-[node name="LibrariesManager" type="Node" parent="." node_paths=PackedStringArray("save_library_button", "load_library_button", "new_library_button", "file_dialog", "libraries_container", "add_new_library_button", "preview_size_slider")]
+[node name="LibrariesManager" type="Node" parent="." node_paths=PackedStringArray("signal_routing", "save_library_button", "load_library_button", "new_library_button", "file_dialog", "libraries_container", "add_new_library_button", "preview_size_slider")]
 script = ExtResource("4_80nxl")
+signal_routing = NodePath("../SignalRouting")
 save_library_button = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/SaveLibrary")
 load_library_button = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/LoadLibrary")
 new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer/NewLibrary")
@@ -319,9 +324,9 @@ add_new_library_button = NodePath("../HBoxContainer/AssetPalette/MarginContainer
 asset_palette_scene = ExtResource("1_gn6wi")
 preview_size_slider = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/LibraryOptions/PreviewSizeSlider")
 
-[node name="SpawnManager" type="Node" parent="." node_paths=PackedStringArray("libraries_manager", "spawn_under_label", "spawn_under_choose_selected_button", "spawn_option_button", "spawn_option_parent", "snap_enable", "snap_step", "snap_shift_step", "grid_offset_x", "grid_offset_z", "reset_grid_offset", "match_selected_offset", "spawn_node")]
+[node name="SpawnManager" type="Node" parent="." node_paths=PackedStringArray("signal_routing", "spawn_under_label", "spawn_under_choose_selected_button", "spawn_option_button", "spawn_option_parent", "snap_enable", "snap_step", "snap_shift_step", "grid_offset_x", "grid_offset_z", "reset_grid_offset", "match_selected_offset", "spawn_node")]
 script = ExtResource("5_bu4qg")
-libraries_manager = NodePath("../LibrariesManager")
+signal_routing = NodePath("../SignalRouting")
 spawn_under_label = NodePath("../HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer/ParentLabel")
 spawn_under_choose_selected_button = NodePath("../HBoxContainer/SpawnOptions/SpawnParent/PanelContainer/HBoxContainer/ChooseSelected")
 spawn_option_button = NodePath("../HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer/PlacementOptions")
@@ -339,3 +344,6 @@ placement_mode_to_ui_scene = Dictionary[int, PackedScene]({
 0: ExtResource("4_k2ook"),
 1: ExtResource("8_64fbb")
 })
+
+[node name="SignalRouting" type="Node" parent="."]
+script = ExtResource("10_dj6qx")

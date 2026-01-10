@@ -17,7 +17,7 @@ script = ExtResource("2_6o7e1")
 icon_name = &"EditPivot"
 metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
-[node name="PlanePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("plane_select", "position_along_normal_spin_box", "reset_position_along_normal", "match_selected_posiiton_along_normal")]
+[node name="PlanePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("plane_select", "revert_offset_button", "match_offset_button", "x_offset_spinbox", "y_offset_spinbox", "z_offset_spinbox", "revert_rotation_button", "match_rotation_button", "rotation_spin_box")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -26,57 +26,116 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_uaecf")
-plane_select = NodePath("HBoxContainer/PlaneSelection/OptionButton")
-position_along_normal_spin_box = NodePath("HBoxContainer/PlaneOffset/SpinBox")
-reset_position_along_normal = NodePath("HBoxContainer/PlaneOffset/HBoxContainer/Revert")
-match_selected_posiiton_along_normal = NodePath("HBoxContainer/PlaneOffset/HBoxContainer/MatchSelected")
+plane_select = NodePath("OptionsContainer/PlaneSelection/OptionButton")
+revert_offset_button = NodePath("OptionsContainer/PlaneOffset/HBoxContainer/RevertGridOffset")
+match_offset_button = NodePath("OptionsContainer/PlaneOffset/HBoxContainer/MatchSelectedOffset")
+x_offset_spinbox = NodePath("OptionsContainer/PlaneOffset/HBoxContainer2/XPositionValue")
+y_offset_spinbox = NodePath("OptionsContainer/PlaneOffset/HBoxContainer2/YPositionValue")
+z_offset_spinbox = NodePath("OptionsContainer/PlaneOffset/HBoxContainer2/ZPositionValue")
+revert_rotation_button = NodePath("OptionsContainer/PlaneRotation/HBoxContainer/RevertGridRotation")
+match_rotation_button = NodePath("OptionsContainer/PlaneRotation/HBoxContainer/MatchSelectedRotation")
+rotation_spin_box = NodePath("OptionsContainer/PlaneRotation/RotationValue")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="OptionsContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="PlaneSelection" type="VBoxContainer" parent="HBoxContainer"]
+[node name="PlaneSelection" type="VBoxContainer" parent="OptionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBoxContainer/PlaneSelection"]
+[node name="Label" type="Label" parent="OptionsContainer/PlaneSelection"]
 layout_mode = 2
 text = "Plane"
 
-[node name="OptionButton" type="OptionButton" parent="HBoxContainer/PlaneSelection"]
+[node name="OptionButton" type="OptionButton" parent="OptionsContainer/PlaneSelection"]
 layout_mode = 2
 selected = 0
-item_count = 6
+item_count = 3
 popup/item_0/text = "XZ"
 popup/item_0/id = 0
 popup/item_1/text = "XY"
 popup/item_1/id = 1
 popup/item_2/text = "YZ"
 popup/item_2/id = 2
-popup/item_3/text = "XZ"
-popup/item_3/id = 3
-popup/item_4/text = "XY"
-popup/item_4/id = 4
-popup/item_5/text = "YZ"
-popup/item_5/id = 5
 
-[node name="PlaneOffset" type="VBoxContainer" parent="HBoxContainer"]
+[node name="PlaneOffset" type="VBoxContainer" parent="OptionsContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PlaneOffset"]
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsContainer/PlaneOffset"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+[node name="Label" type="Label" parent="OptionsContainer/PlaneOffset/HBoxContainer"]
 layout_mode = 2
-text = "Position"
+text = "Local Grid Offset"
 
-[node name="Revert" type="Button" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+[node name="RevertGridOffset" type="Button" parent="OptionsContainer/PlaneOffset/HBoxContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_0lj7p")
 
-[node name="MatchSelected" type="Button" parent="HBoxContainer/PlaneOffset/HBoxContainer"]
+[node name="MatchSelectedOffset" type="Button" parent="OptionsContainer/PlaneOffset/HBoxContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_m1mu5")
 
-[node name="SpinBox" type="SpinBox" parent="HBoxContainer/PlaneOffset"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="OptionsContainer/PlaneOffset"]
 layout_mode = 2
+
+[node name="Label3" type="Label" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+text = "y:"
+
+[node name="YPositionValue" type="SpinBox" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+
+[node name="Label" type="Label" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+text = "x: "
+
+[node name="XPositionValue" type="SpinBox" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+text = "z: "
+
+[node name="ZPositionValue" type="SpinBox" parent="OptionsContainer/PlaneOffset/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+
+[node name="PlaneRotation" type="VBoxContainer" parent="OptionsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsContainer/PlaneRotation"]
+layout_mode = 2
+
+[node name="Rotation" type="Label" parent="OptionsContainer/PlaneRotation/HBoxContainer"]
+layout_mode = 2
+text = "Local Grid Rotation"
+
+[node name="RevertGridRotation" type="Button" parent="OptionsContainer/PlaneRotation/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_0lj7p")
+
+[node name="MatchSelectedRotation" type="Button" parent="OptionsContainer/PlaneRotation/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_m1mu5")
+
+[node name="RotationValue" type="SpinBox" parent="OptionsContainer/PlaneRotation"]
+layout_mode = 2
+min_value = -360.0
+max_value = 360.0

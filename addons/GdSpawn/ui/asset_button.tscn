@@ -1,16 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdhhsg18wk17j"]
+[gd_scene load_steps=7 format=3 uid="uid://bdhhsg18wk17j"]
 
 [ext_resource type="Script" uid="uid://dofj220avtmve" path="res://addons/GdSpawn/ui/asset_button.gd" id="1_j1dts"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="2_ykqnq"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_y0jdw"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Texture2D" id="Texture2D_r877v"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("2_ykqnq")
+icon_name = &"Reload"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
 [sub_resource type="Environment" id="Environment_y0jdw"]
 
 [sub_resource type="World3D" id="World3D_ykqnq"]
 environment = SubResource("Environment_y0jdw")
 
-[node name="AssetButton" type="Button" node_paths=PackedStringArray("texture_rect", "button_container", "name_label", "subviewport", "scene_parent", "camera")]
+[node name="AssetButton" type="Button" node_paths=PackedStringArray("texture_rect", "button_container", "name_label", "reset_local_transform_button", "subviewport", "scene_parent", "camera")]
 custom_minimum_size = Vector2(128, 128)
 offset_right = 128.0
 offset_bottom = 160.0
@@ -20,6 +28,7 @@ script = ExtResource("1_j1dts")
 texture_rect = NodePath("VBoxContainer/TextureRect")
 button_container = NodePath("VBoxContainer")
 name_label = NodePath("VBoxContainer/Name")
+reset_local_transform_button = NodePath("ResetLocalTransform")
 subviewport = NodePath("SubViewport")
 scene_parent = NodePath("SubViewport/Node3D/Scene")
 camera = NodePath("SubViewport/Node3D/CameraPivot/Camera3D")
@@ -45,6 +54,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
+
+[node name="ResetLocalTransform" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -24.0
+offset_bottom = 24.0
+grow_horizontal = 0
+action_mode = 0
+icon = SubResource("Texture2D_r877v")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 own_world_3d = true

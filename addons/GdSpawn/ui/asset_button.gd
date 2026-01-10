@@ -5,15 +5,13 @@ class_name GdSpawnAssetButton
 
 @export var texture_rect: TextureRect
 @export var button_container: Container
-
 @export var name_label: Label
-
-
-
+@export var reset_local_transform_button: Button
 @export var subviewport: SubViewport
 @export var scene_parent: Node3D
 @export var camera: Camera3D
 
+var signal_routing: GdSpawnSignalRouting
 
 @export var library: GdSpawnSceneLibrary
 @export var library_item: GdSpawnSceneLibraryItem
@@ -24,7 +22,7 @@ signal left_clicked(library_item: GdSpawnSceneLibraryItem)
 signal right_clicked(library_item: GdSpawnSceneLibraryItem)
 
 
-const size_multiplier = 1.3
+const size_multiplier = 1.2
 
 func _set_new_size(size):
 	var viewport_size = Vector2i(size, size)
@@ -32,7 +30,9 @@ func _set_new_size(size):
 	subviewport.size = viewport_size
 	self.custom_minimum_size = button_container.get_combined_minimum_size()
 
-func set_library_item(_library_item, _scene_library):
+func set_library_item(_library_item, _scene_library, _signal_routing):
+	signal_routing = _signal_routing
+
 	library_item = _library_item
 	library = _scene_library
 
@@ -42,13 +42,43 @@ func set_library_item(_library_item, _scene_library):
 	update_preview()
 
 	name_label.text = library_item.scene.resource_path.get_file().get_basename()
+	signal_routing.ItemSelect.connect(on_item_select)
+	signal_routing.ItemPlacementBasisSet.connect(on_item_basis_change)
 
 
 func _ready():
 	mouse_filter = Control.MOUSE_FILTER_STOP
-	toggled.connect(func(_a): left_clicked.emit(library_item))
+	toggled.connect(on_toggled)
+
+	reset_local_transform_button.pressed.connect(on_reset_local_transform)
+	reset_local_transform_button.hide()
 
 
+func on_toggled(toggled_on):
+	if not toggled_on:
+		signal_routing.ItemSelect.emit(null)
+		return
+	
+	signal_routing.ItemSelect.emit(library_item)
+	
+
+func on_item_select(item):
+	if item == null or item != library_item:
+		set_pressed_no_signal(false)
+
+
+func on_reset_local_transform():
+	library_item.item_placement_basis = Basis()
+	reset_local_transform_button.hide()
+	signal_routing.ItemPlacementBasisSet.emit(library_item)
+
+func on_item_basis_change(item):
+	if item != library_item:
+		return
+	if item.item_placement_basis.is_equal_approx(Basis.IDENTITY):
+		reset_local_transform_button.hide()
+	else:
+		reset_local_transform_button.show()
 
 func _gui_input(event):
 	if event is InputEventMouseButton:

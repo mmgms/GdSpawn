@@ -2,7 +2,8 @@
 extends Node
 class_name GdSpawnSpawnManager
 
-@export var libraries_manager: GdSpawnLibrariesManager
+@export var signal_routing: GdSpawnSignalRouting
+
 @export var spawn_under_label: GdSpawnSpawnUnderLabel
 @export var spawn_under_choose_selected_button: Button
 
@@ -75,7 +76,9 @@ func _ready() -> void:
 
 	spawn_under_choose_selected_button.pressed.connect(on_choose_selected)
 
-	libraries_manager.selected_item_changed.connect(on_selected_item_changed)
+	signal_routing.ItemSelect.connect(on_selected_item_changed)
+	signal_routing.ItemPlacementBasisSet.connect(on_item_basis_set)
+	signal_routing.GridTrasformChanged.connect(on_grid_transform_changed)
 
 	if spawn_option_parent.get_child_count() > 0:
 		spawn_option_parent.get_child(0).queue_free()
@@ -83,6 +86,7 @@ func _ready() -> void:
 	for placement_mode in placement_mode_to_ui_scene.keys():
 		var ui_instance = placement_mode_to_ui_scene[placement_mode].instantiate()
 		spawn_option_parent.add_child(ui_instance)
+		ui_instance.signal_routing = signal_routing
 		placement_mode_to_ui[placement_mode] = ui_instance
 	
 	on_spawn_option_selected(0)
@@ -112,7 +116,9 @@ func change_spawn_node(node):
 	spawn_under_label.text = spawn_node.name
 
 var preview_scene = null
+var current_selected_item = null
 func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
+	current_selected_item = item
 	if preview_scene:
 		preview_scene.queue_free()
 
@@ -130,19 +136,34 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 	spawn_node.add_child(preview_scene)
 	EditorInterface.edit_node(spawn_node)
 
+
 var last_mouse_pos: Vector2
+var viewport_camera = null
 
 func on_move(camera: Camera3D, mouse_position: Vector2):
+	viewport_camera = camera
 	last_mouse_pos = mouse_position
 	if not preview_scene:
 		return
-	preview_scene.global_transform = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info)
+
+	var res = current_placement_mode_manager.on_move(camera, mouse_position, current_snap_info, current_selected_item)
+	preview_scene.global_transform = res.object_transform
+
+	# if not current_grid:
+	# 	return
+	# current_grid.update_offset(res.grid_offset)
 	
 
-func on_confirm():
-	var instanced_scene = libraries_manager.current_selected_scene_library_item.scene.instantiate()
+func on_item_basis_set(item: GdSpawnSceneLibraryItem):
+	if not preview_scene:
+		return
+	var res = current_placement_mode_manager.on_move(viewport_camera, last_mouse_pos, current_snap_info, current_selected_item)
+	preview_scene.global_transform = res.object_transform
 
-	undo_redo.create_action("Place Scene: %s" % libraries_manager.current_selected_scene_library_item.scene.resource_path)
+func on_confirm():
+	var instanced_scene = current_selected_item.scene.instantiate()
+
+	undo_redo.create_action("Place Scene: %s" % current_selected_item.scene.resource_path)
 	undo_redo.add_do_method(self, "_do_placement", instanced_scene, spawn_node, preview_scene.global_transform)
 	undo_redo.add_undo_method(self, "_undo_placement", spawn_node)
 	undo_redo.commit_action()
@@ -155,20 +176,22 @@ func _do_placement(new_node, root: Node3D, transform: Transform3D):
 	new_node.owner = EditorInterface.get_edited_scene_root()
 	node_history.push_front(new_node)
 
-func on_rotate_y(camera: Camera3D, shift_pressed):
-	current_placement_mode_manager.on_rotate_y(shift_pressed)
-	if not preview_scene:
-		return
-	preview_scene.global_transform = current_placement_mode_manager.on_move(camera, last_mouse_pos, current_snap_info)
-
 func _undo_placement(root: Node3D):
 	var last_added = node_history.pop_front()
 	root.remove_child(last_added)
 
-func on_cancel():
-	preview_scene.queue_free()
-	libraries_manager.deselect()
-	hide_grid()
+func on_rotate_y(camera: Camera3D, shift_pressed):
+	if not preview_scene:
+		return
+
+	if not current_selected_item:
+		return
+	
+	current_selected_item.item_placement_basis = current_selected_item.item_placement_basis.rotated(Vector3.UP, deg_to_rad(90))
+	signal_routing.ItemPlacementBasisSet.emit(current_selected_item)
+
+	var res = current_placement_mode_manager.on_move(camera, last_mouse_pos, current_snap_info, current_selected_item)
+	preview_scene.global_transform = res.object_transform
 
 
 func on_grid_offset_value_changed(_value):
@@ -186,8 +209,6 @@ func on_match_selected_offset():
 	var selected_node = selection.get_selected_nodes()[0]
 	if not selected_node is Node3D:
 		return
-
-
 
 func add_or_update_grid(scene_root):
 	if not scene_root:
@@ -222,3 +243,9 @@ func hide_grid():
 	if not current_grid:
 		return
 	current_grid.hide()
+
+func on_grid_transform_changed(transform):
+	if not current_grid:
+		return
+	
+	current_grid.update_transform(transform)
