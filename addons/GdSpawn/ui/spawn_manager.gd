@@ -4,8 +4,7 @@ class_name GdSpawnSpawnManager
 
 @export var signal_routing: GdSpawnSignalRouting
 
-@export var spawn_under_label: GdSpawnSpawnUnderLabel
-@export var spawn_under_choose_selected_button: Button
+@export var spawn_under_node_select: GdSpawnNodeSelect
 
 @export var spawn_option_button: OptionButton
 @export var spawn_option_parent: Control
@@ -21,7 +20,7 @@ class_name GdSpawnSpawnManager
 @export var match_selected_offset: Button
 
 
-@export var spawn_node: Node
+@export var spawn_node: Node = null
 
 @export var grid_scene: PackedScene
 
@@ -94,18 +93,15 @@ func _ready() -> void:
 	undo_redo = editor_plugin.get_undo_redo()
 
 	var current_scene_root = EditorInterface.get_edited_scene_root()
-	change_spawn_node(current_scene_root)
-	add_or_update_grid(current_scene_root)
+	on_scene_change(current_scene_root)
 	hide_grid()
-	editor_plugin.scene_changed.connect(func (scene_root): change_spawn_node(scene_root); add_or_update_grid(scene_root))
-	spawn_under_label.node_changed.connect(func (node): change_spawn_node(node))
+	editor_plugin.scene_changed.connect(on_scene_change)
+	spawn_under_node_select.node_changed.connect(on_spawn_node_selected)
 
 	for key in GdSpawnPlacementMode.keys():
 		spawn_option_button.add_item(key)
 
 	spawn_option_button.item_selected.connect(on_spawn_option_selected)
-
-	spawn_under_choose_selected_button.pressed.connect(on_choose_selected)
 
 	signal_routing.ItemSelect.connect(on_selected_item_changed)
 	signal_routing.ItemPlacementBasisSet.connect(on_item_basis_set)
@@ -122,6 +118,28 @@ func _ready() -> void:
 	
 	on_spawn_option_selected(0)
 
+var spawn_node_cache: Dictionary
+
+func on_scene_change(scene_root):
+	if spawn_node_cache.has(scene_root):
+		change_spawn_node(spawn_node_cache[scene_root])
+		add_or_update_grid(scene_root)
+		spawn_under_node_select.set_node(spawn_node_cache[scene_root])
+		return
+
+	if not scene_root is Node3D:
+		spawn_under_node_select.set_node(null)
+		change_spawn_node(null)
+		return
+
+	change_spawn_node(scene_root)
+	add_or_update_grid(scene_root)
+	spawn_under_node_select.set_node(scene_root)
+
+func on_spawn_node_selected(node):
+	change_spawn_node(node)
+	spawn_node_cache[EditorInterface.get_edited_scene_root()] = node
+
 
 func on_spawn_option_selected(idx):
 	current_placement_mode = idx
@@ -135,20 +153,12 @@ func on_spawn_option_selected(idx):
 	if current_placement_mode_manager.should_show_grid() and preview_scene:
 		show_grid()
 
-
-func on_choose_selected():
-	var selected_nodes = EditorInterface.get_selection().get_selected_nodes()
-	if selected_nodes.size() == 0:
-		return
-	
-	change_spawn_node(selected_nodes[0])
-
 	
 func change_spawn_node(node):
 	if not node:
+		spawn_node = null
 		return
 	spawn_node = node
-	spawn_under_label.text = spawn_node.name
 
 var preview_scene: Node3D = null
 var current_selected_item = null
@@ -269,6 +279,8 @@ func on_press_start():
 		preview_scene_transform_on_rotate_y_placement = preview_scene.global_transform
 
 func on_confirm(alt_pressed):
+	if not spawn_node:
+		return
 
 	if current_placement_state == PlacementState.TransformLocalY: 
 
@@ -387,6 +399,9 @@ func add_or_update_grid(scene_root):
 		return
 
 	if not scene_root is Node3D:
+		return
+
+	if scene_root is GdSpawnGrid:
 		return
 	
 	if scene_root.has_node("GdSpawnGrid"):

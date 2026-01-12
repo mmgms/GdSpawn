@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://d112x5qh1kvo5"]
 
 [ext_resource type="Script" uid="uid://2xdsxsn22ej1" path="res://addons/GdSpawn/ui/dynamic_preview_popup.gd" id="1_wk7b0"]
-[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="2_cd0h0"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="2_cd0h0"]
 
 [sub_resource type="Texture2D" id="Texture2D_45e5r"]
 resource_local_to_scene = false

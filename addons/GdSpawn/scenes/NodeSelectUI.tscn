@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://lrq5n1rhk4gu"]
+
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="1_16vgm"]
+[ext_resource type="Script" uid="uid://dcbncmuoncb1b" path="res://addons/GdSpawn/scripts/NodeSelectUi.gd" id="2_dumsm"]
+
+[sub_resource type="Texture2D" id="Texture2D_bu4qg"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_16vgm")
+icon_name = &"Warning"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_k2ook"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_16vgm")
+icon_name = &"ListSelect"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[node name="NodeSelect" type="PanelContainer" node_paths=PackedStringArray("match_selected_button", "label", "texture_rect")]
+script = ExtResource("2_dumsm")
+match_selected_button = NodePath("HBoxContainer/ChooseSelected")
+node_type = "Node3D"
+label = NodePath("HBoxContainer/NodeNameLabel")
+texture_rect = NodePath("HBoxContainer/TextureRect")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = SubResource("Texture2D_bu4qg")
+stretch_mode = 3
+
+[node name="NodeNameLabel" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "No node selected"
+
+[node name="ChooseSelected" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_k2ook")

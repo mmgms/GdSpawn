@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dx2i8srcww4hd"]
+[gd_scene load_steps=3 format=3 uid="uid://dx2i8srcww4hd"]
 
 [ext_resource type="Script" uid="uid://b45ueufqhhxh8" path="res://addons/GdSpawn/ui/placement_type_ui/surface_placement_options.gd" id="1_1bxxx"]
+[ext_resource type="PackedScene" uid="uid://lrq5n1rhk4gu" path="res://addons/GdSpawn/scenes/NodeSelectUI.tscn" id="2_xayq4"]
 
-[node name="SurfacePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("align_to_surface_normal_check_box", "alignment_options_select")]
+[node name="SurfacePlacementOptions" type="PanelContainer" node_paths=PackedStringArray("align_to_surface_normal_check_box", "alignment_options_select", "terrain_3d_node_select")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,6 +14,7 @@ size_flags_vertical = 3
 script = ExtResource("1_1bxxx")
 align_to_surface_normal_check_box = NodePath("VBoxContainer/HBoxContainer/AlignToNormalCheckBox")
 alignment_options_select = NodePath("VBoxContainer/VBoxContainer/AlignmentDirectionSelect")
+terrain_3d_node_select = NodePath("VBoxContainer/Terrain3d/NodeSelect")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -36,3 +38,14 @@ text = "Alignment Direction"
 
 [node name="AlignmentDirectionSelect" type="OptionButton" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
+
+[node name="Terrain3d" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Terrain3d"]
+layout_mode = 2
+text = "Terrain3D Node: "
+
+[node name="NodeSelect" parent="VBoxContainer/Terrain3d" instance=ExtResource("2_xayq4")]
+layout_mode = 2
+node_type = "Terrain3D"

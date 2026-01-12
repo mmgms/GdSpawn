@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ctyldc3irrd5f"]
 
 [ext_resource type="Script" uid="uid://u1bblwrygxvx" path="res://addons/GdSpawn/ui/placement_type_ui/plane_placement_options.gd" id="1_uaecf"]
-[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/asset_placer/utils/system_icon.gd" id="2_6o7e1"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="2_6o7e1"]
 
 [sub_resource type="Texture2D" id="Texture2D_0lj7p"]
 resource_local_to_scene = false

@@ -3,6 +3,7 @@ extends PanelContainer
 
 @export var align_to_surface_normal_check_box: CheckBox
 @export var alignment_options_select: OptionButton
+@export var terrain_3d_node_select: GdSpawnNodeSelect
 
 enum GdSpawnAligmentOptions {POS_Y, POS_Z, POS_X, NEG_Y, NEG_Z, NEG_X}
 
@@ -12,11 +13,18 @@ var should_align_to_surface_normal: bool = false
 
 var signal_routing: GdSpawnSignalRouting
 
+
+var terrain_3d_node: Node = null
+
 func _ready() -> void:
 	alignment_options_select.item_selected.connect(on_aligment_option_selected)
 	align_to_surface_normal_check_box.toggled.connect(func(toggled_on): should_align_to_surface_normal = toggled_on)
+	terrain_3d_node_select.node_changed.connect(on_terrain3d_node_changed)
 	populate_alignment_options()
 
+
+func on_terrain3d_node_changed(node):
+	terrain_3d_node = node
 
 func should_show_grid():
 	return false
@@ -69,6 +77,9 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 	local_object_transform.basis = library_item.item_placement_basis
 
 	if result.is_empty():
+		result = get_terrain3d_intersection(camera, mouse_pos)
+
+	if result.is_empty():
 		res["object_transform"] = local_object_transform
 		res["grid_offset"] = Vector3.ZERO
 		return res
@@ -86,4 +97,28 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 
 	res["object_transform"] = on_surface_transform * local_object_transform
 
+	return res
+
+
+func get_terrain3d_intersection(camera, mouse_position):
+	var res = {}
+
+	if not terrain_3d_node:
+		return res
+
+	if not terrain_3d_node.has_method("get_intersection"):
+		return res
+
+	var from = camera.project_ray_origin(mouse_position)
+	var to = from + camera.project_ray_normal(mouse_position) * 1000
+	var direction = (to - from).normalized()
+	var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, false)
+	if hit_position != Vector3.INF:
+		var data = terrain_3d_node.data
+		var normal = data.get_normal(hit_position)
+
+		res.position = hit_position
+		res.normal = normal
+
+		return res
 	return res
