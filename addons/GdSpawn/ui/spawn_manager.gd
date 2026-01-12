@@ -57,6 +57,7 @@ class GdSpawnAddScenesAction:
 	var transforms: Array
 	var parent: Node3D
 	var owner: Node
+	var select_last: bool = false
 
 	var added_instances: Array
 
@@ -70,11 +71,17 @@ class GdSpawnAddScenesAction:
 			instance.global_transform = transform
 			instance.owner = owner
 			added_instances.append(instance)
+		if select_last:
+			EditorInterface.edit_node(added_instances[-1])
+			
 
 	func undo():
 		for instance in added_instances:
 			if instance:
 				instance.queue_free()
+
+		if select_last:
+			EditorInterface.edit_node(EditorInterface.get_edited_scene_root())
 
 var current_snap_info = GdSpawnSnapInfo.new()
 
@@ -303,13 +310,14 @@ func on_confirm(alt_pressed):
 		action.owner = EditorInterface.get_edited_scene_root()
 		action.scene = current_selected_item.scene
 
+		if alt_pressed:
+			action.select_last = true
+
 		undo_redo.create_action("Place Scene: %s" % current_selected_item.scene.resource_path, 0, self)
 		undo_redo.add_do_method(action, "do")
 		undo_redo.add_undo_method(action, "undo")
 		undo_redo.commit_action()
 
-		if alt_pressed:
-			EditorInterface.edit_node(action.added_instances[0])
 
 		current_placement_state = PlacementState.Normal
 
@@ -318,6 +326,9 @@ func on_confirm(alt_pressed):
 		action.parent = spawn_node
 		action.owner = EditorInterface.get_edited_scene_root()
 		action.scene = current_selected_item.scene
+
+		if alt_pressed:
+			action.select_last = true
 
 		for instanced in painted_instances_transform_history:
 			action.transforms.append(instanced.global_transform)
@@ -332,8 +343,6 @@ func on_confirm(alt_pressed):
 
 		current_placement_state = PlacementState.Normal
 
-		if alt_pressed:
-			EditorInterface.edit_node(action.added_instances[-1])
 
 
 
