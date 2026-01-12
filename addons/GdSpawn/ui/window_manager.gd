@@ -2,41 +2,57 @@
 extends Control
 class_name GdSpawnMainDockManager
 
-@export var main_node: Control
+@export var detachable_node: Control
 @export var detach_button: Button
 @export var help_button: Button
+@export var about_button: Button
+
 
 @export var editor_plugin: EditorPlugin
 
 @export var spawn_manager: GdSpawnSpawnManager
 @export var libraries_manager: GdSpawnLibrariesManager
 @export var signal_routing: GdSpawnSignalRouting
+@export var detached_window: Window
+@export var window_panel: PanelContainer
 
 var is_detached: bool = false
 
-var detached_window: Window
 
 func _enter_tree() -> void:
 	spawn_manager.editor_plugin = editor_plugin
 
 func _ready() -> void:
+	detached_window.hide()
 
 	detach_button.pressed.connect(on_detach_button_pressed)
 	help_button.pressed.connect(on_help_button_pressed)
+	signal_routing.PluginDisabled.connect(on_plugin_disabled)
+	detached_window.close_requested.connect(attach_to_dock)
 
 
 func on_detach_button_pressed():
-	if is_detached:
-		detached_window.remove_child(main_node)
-		detached_window.queue_free()
-		editor_plugin.attach_to_bottom_panel()
-		is_detached = false
-	else:
-		detached_window = Window.new()
-		main_node.reparent(detached_window)
-		EditorInterface.popup_dialog_centered(detached_window, detached_window.get_contents_minimum_size())
-		is_detached = true
+
+	var min_size = self.size
+	
+	detach_button.hide()
+	detachable_node.reparent(window_panel)
+	
+	detached_window.popup_centered(min_size)
+	is_detached = true
+
+
+func attach_to_dock():
+	detach_button.show()
+	detached_window.hide()
+	detachable_node.reparent(self)
+	is_detached = false
 
 
 func on_help_button_pressed():
 	pass
+
+func on_plugin_disabled():
+	return
+	if detached_window:
+		detached_window.queue_free()

@@ -20,6 +20,7 @@ func _enter_tree() -> void:
 
 
 	project_settings_changed.connect(on_project_settings_changed)
+	scene_changed.connect(func (root): main_dock.signal_routing.EditedSceneChanged.emit(root))
 
 
 func _exit_tree() -> void:

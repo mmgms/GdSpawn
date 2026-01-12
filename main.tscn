@@ -1,8 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=11 format=3 uid="uid://brjmlw33t6bld"]
 
 [ext_resource type="PackedScene" uid="uid://d4mj0o6m30s0t" path="res://scenes/suburban_modular/ExteriorWindowLarge.tscn" id="2_lquwl"]
-[ext_resource type="Material" uid="uid://buvejml4q1x2h" path="res://materials/atlas01.tres" id="3_7mycd"]
-[ext_resource type="ArrayMesh" uid="uid://cksdkgqcayp13" path="res://assets/walls_modular/suburb_house_set_exterior_window_opening_large.res" id="4_272bh"]
 [ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/suburban_modular/InnerFloor.tscn" id="4_getpj"]
 [ext_resource type="PackedScene" uid="uid://dna1hd47b3y8u" path="res://scenes/test/ExampleTerrain.tscn" id="12_dg77c"]
 
@@ -210,7 +208,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 8)
 [node name="InnerFloor71" parent="." instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 10)
 
-[node name="ExteriorWindow3" type="MeshInstance3D" parent="." instance=ExtResource("2_lquwl")]
+[node name="ExteriorWindow3" parent="." instance=ExtResource("2_lquwl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 7)
-material_override = ExtResource("3_7mycd")
-mesh = ExtResource("4_272bh")

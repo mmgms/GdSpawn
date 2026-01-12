@@ -43,19 +43,22 @@ metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wbhi7"]
 
-[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("main_node", "detach_button", "help_button", "spawn_manager", "libraries_manager", "signal_routing")]
+[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("detachable_node", "detach_button", "help_button", "about_button", "spawn_manager", "libraries_manager", "signal_routing", "detached_window", "window_panel")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_m8qjy")
-main_node = NodePath(".")
+detachable_node = NodePath("HBoxContainer")
 detach_button = NodePath("HBoxContainer/SpawnOptions/Header/DetachButton")
 help_button = NodePath("HBoxContainer/SpawnOptions/Header/HelpButton")
+about_button = NodePath("HBoxContainer/SpawnOptions/Header/About")
 spawn_manager = NodePath("SpawnManager")
 libraries_manager = NodePath("LibrariesManager")
 signal_routing = NodePath("SignalRouting")
+detached_window = NodePath("DetachWindow")
+window_panel = NodePath("DetachWindow/PanelContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -156,7 +159,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 step = 0.01
 value = 1.0
-rounded = true
 allow_greater = true
 
 [node name="SnapShiftStep" type="SpinBox" parent="HBoxContainer/SpawnOptions/SnappingOptions/VBoxContainer/HBoxContainer2"]
@@ -271,10 +273,6 @@ size_flags_vertical = 0
 theme_override_font_sizes/font_size = 24
 text = "+"
 
-[node name="FileDialog" type="FileDialog" parent="."]
-initial_position = 2
-filters = PackedStringArray("*.tres")
-
 [node name="LibrariesManager" type="Node" parent="." node_paths=PackedStringArray("signal_routing", "save_library_button", "load_library_button", "new_library_button", "file_dialog", "libraries_container", "add_new_library_button", "preview_size_slider")]
 script = ExtResource("4_80nxl")
 signal_routing = NodePath("../SignalRouting")
@@ -309,3 +307,20 @@ placement_mode_to_ui_scene = Dictionary[int, PackedScene]({
 
 [node name="SignalRouting" type="Node" parent="."]
 script = ExtResource("10_dj6qx")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+initial_position = 2
+filters = PackedStringArray("*.tres")
+
+[node name="DetachWindow" type="Window" parent="."]
+title = "GdSpawn"
+initial_position = 2
+size = Vector2i(500, 200)
+visible = false
+
+[node name="PanelContainer" type="PanelContainer" parent="DetachWindow"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

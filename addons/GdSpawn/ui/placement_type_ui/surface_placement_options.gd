@@ -11,7 +11,10 @@ var current_alignment_option: GdSpawnAligmentOptions = GdSpawnAligmentOptions.PO
 
 var should_align_to_surface_normal: bool = false
 
-var signal_routing: GdSpawnSignalRouting
+var signal_routing: GdSpawnSignalRouting:
+	set(val):
+		signal_routing = val
+		signal_routing.EditedSceneChanged.connect(on_scene_changed)
 
 
 var terrain_3d_node: Node = null
@@ -23,8 +26,19 @@ func _ready() -> void:
 	populate_alignment_options()
 
 
+var root_to_terrain_3d_node_cache: Dictionary
+func on_scene_changed(root):
+	if root_to_terrain_3d_node_cache.has(root):
+		terrain_3d_node = root_to_terrain_3d_node_cache[root]
+		terrain_3d_node_select.set_node(terrain_3d_node)
+		return
+
+	terrain_3d_node_select.set_node(null)
+	
+
 func on_terrain3d_node_changed(node):
 	terrain_3d_node = node
+	root_to_terrain_3d_node_cache[EditorInterface.get_edited_scene_root()] = terrain_3d_node
 
 func should_show_grid():
 	return false
@@ -113,12 +127,12 @@ func get_terrain3d_intersection(camera, mouse_position):
 	var to = from + camera.project_ray_normal(mouse_position) * 1000
 	var direction = (to - from).normalized()
 	var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, false)
-	if hit_position != Vector3.INF:
-		var data = terrain_3d_node.data
-		var normal = data.get_normal(hit_position)
-
-		res.position = hit_position
-		res.normal = normal
-
+	var data = terrain_3d_node.data
+	var normal = data.get_normal(hit_position)
+	if is_nan(normal.x) or is_nan(normal.z) or is_nan(normal.y):
 		return res
+
+	res.position = hit_position
+	res.normal = normal
+
 	return res

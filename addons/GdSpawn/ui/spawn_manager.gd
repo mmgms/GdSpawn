@@ -74,7 +74,6 @@ class GdSpawnAddScenesAction:
 		if select_last:
 			EditorInterface.edit_node(added_instances[-1])
 			
-
 	func undo():
 		for instance in added_instances:
 			if instance:
