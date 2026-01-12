@@ -11,6 +11,7 @@ signal ItemSelect(item: GdSpawnSceneLibraryItem)
 signal GridTrasformChanged(transform: Transform3D)
 
 
+var current_item_selected = null
 var last_item_selected = null
 
 func _ready() -> void:
@@ -18,4 +19,6 @@ func _ready() -> void:
 
 
 func on_item_select(item):
-	last_item_selected = item
+	current_item_selected = item
+	if item != null:
+		last_item_selected = item

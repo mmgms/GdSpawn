@@ -65,6 +65,8 @@ func on_toggled(toggled_on):
 func on_item_select(item):
 	if item == null or item != library_item:
 		set_pressed_no_signal(false)
+	if item == library_item:
+		set_pressed_no_signal(true)
 
 
 func on_reset_local_transform():

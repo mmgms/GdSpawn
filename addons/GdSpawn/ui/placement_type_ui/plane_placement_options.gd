@@ -46,6 +46,9 @@ func _ready() -> void:
 	y_offset_spinbox.value_changed.connect(on_local_grid_offset_changed)
 	z_offset_spinbox.value_changed.connect(on_local_grid_offset_changed)
 
+func should_show_grid():
+	return true
+
 func on_revert_rotation():
 	rotation_spin_box.value = 0.0
 	on_grid_rotation_changed(0.0)
@@ -139,7 +142,7 @@ func on_plane_type_selected(idx):
 
 	signal_routing.GridTrasformChanged.emit(get_plane_transform())
 
-func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpawnManager.GdSpawnSnapInfo, library_item: GdSpawnSceneLibraryItem):
+func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLibraryItem, snap_step, snap_enable):
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var ray_direction = camera.project_ray_normal(mouse_pos)
 
@@ -159,8 +162,8 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpa
 
 	var local_hit = current_grid_transform.affine_inverse() * intersection_point
 
-	var snapped_hit = local_hit.snapped(Vector3.ONE * current_snap_info.step)
-	if current_snap_info.enabled:
+	var snapped_hit = local_hit.snapped(Vector3.ONE * snap_step)
+	if snap_enable:
 		local_hit = snapped_hit
 
 	var local_hit_transform = Transform3D(Basis.IDENTITY, local_hit)
@@ -187,3 +190,63 @@ func make_plane_from_transform(transform: Transform3D, plane_type: GdSpawnPlaneT
 
 	return Plane(normal.normalized(), transform.origin)
 
+var current_line_origin: Vector3
+func on_move_plane_start():
+	current_line_origin = current_grid_transform.origin
+
+func on_move_plane_cancel():
+	current_grid_transform.origin = current_line_origin
+	update_spin_boxes_offset()
+	signal_routing.GridTrasformChanged.emit(get_plane_transform())
+
+
+func on_move_along_plane_normal(camera: Camera3D, mouse_pos: Vector2):
+
+	# 1. Determine plane normal in local grid space
+	var local_normal: Vector3
+	match current_plane_type:
+		GdSpawnPlaneType.XZ:
+			local_normal = Vector3.UP
+		GdSpawnPlaneType.XY:
+			local_normal = Vector3.FORWARD
+		GdSpawnPlaneType.YZ:
+			local_normal = Vector3.RIGHT
+
+	# Convert to world-space normal
+	var world_normal := current_grid_transform.basis * local_normal
+	world_normal = world_normal.normalized()
+
+	# 2. Get camera ray
+	var ray_origin := camera.project_ray_origin(mouse_pos)
+	var ray_dir := camera.project_ray_normal(mouse_pos).normalized()
+
+	# 3. Line definitions
+	var line_origin := current_line_origin
+	var line_dir := world_normal
+
+	# 4. Closest point between ray and normal line
+	var r := ray_origin - line_origin
+	var a := ray_dir.dot(ray_dir)              # = 1
+	var b := ray_dir.dot(line_dir)
+	var c := line_dir.dot(line_dir)             # = 1
+	var d := ray_dir.dot(r)
+	var e := line_dir.dot(r)
+
+	var denom := a * c - b * b
+	if abs(denom) < 0.00001:
+		return # Parallel – no stable solution
+
+	var s := (b * d - a * e) / denom
+
+	# 5. Move grid along normal
+	current_grid_transform.origin = line_origin - line_dir * s
+
+	update_spin_boxes_offset()
+
+	signal_routing.GridTrasformChanged.emit(get_plane_transform())
+
+
+func update_spin_boxes_offset():
+	x_offset_spinbox.set_value_no_signal(current_grid_transform.origin.x)
+	y_offset_spinbox.set_value_no_signal(current_grid_transform.origin.y)
+	z_offset_spinbox.set_value_no_signal(current_grid_transform.origin.z)

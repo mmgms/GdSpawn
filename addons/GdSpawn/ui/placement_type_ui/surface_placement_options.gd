@@ -10,15 +10,16 @@ var current_alignment_option: GdSpawnAligmentOptions = GdSpawnAligmentOptions.PO
 
 var should_align_to_surface_normal: bool = false
 
-var default_transform: Transform3D
-
 var signal_routing: GdSpawnSignalRouting
 
 func _ready() -> void:
-	default_transform = Transform3D()
 	alignment_options_select.item_selected.connect(on_aligment_option_selected)
 	align_to_surface_normal_check_box.toggled.connect(func(toggled_on): should_align_to_surface_normal = toggled_on)
 	populate_alignment_options()
+
+
+func should_show_grid():
+	return false
 
 func populate_alignment_options() -> void:
 	alignment_options_select.clear()
@@ -50,7 +51,7 @@ func _get_alignment_axis() -> Vector3:
 		_: return Vector3.UP
 
 
-func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpawnManager.GdSpawnSnapInfo) -> Transform3D:
+func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLibraryItem, snap_step, snap_enable):
 
 	var ray_origin = camera.project_ray_origin(mouse_pos)
 	var	ray_dir = camera.project_ray_normal(mouse_pos)
@@ -62,12 +63,18 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpa
 	params.collision_mask = 0b1
 	var result = space_state.intersect_ray(params)
 
-	var new_transform = default_transform
+	var res = {}
+
+	var local_object_transform = Transform3D()
+	local_object_transform.basis = library_item.item_placement_basis
 
 	if result.is_empty():
-		return new_transform
+		res["object_transform"] = local_object_transform
+		res["grid_offset"] = Vector3.ZERO
+		return res
 
-	new_transform.origin = result.position
+	var on_surface_transform = Transform3D()
+	on_surface_transform.origin = result.position
 
 	if should_align_to_surface_normal:
 		var surface_normal = result.normal.normalized()
@@ -75,14 +82,8 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, current_snap_info: GdSpawnSpa
 
 		var q := Quaternion(local_axis, surface_normal)
 		var basis := Basis(q)
-		basis = basis.scaled(new_transform.basis.get_scale())
-		new_transform.basis = basis
+		on_surface_transform.basis = basis
 
+	res["object_transform"] = on_surface_transform * local_object_transform
 
-	return new_transform
-
-func on_rotate_y(shift_pressed):
-	var deg_to_rotate = 90
-	if shift_pressed:
-		deg_to_rotate = 45
-	default_transform = default_transform.rotated_local(Vector3.UP, deg_to_rad(deg_to_rotate))
+	return res

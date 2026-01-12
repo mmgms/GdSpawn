@@ -61,31 +61,85 @@ func get_enum_hint_string(enum_dict):
 
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 
-	if main_dock.signal_routing.last_item_selected == null:
+	if event is InputEventKey and event.is_pressed():
+		if event.keycode == KEY_SPACE and main_dock.signal_routing.current_item_selected == null:
+			if main_dock.signal_routing.last_item_selected == null:
+				return EditorPlugin.AFTER_GUI_INPUT_PASS
+			main_dock.signal_routing.ItemSelect.emit(main_dock.signal_routing.last_item_selected)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if main_dock.signal_routing.current_item_selected == null:
 		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-		main_dock.spawn_manager.on_move(viewport_camera, event.position)
+		var ctrl_pressed = false
+		if Input.is_key_pressed(KEY_CTRL):
+			ctrl_pressed = true
+
+		var shift_pressed = false
+		if Input.is_key_pressed(KEY_SHIFT):
+			shift_pressed = true
+		main_dock.spawn_manager.on_move(viewport_camera, event.position, ctrl_pressed, shift_pressed)
 		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		main_dock.spawn_manager.on_confirm()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
+		var alt_pressed = false
+		if Input.is_key_pressed(KEY_ALT):
+			alt_pressed = true
+		main_dock.spawn_manager.on_confirm(alt_pressed)
 		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 	if event is InputEventKey and event.is_pressed():
-		if event.keycode == KEY_ESCAPE:
-			main_dock.signal_routing.ItemSelect.emit(null)
+		if event.keycode == KEY_ESCAPE:# deselect
+			main_dock.spawn_manager.on_cancel()
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
-		elif event.keycode == KEY_S:
-			var shift_pressed = false
-			if Input.is_key_pressed(KEY_SHIFT):
-				shift_pressed = true
-			main_dock.spawn_manager.on_rotate_y(viewport_camera, shift_pressed)
+		elif event.keycode == KEY_S:# rotate y
+			local_axis_rotation(viewport_camera, Vector3.UP)
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		elif event.keycode == KEY_A:# rotate x
+			local_axis_rotation(viewport_camera, Vector3.RIGHT)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		elif event.keycode == KEY_D:# rotate z
+			local_axis_rotation(viewport_camera, Vector3.FORWARD)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+		
+		elif event.keycode == KEY_1:
+			local_axis_flip(viewport_camera, Vector3.RIGHT)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		elif event.keycode == KEY_2:
+			local_axis_flip(viewport_camera, Vector3.UP)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		elif event.keycode == KEY_3:
+			local_axis_flip(viewport_camera, Vector3.BACK)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+
+		elif event.keycode == KEY_G:
+			main_dock.spawn_manager.on_move_plane_start()
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+
+		elif event.keycode == KEY_E:
+			if Input.is_key_pressed(KEY_SHIFT):
+				if main_dock.signal_routing.current_item_selected:
+					main_dock.signal_routing.current_item_selected.item_placement_basis = Basis.IDENTITY
+					main_dock.signal_routing.ItemPlacementBasisSet.emit(main_dock.signal_routing.current_item_selected)
+					return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 
 	return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+func local_axis_rotation(camera, axis):
+	var shift_pressed = false
+	if Input.is_key_pressed(KEY_SHIFT):
+		shift_pressed = true
+	main_dock.spawn_manager.on_rotate(camera, shift_pressed, axis)
+
+func local_axis_flip(camera, axis):
+	main_dock.spawn_manager.on_flip(camera, axis)
+
 
 
 func _handles(object):

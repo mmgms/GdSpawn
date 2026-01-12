@@ -4,6 +4,8 @@ class_name GdSpawnGrid
 
 var max_extent: float = 300.0
 @export var mesh_instance: MeshInstance3D
+@export var line_mesh_instance: MeshInstance3D
+
 
 func update_transform(_transform):
 	transform = _transform
@@ -39,3 +41,25 @@ func update_grid_snap(grid_size: float) -> void:
 	mesh_instance.mesh = immediate_mesh
 
 
+func show_line():
+	if line_mesh_instance.mesh == null:
+
+		var half_extent := max_extent * 0.5
+
+		var immediate_mesh := ImmediateMesh.new()
+		immediate_mesh.clear_surfaces()
+
+		immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
+		immediate_mesh.surface_add_vertex(Vector3(0, half_extent, 0))
+		immediate_mesh.surface_add_vertex(Vector3(0, -half_extent, 0))
+
+		immediate_mesh.surface_end()
+
+		line_mesh_instance.mesh = immediate_mesh
+
+	line_mesh_instance.show()
+
+
+
+func hide_line():
+	line_mesh_instance.hide()
