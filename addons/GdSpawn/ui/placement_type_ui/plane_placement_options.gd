@@ -156,7 +156,7 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 
 	var intersection_point = current_plane.intersects_ray(ray_origin, ray_direction)
 	if intersection_point == null:
-		res["object_transform"] = local_object_transform
+		res["object_transform"] = current_grid_transform * local_object_transform
 		res["grid_offset"] = Vector3.ZERO
 		return res
 

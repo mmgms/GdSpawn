@@ -82,6 +82,11 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 		main_dock.spawn_manager.on_move(viewport_camera, event.position, ctrl_pressed, shift_pressed)
 		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		main_dock.spawn_manager.on_press_start()
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var alt_pressed = false
 		if Input.is_key_pressed(KEY_ALT):

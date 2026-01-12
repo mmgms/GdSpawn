@@ -43,11 +43,37 @@ var editor_plugin
 
 var is_moving_plane = false
 
+enum PlacementState {Normal, Paint, TransformLocalY}
+
+var current_placement_state = PlacementState.Normal
+
 class GdSpawnSnapInfo:
 	var enabled: bool = false
 	var step: float = 1.0
 	var shift_step: float = 0.1
 	var grid_offset: Vector2 = Vector2.ZERO
+
+
+class GdSpawnAddScenesAction:
+	var scene: PackedScene
+	var transforms: Array
+	var parent: Node3D
+	var owner: Node
+
+	var added_instances: Array
+
+	func do():
+		added_instances = []
+		for transform in transforms:
+			var instance = scene.instantiate()
+			parent.add_child(instance, true)
+			instance.global_transform = transform
+			instance.owner = owner
+			added_instances.append(instance)
+
+	func undo():
+		for instance in added_instances:
+			instance.queue_free()
 
 var current_snap_info = GdSpawnSnapInfo.new()
 
@@ -103,6 +129,8 @@ func on_spawn_option_selected(idx):
 	current_placement_mode_manager.show()
 	if not current_placement_mode_manager.should_show_grid():
 		hide_grid()
+	if current_placement_mode_manager.should_show_grid() and preview_scene:
+		show_grid()
 
 
 func on_choose_selected():
@@ -119,7 +147,7 @@ func change_spawn_node(node):
 	spawn_node = node
 	spawn_under_label.text = spawn_node.name
 
-var preview_scene = null
+var preview_scene: Node3D = null
 var current_selected_item = null
 func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 	current_selected_item = item
@@ -141,14 +169,20 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 	spawn_node.add_child(preview_scene)
 	EditorInterface.edit_node(spawn_node)
 
-
+var mouse_pos_on_rotate_y_placement: Vector2
+var preview_scene_transform_on_rotate_y_placement: Transform3D
 var last_mouse_pos: Vector2
 var viewport_camera = null
+var painted_instances_transform_history: Array
 
 func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pressed):
 	viewport_camera = camera
 	last_mouse_pos = mouse_position
 	if not preview_scene:
+		return
+
+	if current_placement_mode == GdSpawnPlacementMode.Plane and is_moving_plane:
+		current_placement_mode_manager.on_move_along_plane_normal(camera, mouse_position)
 		return
 
 	var step = current_snap_info.step
@@ -159,15 +193,45 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 	if ctrl_pressed:
 		snap_enabled = false
 
-	var res = current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
-	preview_scene.global_transform = res.object_transform
+	if current_placement_state == PlacementState.Normal:
 
-	if current_placement_mode == GdSpawnPlacementMode.Plane and is_moving_plane:
-		current_placement_mode_manager.on_move_along_plane_normal(camera, mouse_position)
+
+		var res = current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
+		preview_scene.global_transform = res.object_transform
+
+	elif current_placement_state == PlacementState.TransformLocalY:
+		
+		var current_diff = mouse_position - mouse_pos_on_rotate_y_placement
+
+		if abs(current_diff.x) < 10:
+			return
+
+		const ROTATE_SENSITIVITY := 0.01 
+
+		preview_scene.global_transform = preview_scene_transform_on_rotate_y_placement.rotated_local(Vector3.UP, current_diff.x * ROTATE_SENSITIVITY)
+
+	elif current_placement_state == PlacementState.Paint:
+		var res = current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, true)
+		var object_transform = res["object_transform"] as Transform3D
+
+		if not check_can_place(spawn_node, current_selected_item.scene, object_transform):
+			return
+		
+		var instanced_scene = current_selected_item.scene.instantiate()
+		spawn_node.add_child(instanced_scene, true)
+		instanced_scene.global_transform = object_transform
+		painted_instances_transform_history.append(instanced_scene)
 
 	# if not current_grid:
 	# 	return
 	# current_grid.update_offset(res.grid_offset)
+
+func check_can_place(root, packed_scene, transform):
+	for child in root.get_children().slice(0, 1000):
+		if child.scene_file_path == packed_scene.resource_path and child.global_transform.is_equal_approx(transform):
+			return false
+	
+	return true
 	
 
 func on_item_basis_set(item: GdSpawnSceneLibraryItem):
@@ -176,6 +240,21 @@ func on_item_basis_set(item: GdSpawnSceneLibraryItem):
 	var res = current_placement_mode_manager.on_move(viewport_camera, last_mouse_pos, current_selected_item, current_snap_info.step, false)
 	preview_scene.global_transform = res.object_transform
 
+
+func on_press_start():
+	if current_snap_info.enabled and current_placement_mode == GdSpawnPlacementMode.Plane:
+		current_placement_state = PlacementState.Paint
+		painted_instances_transform_history = []
+		var instanced_scene = current_selected_item.scene.instantiate()
+		spawn_node.add_child(instanced_scene, true)
+		instanced_scene.global_transform = preview_scene.global_transform
+		painted_instances_transform_history.append(instanced_scene)
+
+	else:
+		current_placement_state = PlacementState.TransformLocalY
+		mouse_pos_on_rotate_y_placement = last_mouse_pos
+		preview_scene_transform_on_rotate_y_placement = preview_scene.global_transform
+
 func on_confirm(alt_pressed):
 	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
 		is_moving_plane = false
@@ -183,20 +262,50 @@ func on_confirm(alt_pressed):
 			current_grid.hide_line()
 		return
 
-	var instanced_scene = current_selected_item.scene.instantiate()
+	if current_placement_state == PlacementState.TransformLocalY: 
 
-	undo_redo.create_action("Place Scene: %s" % current_selected_item.scene.resource_path)
-	undo_redo.add_do_method(self, "_do_placement", instanced_scene, spawn_node, preview_scene.global_transform)
-	undo_redo.add_undo_method(self, "_undo_placement", spawn_node)
-	undo_redo.commit_action()
+		var action = GdSpawnAddScenesAction.new()
+		action.parent = spawn_node
+		action.transforms = [preview_scene.global_transform]
+		action.owner = EditorInterface.get_edited_scene_root()
+		action.scene = current_selected_item.scene
 
-	if alt_pressed:
-		EditorInterface.edit_node(instanced_scene)
+		undo_redo.create_action("Place Scene: %s" % current_selected_item.scene.resource_path, 0, self)
+		undo_redo.add_do_method(action, "do")
+		undo_redo.add_undo_method(action, "undo")
+		undo_redo.commit_action()
+
+		if alt_pressed:
+			EditorInterface.edit_node(action.added_instances[0])
+
+		current_placement_state = PlacementState.Normal
+
+	else:
+		var action = GdSpawnAddScenesAction.new()
+		action.parent = spawn_node
+		action.owner = EditorInterface.get_edited_scene_root()
+		action.scene = current_selected_item.scene
+
+		for instanced in painted_instances_transform_history:
+			action.transforms.append(instanced.global_transform)
+			instanced.queue_free()
+
+		painted_instances_transform_history.clear()
+
+		undo_redo.create_action("Paint: %s" % current_selected_item.scene.resource_path, 0, self)
+		undo_redo.add_do_method(action, "do")
+		undo_redo.add_undo_method(action, "undo")
+		undo_redo.commit_action()
+
+		current_placement_state = PlacementState.Normal
 
 	#TODO clear history when plugin disabled
 
 
 func on_cancel():
+	if current_placement_state != PlacementState.Normal:
+		return
+
 	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
 		is_moving_plane = false
 		current_placement_mode_manager.on_move_plane_cancel()
@@ -206,16 +315,6 @@ func on_cancel():
 
 	signal_routing.ItemSelect.emit(null)
 
-
-func _do_placement(new_node, root: Node3D, transform: Transform3D):
-	root.add_child(new_node, true)
-	new_node.global_transform = transform
-	new_node.owner = EditorInterface.get_edited_scene_root()
-	node_history.push_front(new_node)
-
-func _undo_placement(root: Node3D):
-	var last_added = node_history.pop_front()
-	root.remove_child(last_added)
 
 func on_rotate(camera: Camera3D, shift_pressed, axis=Vector3.UP):
 	if not preview_scene:
