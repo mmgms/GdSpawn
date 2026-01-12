@@ -1,5 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=5 format=3 uid="uid://brjmlw33t6bld"]
 
+[ext_resource type="Material" uid="uid://08fpp1jxbsgl" path="res://materials/atlas02.tres" id="3_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/suburban_modular/InnerFloor.tscn" id="4_getpj"]
+[ext_resource type="ArrayMesh" uid="uid://cl1buiteuarh6" path="res://assets/walls_modular/suburb_house_set_interior_floor.res" id="4_lquwl"]
 [ext_resource type="PackedScene" uid="uid://dna1hd47b3y8u" path="res://scenes/test/ExampleTerrain.tscn" id="12_dg77c"]
 
 [node name="Main" type="Node3D"]
@@ -15,3 +18,178 @@ transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
 [node name="Ceiling1" type="Node3D" parent="House"]
 
 [node name="OtherBuilding" type="Node3D" parent="."]
+
+[node name="InnerFloor37" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor38" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor39" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor40" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 6)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor41" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 4)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor42" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 4)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor43" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 4)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor44" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 4)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor45" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 6)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor46" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 6)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor47" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor48" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor49" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor50" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor51" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor52" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 14)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor53" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 14)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor54" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 16)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor55" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 16)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor56" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 16)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor57" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 14)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor58" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor59" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor60" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 14)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor61" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor62" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 6)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor63" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 6)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor64" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor65" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor66" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor67" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 14)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor68" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 12)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor69" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor70" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 8)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")
+
+[node name="InnerFloor71" type="MeshInstance3D" parent="." instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 10)
+material_override = ExtResource("3_1bvp3")
+mesh = ExtResource("4_lquwl")

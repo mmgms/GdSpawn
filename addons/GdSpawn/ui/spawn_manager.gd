@@ -64,6 +64,8 @@ class GdSpawnAddScenesAction:
 
 	func do():
 		added_instances = []
+		if not parent:
+			return
 		for transform in transforms:
 			var instance = scene.instantiate()
 			parent.add_child(instance, true)
@@ -73,7 +75,8 @@ class GdSpawnAddScenesAction:
 
 	func undo():
 		for instance in added_instances:
-			instance.queue_free()
+			if instance:
+				instance.queue_free()
 
 var current_snap_info = GdSpawnSnapInfo.new()
 
@@ -167,6 +170,7 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 
 	preview_scene = item.scene.instantiate()
 	spawn_node.add_child(preview_scene)
+	GdSpawnUtilities.disable_collisions_recursive(preview_scene)
 	EditorInterface.edit_node(spawn_node)
 
 var mouse_pos_on_rotate_y_placement: Vector2
@@ -178,12 +182,6 @@ var painted_instances_transform_history: Array
 func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pressed):
 	viewport_camera = camera
 	last_mouse_pos = mouse_position
-	if not preview_scene:
-		return
-
-	if current_placement_mode == GdSpawnPlacementMode.Plane and is_moving_plane:
-		current_placement_mode_manager.on_move_along_plane_normal(camera, mouse_position)
-		return
 
 	var step = current_snap_info.step
 	if shift_pressed:
@@ -192,6 +190,15 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 	var snap_enabled = current_snap_info.enabled
 	if ctrl_pressed:
 		snap_enabled = false
+
+	if not preview_scene:
+		return
+
+	if current_placement_mode == GdSpawnPlacementMode.Plane and is_moving_plane:
+		current_placement_mode_manager.on_move_along_plane_normal(camera, mouse_position, step, snap_enabled)
+		var res = current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
+		preview_scene.global_transform = res.object_transform
+		return
 
 	if current_placement_state == PlacementState.Normal:
 
@@ -242,6 +249,12 @@ func on_item_basis_set(item: GdSpawnSceneLibraryItem):
 
 
 func on_press_start():
+	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
+		is_moving_plane = false
+		if current_grid:
+			current_grid.hide_line()
+		return
+
 	if current_snap_info.enabled and current_placement_mode == GdSpawnPlacementMode.Plane:
 		current_placement_state = PlacementState.Paint
 		painted_instances_transform_history = []
@@ -256,11 +269,6 @@ func on_press_start():
 		preview_scene_transform_on_rotate_y_placement = preview_scene.global_transform
 
 func on_confirm(alt_pressed):
-	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
-		is_moving_plane = false
-		if current_grid:
-			current_grid.hide_line()
-		return
 
 	if current_placement_state == PlacementState.TransformLocalY: 
 

@@ -200,7 +200,7 @@ func on_move_plane_cancel():
 	signal_routing.GridTrasformChanged.emit(get_plane_transform())
 
 
-func on_move_along_plane_normal(camera: Camera3D, mouse_pos: Vector2):
+func on_move_along_plane_normal(camera: Camera3D, mouse_pos: Vector2, step, snap_enable):
 
 	# 1. Determine plane normal in local grid space
 	var local_normal: Vector3
@@ -237,6 +237,9 @@ func on_move_along_plane_normal(camera: Camera3D, mouse_pos: Vector2):
 		return # Parallel – no stable solution
 
 	var s := (b * d - a * e) / denom
+
+	if snap_enable:
+		s = snapped(s, step)
 
 	# 5. Move grid along normal
 	current_grid_transform.origin = line_origin - line_dir * s

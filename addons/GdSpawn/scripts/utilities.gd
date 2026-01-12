@@ -26,3 +26,15 @@ static func calculate_spatial_bounds(scene_parent: Node3D, exclude_top_level_tra
 	
 
 	return bounds
+
+
+static func disable_collisions_recursive(root: Node) -> void:
+	if root == null:
+		return
+
+	# Disable individual shapes if present
+	if root is CollisionShape3D:
+		root.disabled = true
+
+	for child in root.get_children():
+		disable_collisions_recursive(child)

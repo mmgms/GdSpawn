@@ -237,7 +237,7 @@ func generate_asset_zoo():
 	var parent_node := Node3D.new()
 	parent_node.name = "AssetZoo"
 
-	var padding := 1.0
+	var padding := 5.0
 
 	# --- Collect instances and bounds ---
 	var items := []
