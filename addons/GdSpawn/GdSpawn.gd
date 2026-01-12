@@ -29,8 +29,7 @@ func _exit_tree() -> void:
 
 
 func on_project_settings_changed():
-	## TODO
-	pass
+	main_dock.signal_routing.ProjectSettingsChanged.emit()
 
 func attach_to_bottom_panel():
 	add_control_to_bottom_panel(main_dock, "GdSpawn")

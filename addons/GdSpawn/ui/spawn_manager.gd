@@ -36,7 +36,6 @@ var placement_mode_to_ui: Dictionary[GdSpawnPlacementMode, Control]
 var current_placement_mode_manager: Node
 var undo_redo: EditorUndoRedoManager
 
-var node_history: Array
 
 var editor_plugin
 
@@ -128,6 +127,11 @@ func on_plugin_disabled():
 		preview_scene.queue_free()
 	if current_grid:
 		current_grid.queue_free()
+
+	for scene in painted_instances_transform_history:
+		scene.queue_free()
+
+	painted_instances_transform_history.clear()
 
 func on_scene_change(scene_root):
 	if spawn_node_cache.has(scene_root):
@@ -328,7 +332,9 @@ func on_confirm(alt_pressed):
 
 		current_placement_state = PlacementState.Normal
 
-	#TODO clear history when plugin disabled
+		if alt_pressed:
+			EditorInterface.edit_node(action.added_instances[-1])
+
 
 
 func on_cancel():

@@ -84,25 +84,17 @@ metadata/_edit_lock_ = true
 [node name="ExampleTerrain" parent="." instance=ExtResource("12_dg77c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, 0)
 
-[node name="ExteriorWindow" type="MeshInstance3D" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
+[node name="ExteriorWindow" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
 transform = Transform3D(-0.128845, 0, 0.991665, 0, 1, 0, -0.991665, 0, -0.128845, 1.39256, 0, 6.58571)
-material_override = ExtResource("3_7mycd")
-mesh = ExtResource("4_272bh")
 
-[node name="ExteriorWindow2" type="MeshInstance3D" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
+[node name="ExteriorWindow2" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
 transform = Transform3D(0.830941, 0, 0.556361, 0, 1, 0, -0.556361, 0, 0.830941, -1.06333, 0, -0.391093)
-material_override = ExtResource("3_7mycd")
-mesh = ExtResource("4_272bh")
 
-[node name="ExteriorWindow3" type="MeshInstance3D" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
+[node name="ExteriorWindow3" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
 transform = Transform3D(0.971338, 0, 0.237703, 0, 1, 0, -0.237703, 0, 0.971338, 7.19656, -9.53674e-07, 2.58252)
-material_override = ExtResource("3_7mycd")
-mesh = ExtResource("4_272bh")
 
-[node name="ExteriorWindow4" type="MeshInstance3D" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
+[node name="ExteriorWindow4" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
 transform = Transform3D(0.973666, 0, 0.227978, 0, 1, 0, -0.227978, 0, 0.973666, 3.67036, 0, -2.23579)
-material_override = ExtResource("3_7mycd")
-mesh = ExtResource("4_272bh")
 
 [node name="House" type="Node3D" parent="."]
 
@@ -217,3 +209,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 8)
 
 [node name="InnerFloor71" parent="." instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 10)
+
+[node name="ExteriorWindow3" type="MeshInstance3D" parent="." instance=ExtResource("2_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 7)
+material_override = ExtResource("3_7mycd")
+mesh = ExtResource("4_272bh")

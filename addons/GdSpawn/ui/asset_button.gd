@@ -44,6 +44,7 @@ func set_library_item(_library_item, _scene_library, _signal_routing):
 	name_label.text = library_item.scene.resource_path.get_file().get_basename()
 	signal_routing.ItemSelect.connect(on_item_select)
 	signal_routing.ItemPlacementBasisSet.connect(on_item_basis_change)
+	signal_routing.ProjectSettingsChanged.connect(on_proj_settings_change)
 
 
 func _ready():
@@ -53,6 +54,9 @@ func _ready():
 	reset_local_transform_button.pressed.connect(on_reset_local_transform)
 	reset_local_transform_button.hide()
 
+func on_proj_settings_change():
+	if ProjectSettings.get_setting("GdSpawn/Settings/Preview Perspective") != last_global_preview_mode:
+		update_preview()
 
 func on_toggled(toggled_on):
 	if not toggled_on:
@@ -121,13 +125,14 @@ func get_preview_camera_position():
 	
 	return _get_preview_camera_position(library, library_item, aabb)
 
-
+var last_global_preview_mode = 0
 
 func _get_preview_camera_position(library: GdSpawnSceneLibrary, library_item: GdSpawnSceneLibraryItem, scene_aabb: AABB):
 	var aabb_center = scene_aabb.get_center()
 	var max_size = max(scene_aabb.size.x, scene_aabb.size.y, scene_aabb.size.z)
 
 	var global_preview_mode = ProjectSettings.get_setting("GdSpawn/Settings/Preview Perspective") as GdSpawnSceneLibraryItem.PreviewMode
+	last_global_preview_mode = global_preview_mode
 
 	var final_preview_mode: GdSpawnSceneLibraryItem.PreviewMode
 

@@ -9,6 +9,8 @@ signal ItemPlacementBasisSet(item: GdSpawnSceneLibraryItem)
 signal ItemSelect(item: GdSpawnSceneLibraryItem)
 
 signal PluginDisabled()
+signal ProjectSettingsChanged()
+
 
 signal GridTrasformChanged(transform: Transform3D)
 
