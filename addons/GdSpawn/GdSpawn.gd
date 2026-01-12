@@ -23,6 +23,7 @@ func _enter_tree() -> void:
 
 
 func _exit_tree() -> void:
+	main_dock.signal_routing.PluginDisabled.emit()
 	remove_control_from_bottom_panel(main_dock)
 	main_dock.free()
 

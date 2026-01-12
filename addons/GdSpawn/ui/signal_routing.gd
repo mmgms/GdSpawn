@@ -8,6 +8,8 @@ signal ItemPlacementBasisSet(item: GdSpawnSceneLibraryItem)
 # also deselect when item null
 signal ItemSelect(item: GdSpawnSceneLibraryItem)
 
+signal PluginDisabled()
+
 signal GridTrasformChanged(transform: Transform3D)
 
 

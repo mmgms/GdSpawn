@@ -106,6 +106,7 @@ func _ready() -> void:
 	signal_routing.ItemSelect.connect(on_selected_item_changed)
 	signal_routing.ItemPlacementBasisSet.connect(on_item_basis_set)
 	signal_routing.GridTrasformChanged.connect(on_grid_transform_changed)
+	signal_routing.PluginDisabled.connect(on_plugin_disabled)
 
 	if spawn_option_parent.get_child_count() > 0:
 		spawn_option_parent.get_child(0).queue_free()
@@ -118,7 +119,15 @@ func _ready() -> void:
 	
 	on_spawn_option_selected(0)
 
+
 var spawn_node_cache: Dictionary
+
+
+func on_plugin_disabled():
+	if preview_scene:
+		preview_scene.queue_free()
+	if current_grid:
+		current_grid.queue_free()
 
 func on_scene_change(scene_root):
 	if spawn_node_cache.has(scene_root):
