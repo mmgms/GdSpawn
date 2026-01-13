@@ -1,7 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=21 format=3 uid="uid://brjmlw33t6bld"]
 
+[ext_resource type="Script" uid="uid://b73vfhkn6shtb" path="res://addons/GdSpawn/scripts/custom_nodes/layer.gd" id="2_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://d4mj0o6m30s0t" path="res://scenes/suburban_modular/ExteriorWindowLarge.tscn" id="2_lquwl"]
+[ext_resource type="Material" uid="uid://08fpp1jxbsgl" path="res://materials/atlas02.tres" id="4_5vw27"]
 [ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/suburban_modular/InnerFloor.tscn" id="4_getpj"]
+[ext_resource type="ArrayMesh" uid="uid://cl1buiteuarh6" path="res://assets/walls_modular/suburb_house_set_interior_floor.res" id="5_kek77"]
+[ext_resource type="Script" uid="uid://bn7ki5sdygivv" path="res://addons/GdSpawn/scripts/custom_nodes/curve.gd" id="7_272bh"]
+[ext_resource type="Resource" uid="uid://qo5b1m3bu1gc" path="res://resources/spawn_profiles/test_curve_profile.tres" id="8_5vw27"]
+[ext_resource type="Script" uid="uid://b011ame8q4oxk" path="res://addons/GdSpawn/scripts/spawn_profile_resources/curve_spawn_settings.gd" id="9_kek77"]
+[ext_resource type="PackedScene" uid="uid://by441f3qt8cjg" path="res://scenes/suburban_modular/InnerWall.tscn" id="10_efxa6"]
+[ext_resource type="ArrayMesh" uid="uid://d2s2p5qrpclro" path="res://assets/walls_modular/suburb_house_set_interior_wall.res" id="11_dg77c"]
 [ext_resource type="PackedScene" uid="uid://dna1hd47b3y8u" path="res://scenes/test/ExampleTerrain.tscn" id="12_dg77c"]
 
 [sub_resource type="Gradient" id="Gradient_0xm2m"]
@@ -68,12 +76,27 @@ lod0_range = 128.0
 [sub_resource type="Terrain3DAssets" id="Terrain3DAssets_5vw27"]
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_272bh")])
 
+[sub_resource type="Curve3D" id="Curve3D_272bh"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -47, 6, 1, -4.5, 0, 0.5, 4.5, 0, -0.5, -39, 1, 6, -3.3, 0, -1.6, 3.3, 0, 1.6, -25.4945, 0, 13.6819, -0.4, 0, -3.2, 0.4, 0, 3.2, -16.4887, 0, 24.0867, 0, 0, 0, 0, 0, 0, -18.1499, 0, 31.6061),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0)
+}
+point_count = 5
+
+[sub_resource type="Resource" id="Resource_5vw27"]
+script = ExtResource("9_kek77")
+avoid_overlaps = true
+padding_mode = 0
+padding = 0.0
+metadata/_custom_type_script = "uid://b011ame8q4oxk"
+
 [node name="Main" type="Node3D"]
 
 [node name="Terrain3D" type="Terrain3D" parent="."]
 data_directory = "res://resources/terrains"
 material = SubResource("Terrain3DMaterial_lquwl")
 assets = SubResource("Terrain3DAssets_5vw27")
+collision_mode = 2
 show_checkered = true
 show_grey = true
 top_level = true
@@ -81,18 +104,6 @@ metadata/_edit_lock_ = true
 
 [node name="ExampleTerrain" parent="." instance=ExtResource("12_dg77c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 0, 0)
-
-[node name="ExteriorWindow" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
-transform = Transform3D(-0.128845, 0, 0.991665, 0, 1, 0, -0.991665, 0, -0.128845, 1.39256, 0, 6.58571)
-
-[node name="ExteriorWindow2" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
-transform = Transform3D(0.830941, 0, 0.556361, 0, 1, 0, -0.556361, 0, 0.830941, -1.06333, 0, -0.391093)
-
-[node name="ExteriorWindow3" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
-transform = Transform3D(0.971338, 0, 0.237703, 0, 1, 0, -0.237703, 0, 0.971338, 7.19656, -9.53674e-07, 2.58252)
-
-[node name="ExteriorWindow4" parent="ExampleTerrain" instance=ExtResource("2_lquwl")]
-transform = Transform3D(0.973666, 0, 0.227978, 0, 1, 0, -0.227978, 0, 0.973666, 3.67036, 0, -2.23579)
 
 [node name="House" type="Node3D" parent="."]
 
@@ -103,110 +114,173 @@ transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
 
 [node name="OtherBuilding" type="Node3D" parent="."]
 
-[node name="InnerFloor37" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 12)
+[node name="base" type="Node3D" parent="."]
+script = ExtResource("2_0xm2m")
 
-[node name="InnerFloor38" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 10)
+[node name="ExteriorWindow3" parent="base" instance=ExtResource("2_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, 27)
 
-[node name="InnerFloor39" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 8)
+[node name="ExteriorWindow4" parent="base" instance=ExtResource("2_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -41, 0, 27)
 
-[node name="InnerFloor40" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 6)
+[node name="ExteriorWindow5" parent="base" instance=ExtResource("2_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -49, 0, 27)
 
-[node name="InnerFloor41" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 4)
+[node name="floor1" type="Node3D" parent="base"]
+script = ExtResource("2_0xm2m")
 
-[node name="InnerFloor42" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 4)
+[node name="InnerFloor3" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 4, 28)
 
-[node name="InnerFloor43" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 4)
+[node name="InnerFloor4" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 4, 28)
 
-[node name="InnerFloor44" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 4)
+[node name="InnerFloor5" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 4, 28)
 
-[node name="InnerFloor45" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 6)
+[node name="InnerFloor6" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 4, 28)
 
-[node name="InnerFloor46" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 6)
+[node name="InnerFloor7" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 4, 28)
 
-[node name="InnerFloor47" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 8)
+[node name="InnerFloor8" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 4, 28)
 
-[node name="InnerFloor48" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 8)
+[node name="InnerFloor9" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.9997, 4, 28.0002)
 
-[node name="InnerFloor49" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 10)
+[node name="InnerFloor10" parent="base/floor1" instance=ExtResource("4_getpj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.9997, 4, 30.0002)
 
-[node name="InnerFloor50" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 12)
+[node name="GdSpawnPath" type="Path3D" parent="."]
+curve = SubResource("Curve3D_272bh")
+script = ExtResource("7_272bh")
+curve_spawn_profile = ExtResource("8_5vw27")
+curve_spawn_settings = SubResource("Resource_5vw27")
+metadata/_custom_type_script = "uid://bn7ki5sdygivv"
 
-[node name="InnerFloor51" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 12)
+[node name="InnerFloor" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.529999, 0.397112, 0.749269, -2.98023e-08, 0.883573, -0.468293, -0.847998, 0.248195, 0.468293, -47, 6, 1)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor52" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 14)
+[node name="InnerWallStraight8" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.52566, 0.493542, 0.692891, 0.578869, 0.80437, -0.133791, -0.623372, 0.330764, -0.708521, -46.0292, 4.81655, 2.28597)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor53" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 14)
+[node name="InnerWallStraight9" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.605893, 0.465341, 0.645253, 0.547344, 0.832438, -0.0863785, -0.577329, 0.30084, -0.75907, -44.8998, 3.68825, 3.48938)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor54" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 16)
+[node name="InnerWallStraight10" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.70615, 0.42057, 0.569625, 0.495811, 0.868034, -0.0262497, -0.505494, 0.26389, -0.821485, -43.5923, 2.64019, 4.57848)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor55" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 16)
+[node name="InnerWallStraight11" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.837989, 0.337296, 0.428959, 0.396964, 0.91618, 0.0550798, -0.374425, 0.216437, -0.901643, -42.0537, 1.73572, 5.47279)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor56" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 16)
+[node name="InnerWallStraight12" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.974164, 0.170816, 0.147739, 0.192366, 0.970321, 0.146535, -0.118324, 0.171169, -0.978111, -40.2337, 1.12293, 5.99229)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor57" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 14)
+[node name="InnerWallStraight13" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.998359, 0.0131908, 0.0557301, 0.0224929, 0.985231, 0.169747, -0.0526679, 0.170722, -0.983911, -38.2457, 0.991216, 5.9799)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor58" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 12)
+[node name="InnerFloor16" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.349255, 0.00150795, 0.937026, 0.157147, 0.985741, -0.0601594, -0.923756, 0.168262, 0.344039, -36.302, 0.903652, 6.40937)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor59" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 10)
+[node name="InnerFloor17" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.49584, -0.00607546, 0.868393, 0.146019, 0.986322, -0.0764741, -0.85605, 0.164721, 0.489945, -34.4996, 0.764653, 7.25976)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor60" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 14)
+[node name="InnerWallStraight14" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.820278, -0.0118113, 0.571844, 0.0825784, 0.986866, 0.138838, -0.565973, 0.161107, -0.808529, -32.8144, 0.604409, 8.32353)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor61" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 8)
+[node name="InnerWallStraight15" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.791478, -0.017046, 0.61096, 0.0827934, 0.987407, 0.134805, -0.605564, 0.157279, -0.7801, -31.2056, 0.438202, 9.49976)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor62" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 6)
+[node name="InnerFloor18" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.624863, -0.0227876, 0.780402, 0.133364, 0.987998, -0.077934, -0.76926, 0.152775, 0.620402, -29.6368, 0.276563, 10.7296)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor63" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 6)
+[node name="InnerFloor19" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.611715, -0.0305195, 0.79049, 0.134539, 0.988712, -0.0659398, -0.779554, 0.146688, 0.608916, -28.0701, 0.13109, 11.9642)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor64" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 8)
+[node name="InnerWallStraight16" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.838327, -0.0445902, 0.543342, 0.0373298, 0.989615, 0.138811, -0.543889, 0.136652, -0.827956, -26.4505, 0.0232801, 13.1316)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor65" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 10)
+[node name="InnerWallStraight17" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.854027, -0.0734415, 0.515019, 1.57904e-08, 0.989985, 0.141171, -0.520229, 0.120564, -0.845474, -24.7099, 0, 14.1138)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="InnerFloor66" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 12)
+[node name="InnerFloor20" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.616149, -0.0878626, 0.782714, 0.141172, 0.989985, -1.53831e-08, -0.774875, 0.110497, 0.622382, -23.078, 0, 15.2678)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor67" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 14)
+[node name="InnerFloor21" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.678046, -0.0966891, 0.728632, 0.141172, 0.989985, 3.16873e-09, -0.721335, 0.102862, 0.684905, -21.568, 0, 16.5783)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor68" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 12)
+[node name="InnerFloor22" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.728639, -0.103904, 0.67697, 0.141172, 0.989985, -7.37596e-09, -0.67019, 0.0955689, 0.73601, -20.1619, 0, 18)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor69" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 10)
+[node name="InnerFloor23" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.779239, -0.111119, 0.616798, 0.141172, 0.989985, 0, -0.61062, 0.0870743, 0.787122, -18.8656, 0, 19.5224)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor70" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 8)
+[node name="InnerFloor24" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.839547, -0.119719, 0.529933, 0.141172, 0.989985, -3.16872e-09, -0.524626, 0.0748115, 0.84804, -17.7119, 0, 21.155)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
 
-[node name="InnerFloor71" parent="." instance=ExtResource("4_getpj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 10)
+[node name="InnerWallStraight18" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.359897, -0.131712, 0.923648, 0, 0.989985, 0.141172, -0.932992, 0.0508073, -0.356293, -16.7981, 0, 22.9307)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
 
-[node name="ExteriorWindow3" parent="." instance=ExtResource("2_lquwl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 7)
+[node name="InnerWallStraight19" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(-0.00913219, -0.141166, 0.989944, 2.31665e-10, 0.989985, 0.141172, -0.999958, 0.00128921, -0.00904073, -16.4378, 0, 24.885)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
+
+[node name="InnerWallStraight20" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("10_efxa6")]
+transform = Transform3D(0.1772, -0.138938, 0.974319, -2.40976e-10, 0.989985, 0.141172, -0.984175, -0.0250156, 0.175425, -16.6243, 0, 26.8734)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("11_dg77c")
+
+[node name="InnerFloor25" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.947734, -0.135147, -0.289026, 0.141172, 0.989985, -5.03137e-09, 0.286132, -0.0408023, 0.957321, -17.0982, 0, 28.8153)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")
+
+[node name="InnerFloor26" type="MeshInstance3D" parent="GdSpawnPath" instance=ExtResource("4_getpj")]
+transform = Transform3D(0.918883, -0.131032, -0.372135, 0.141172, 0.989985, 0, 0.368408, -0.0525349, 0.928179, -17.7612, 0, 30.7016)
+material_override = ExtResource("4_5vw27")
+mesh = ExtResource("5_kek77")

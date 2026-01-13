@@ -4,6 +4,8 @@ extends EditorPlugin
 
 var main_dock: GdSpawnMainDockManager
 
+var layers_dock: GdSpawnLayersDock
+
 const BASE_SETTING = "GdSpawn/Settings/"
 
 
@@ -13,10 +15,17 @@ func _enter_tree() -> void:
 	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate() as GdSpawnMainDockManager
 	main_dock.editor_plugin = self
 
+
+	layers_dock = preload("res://addons/GdSpawn/ui/LayersDock.tscn").instantiate() as GdSpawnLayersDock
+	layers_dock.signal_routing = main_dock.signal_routing
+
 	add_control_to_bottom_panel(main_dock, "GdSpawn")
+	add_control_to_dock(DOCK_SLOT_LEFT_BR, layers_dock)
 	
 	_add_setting("%sPreview Perspective" % BASE_SETTING, GdSpawnSceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
 		", ".join(GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1)))
+
+	add_custom_type("GdSpawnLayer", "Node3D", preload("res://addons/GdSpawn/scripts/custom_nodes/layer.gd"), preload("res://addons/GdSpawn/icons/GdSpawnLayer.svg"))
 
 
 	project_settings_changed.connect(on_project_settings_changed)
@@ -26,7 +35,11 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	main_dock.signal_routing.PluginDisabled.emit()
 	remove_control_from_bottom_panel(main_dock)
+	remove_control_from_docks(layers_dock)
+	layers_dock.free()
 	main_dock.free()
+
+	remove_custom_type("GdSpawnLayer")
 
 
 func on_project_settings_changed():
@@ -151,3 +164,4 @@ func local_axis_flip(camera, axis):
 func _handles(object):
 	return object is Node3D
 	
+

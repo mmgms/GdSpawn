@@ -1,0 +1,141 @@
+[gd_scene load_steps=11 format=3 uid="uid://bg32ldu2orkei"]
+
+[ext_resource type="Script" uid="uid://ceinglwio6nb5" path="res://addons/GdSpawn/ui/layers_dock.gd" id="1_3nky0"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="1_tm8tk"]
+
+[sub_resource type="Texture2D" id="Texture2D_rehk0"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"GuiVisibilityVisible"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_ckm12"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"GuiVisibilityHidden"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_3u6fm"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"ImportFail"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_urax5"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"ListSelect"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_6d57e"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"FolderCreate"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_iqiku"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"FileTree"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_3nky0"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"Search"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_tm8tk"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_tm8tk")
+icon_name = &"Add"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[node name="GdSpawnLayers" type="PanelContainer" node_paths=PackedStringArray("add_layer_button", "layer_name_text_edit", "filter_line_edit", "batch_hide_button", "batch_show_button", "batch_delete_button", "select_spawn_under", "assign_to_layer", "show_in_tree", "trees_parent")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3nky0")
+add_layer_button = NodePath("VBoxContainer/HBoxContainer2/Add")
+layer_name_text_edit = NodePath("VBoxContainer/HBoxContainer2/LineEdit")
+filter_line_edit = NodePath("VBoxContainer/FilterLayers")
+batch_hide_button = NodePath("VBoxContainer/HBoxContainer/HideButton")
+batch_show_button = NodePath("VBoxContainer/HBoxContainer/ShowButton")
+batch_delete_button = NodePath("VBoxContainer/HBoxContainer/DeleteButton")
+select_spawn_under = NodePath("VBoxContainer/HBoxContainer/SelectSpawnUnder")
+assign_to_layer = NodePath("VBoxContainer/HBoxContainer/AssignSelectedToLayer")
+show_in_tree = NodePath("VBoxContainer/HBoxContainer/ShowInScene")
+trees_parent = NodePath("VBoxContainer/TreesParent")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ShowButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_rehk0")
+
+[node name="HideButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_ckm12")
+
+[node name="DeleteButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_3u6fm")
+
+[node name="SelectSpawnUnder" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_urax5")
+
+[node name="AssignSelectedToLayer" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_6d57e")
+
+[node name="ShowInScene" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = SubResource("Texture2D_iqiku")
+
+[node name="FilterLayers" type="LineEdit" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/FilterLayers"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("Texture2D_3nky0")
+stretch_mode = 3
+
+[node name="TreesParent" type="PanelContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Add" type="Button" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+icon = SubResource("Texture2D_tm8tk")
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3

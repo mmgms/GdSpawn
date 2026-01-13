@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cq58hnib4q4ri"]
+[gd_scene load_steps=19 format=3 uid="uid://cq58hnib4q4ri"]
 
 [ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="1_aoh2j"]
 [ext_resource type="PackedScene" uid="uid://bhj0afo267ais" path="res://addons/GdSpawn/ui/asset_palette.tscn" id="1_gn6wi"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" uid="uid://pctylkklcwin" path="res://addons/GdSpawn/ui/spawn_manager.gd" id="5_bu4qg"]
 [ext_resource type="PackedScene" uid="uid://dcgb6krwvmsny" path="res://addons/GdSpawn/scenes/GdSpawnGrid.tscn" id="8_8seq1"]
 [ext_resource type="PackedScene" uid="uid://dx2i8srcww4hd" path="res://addons/GdSpawn/ui/placement_type_ui/surface_placement_options.tscn" id="8_64fbb"]
+[ext_resource type="PackedScene" uid="uid://dxa84swg2d5qk" path="res://addons/GdSpawn/ui/placement_type_ui/curve_placement_options.tscn" id="10_a4fbt"]
 [ext_resource type="Script" uid="uid://36sx4ie4o83d" path="res://addons/GdSpawn/ui/signal_routing.gd" id="10_dj6qx"]
+[ext_resource type="PackedScene" uid="uid://3nud1xccfo4u" path="res://addons/GdSpawn/ui/placement_type_ui/physics_placement_options.tscn" id="11_eef56"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ajnsn"]
 
@@ -302,7 +304,9 @@ spawn_node = NodePath("..")
 grid_scene = ExtResource("8_8seq1")
 placement_mode_to_ui_scene = Dictionary[int, PackedScene]({
 0: ExtResource("4_k2ook"),
-1: ExtResource("8_64fbb")
+1: ExtResource("8_64fbb"),
+2: ExtResource("10_a4fbt"),
+3: ExtResource("11_eef56")
 })
 
 [node name="SignalRouting" type="Node" parent="."]

@@ -26,7 +26,7 @@ class_name GdSpawnSpawnManager
 
 var current_grid: GdSpawnGrid
 
-enum GdSpawnPlacementMode {Plane, Surface}
+enum GdSpawnPlacementMode {Plane, Surface, Curve, Physics}
 
 var current_placement_mode: GdSpawnPlacementMode
 
@@ -113,6 +113,8 @@ func _ready() -> void:
 	signal_routing.GridTrasformChanged.connect(on_grid_transform_changed)
 	signal_routing.PluginDisabled.connect(on_plugin_disabled)
 
+	signal_routing.SpawnUnderNodeChanged.connect(on_spawn_under_node_changed)
+
 	if spawn_option_parent.get_child_count() > 0:
 		spawn_option_parent.get_child(0).queue_free()
 
@@ -154,6 +156,14 @@ func on_scene_change(scene_root):
 	change_spawn_node(scene_root)
 	add_or_update_grid(scene_root)
 	spawn_under_node_select.set_node(scene_root)
+
+
+func on_spawn_under_node_changed(node):
+	if not node:
+		return
+	change_spawn_node(node)
+	spawn_node_cache[EditorInterface.get_edited_scene_root()] = node
+	spawn_under_node_select.set_node(node)
 
 func on_spawn_node_selected(node):
 	change_spawn_node(node)

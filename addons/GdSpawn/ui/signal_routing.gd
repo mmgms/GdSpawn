@@ -11,6 +11,9 @@ signal ItemSelect(item: GdSpawnSceneLibraryItem)
 signal PluginDisabled()
 signal ProjectSettingsChanged()
 signal EditedSceneChanged(root)
+signal SceneSaved()
+
+signal SpawnUnderNodeChanged(node)
 
 
 signal GridTrasformChanged(transform: Transform3D)
