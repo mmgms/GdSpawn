@@ -97,6 +97,7 @@ func _can_drop_data(at_position, data):
 	
 func _drop_data(at_position, data):
 	var dirs: PackedStringArray = data["files"]
+	print(data)
 	add_assets_or_folders(dirs)
 
 

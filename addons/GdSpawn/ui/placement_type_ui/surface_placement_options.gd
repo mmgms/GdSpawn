@@ -26,6 +26,13 @@ func _ready() -> void:
 	populate_alignment_options()
 
 
+func on_enter():
+	pass
+
+func on_exit():
+	pass
+
+
 var root_to_terrain_3d_node_cache: Dictionary
 func on_scene_changed(root):
 	if root_to_terrain_3d_node_cache.has(root):

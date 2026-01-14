@@ -11,30 +11,30 @@ enum Axis {X, Y, Z}
 @export var spawn_chance: int = 1
 
 @export var up_axis: Axis = Axis.Y
+@export var invert_up_axis: bool = false
 
 @export var forward_axis: Axis = Axis.Z
+@export var invert_forward_axis: bool = false
 
 
 func get_up_axis() -> Vector3:
-	match up_axis:
-		Axis.Y:
-			return Vector3.UP
-		Axis.X:
-			return Vector3.RIGHT
-		Axis.Z:
-			return Vector3.BACK
-		_:
-			return Vector3.UP
-
+	return _get_axis(up_axis, invert_up_axis)
 
 
 func get_forward_axis() -> Vector3:
-	match forward_axis:
+	return _get_axis(forward_axis, invert_forward_axis)
+
+
+func _get_axis(axis_type: Axis, invert: bool):
+	var temp_axis
+	match axis_type:
 		Axis.Y:
-			return Vector3.UP
+			temp_axis = Vector3.UP
 		Axis.X:
-			return Vector3.RIGHT
+			temp_axis = Vector3.RIGHT
 		Axis.Z:
-			return Vector3.BACK
+			temp_axis = Vector3.BACK
 		_:
-			return Vector3.UP
+			temp_axis = Vector3.UP
+
+	return temp_axis if not invert else (- temp_axis)

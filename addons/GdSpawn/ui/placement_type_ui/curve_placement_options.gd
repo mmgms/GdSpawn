@@ -22,6 +22,15 @@ func _ready() -> void:
 	spawn_profile_parent.add_child(editor_property)
 
 
+func on_enter():
+	pass
+
+func on_exit():
+	pass
+
 
 func should_show_grid():
 	return false
+
+func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLibraryItem, snap_step, snap_enable):
+	return {}

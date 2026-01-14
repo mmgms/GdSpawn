@@ -1,14 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://3nud1xccfo4u"]
+[gd_scene load_steps=3 format=3 uid="uid://3nud1xccfo4u"]
 
 [ext_resource type="Script" uid="uid://bpwfu5yuliscu" path="res://addons/GdSpawn/ui/placement_type_ui/physics_placement_options.gd" id="1_d2xrl"]
+[ext_resource type="PackedScene" uid="uid://dsxl4qi8fp1c" path="res://addons/GdSpawn/scenes/GdSpawnDropCircle.tscn" id="2_n74ay"]
 
-[node name="PhysicsPlacementOptions" type="PanelContainer"]
+[node name="PhysicsPlacementOptions" type="PanelContainer" node_paths=PackedStringArray("drop_radius_spinbox", "drop_height_spinbox", "drop_interval_spinbox", "randomize_rotation_button", "out_of_bound_y_spinbox", "random_spawn_profile_parent", "stop_sim_button")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_d2xrl")
+drop_radius_spinbox = NodePath("VBoxContainer/HBoxContainer2/DropRadiusSpinBox")
+drop_height_spinbox = NodePath("VBoxContainer/HBoxContainer3/DropHeightSpinBox")
+drop_interval_spinbox = NodePath("VBoxContainer/HBoxContainer4/DropIntervalSpinBox")
+randomize_rotation_button = NodePath("VBoxContainer/HBoxContainer5/RandomRotationCheckBox")
+out_of_bound_y_spinbox = NodePath("VBoxContainer/HBoxContainer6/OutOfBoundsSpinBox")
+random_spawn_profile_parent = NodePath("VBoxContainer/HBoxContainer/SpawnProfileParent")
+drop_gizmo_scene = ExtResource("2_n74ay")
+stop_sim_button = NodePath("VBoxContainer/StopSimButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
@@ -18,8 +27,84 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Random Spawn Profile:"
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+[node name="SpawnProfileParent" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Drop Radius:"
+
+[node name="DropRadiusSpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.1
+value = 2.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Drop Height:"
+
+[node name="DropHeightSpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.1
+value = 5.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Drop Interval:"
+
+[node name="DropIntervalSpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+step = 0.01
+value = 0.05
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Randomize Rotation:"
+
+[node name="RandomRotationCheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 2
+button_pressed = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Out of Bounds y:"
+
+[node name="OutOfBoundsSpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -100.0
+max_value = 0.0
+step = 0.1
+value = -10.0
+
+[node name="StopSimButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Stop Simulation"

@@ -82,8 +82,6 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 			main_dock.signal_routing.ItemSelect.emit(main_dock.signal_routing.last_item_selected)
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
-	if main_dock.signal_routing.current_item_selected == null:
-		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var ctrl_pressed = false
@@ -98,15 +96,24 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
-		main_dock.spawn_manager.on_press_start()
-		return EditorPlugin.AFTER_GUI_INPUT_STOP
+		var should_stop = main_dock.spawn_manager.on_press_start()
+		if should_stop:
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_released():
 		var alt_pressed = false
 		if Input.is_key_pressed(KEY_ALT):
 			alt_pressed = true
-		main_dock.spawn_manager.on_confirm(alt_pressed)
-		return EditorPlugin.AFTER_GUI_INPUT_STOP
+		var should_stop = main_dock.spawn_manager.on_confirm(alt_pressed)
+		if should_stop:
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+	if main_dock.signal_routing.current_item_selected == null:
+		return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 	if event is InputEventKey and event.is_pressed():
 		if event.keycode == KEY_ESCAPE:# deselect

@@ -171,11 +171,15 @@ func on_spawn_node_selected(node):
 
 
 func on_spawn_option_selected(idx):
+	if current_placement_mode_manager:
+		current_placement_mode_manager.on_exit()
 	current_placement_mode = idx
 
 	for child in spawn_option_parent.get_children():
 		child.hide()
 	current_placement_mode_manager = placement_mode_to_ui[current_placement_mode]
+
+	current_placement_mode_manager.on_enter()
 	current_placement_mode_manager.show()
 	if not current_placement_mode_manager.should_show_grid():
 		hide_grid()
@@ -195,6 +199,10 @@ func on_selected_item_changed(item: GdSpawnSceneLibraryItem):
 	current_selected_item = item
 	if preview_scene:
 		preview_scene.queue_free()
+
+	if current_placement_mode == GdSpawnPlacementMode.Physics or current_placement_mode == GdSpawnPlacementMode.Curve:
+		hide_grid()
+		return
 
 	if not item:
 		hide_grid()
@@ -229,6 +237,13 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 	var snap_enabled = current_snap_info.enabled
 	if ctrl_pressed:
 		snap_enabled = false
+
+	if current_placement_mode == GdSpawnPlacementMode.Physics:
+		current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
+		return
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return
 
 	if not preview_scene:
 		return
@@ -288,11 +303,22 @@ func on_item_basis_set(item: GdSpawnSceneLibraryItem):
 
 
 func on_press_start():
+	if current_placement_mode == GdSpawnPlacementMode.Physics:
+		current_placement_mode_manager.on_press()
+		return true
+
+	if not preview_scene:
+		return false
+
 	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
 		is_moving_plane = false
 		if current_grid:
 			current_grid.hide_line()
-		return
+		return true
+
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return false
 
 	if current_snap_info.enabled and current_placement_mode == GdSpawnPlacementMode.Plane:
 		current_placement_state = PlacementState.Paint
@@ -301,15 +327,28 @@ func on_press_start():
 		spawn_node.add_child(instanced_scene, true)
 		instanced_scene.global_transform = preview_scene.global_transform
 		painted_instances_transform_history.append(instanced_scene)
+		return true
 
 	else:
 		current_placement_state = PlacementState.TransformLocalY
 		mouse_pos_on_rotate_y_placement = last_mouse_pos
 		preview_scene_transform_on_rotate_y_placement = preview_scene.global_transform
+		return true
 
 func on_confirm(alt_pressed):
 	if not spawn_node:
-		return
+		return false
+
+	if current_placement_mode == GdSpawnPlacementMode.Physics:
+		current_placement_mode_manager.on_release()
+		return true
+
+	if not preview_scene:
+		return false
+
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return false
 
 	if current_placement_state == PlacementState.TransformLocalY: 
 
@@ -329,6 +368,8 @@ func on_confirm(alt_pressed):
 
 
 		current_placement_state = PlacementState.Normal
+
+		return true
 
 	else:
 		var action = GdSpawnAddScenesAction.new()
@@ -352,10 +393,19 @@ func on_confirm(alt_pressed):
 
 		current_placement_state = PlacementState.Normal
 
+		return true
+
 
 
 
 func on_cancel():
+
+	if current_placement_mode == GdSpawnPlacementMode.Physics:
+		return
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return
+
 	if current_placement_state != PlacementState.Normal:
 		return
 

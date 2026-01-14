@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsxl4qi8fp1c"]
+
+[ext_resource type="Script" uid="uid://cdhtsos2ciddg" path="res://addons/GdSpawn/scenes/gd_spawn_drop_circle.gd" id="1_2uur5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7bupg"]
+shading_mode = 0
+albedo_color = Color(0, 1, 0, 1)
+
+[node name="GdSpawnDropCircle" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_7bupg")
+cast_shadow = 0
+script = ExtResource("1_2uur5")

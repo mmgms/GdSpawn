@@ -49,6 +49,13 @@ func _ready() -> void:
 func should_show_grid():
 	return true
 
+
+func on_enter():
+	pass
+
+func on_exit():
+	pass
+
 func on_revert_rotation():
 	rotation_spin_box.value = 0.0
 	on_grid_rotation_changed(0.0)

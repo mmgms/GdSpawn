@@ -165,3 +165,14 @@ func _get_preview_camera_position(library: GdSpawnSceneLibrary, library_item: Gd
 
 
 	return position
+
+
+
+func _get_drag_data(at_position: Vector2) -> Variant:
+	var data = {}
+
+	data.type = "files"
+	data.files = [library_item.scene.resource_path]
+	data.from = self
+
+	return data
