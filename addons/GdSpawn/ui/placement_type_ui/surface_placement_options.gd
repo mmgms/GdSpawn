@@ -97,8 +97,8 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 	var local_object_transform = Transform3D()
 	local_object_transform.basis = library_item.item_placement_basis
 
-	if result.is_empty():
-		result = get_terrain3d_intersection(camera, mouse_pos)
+	# if result.is_empty():
+	# 	result = get_terrain3d_intersection(camera, mouse_pos)
 
 	if result.is_empty():
 		res["object_transform"] = local_object_transform
@@ -121,25 +121,25 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 	return res
 
 
-func get_terrain3d_intersection(camera, mouse_position):
-	var res = {}
+# func get_terrain3d_intersection(camera, mouse_position):
+# 	var res = {}
 
-	if not terrain_3d_node:
-		return res
+# 	if not terrain_3d_node:
+# 		return res
 
-	if not terrain_3d_node.has_method("get_intersection"):
-		return res
+# 	if not terrain_3d_node.has_method("get_intersection"):
+# 		return res
 
-	var from = camera.project_ray_origin(mouse_position)
-	var to = from + camera.project_ray_normal(mouse_position) * 1000
-	var direction = (to - from).normalized()
-	var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, false)
-	var data = terrain_3d_node.data
-	var normal = data.get_normal(hit_position)
-	if is_nan(normal.x) or is_nan(normal.z) or is_nan(normal.y):
-		return res
+# 	var from = camera.project_ray_origin(mouse_position)
+# 	var to = from + camera.project_ray_normal(mouse_position) * 1000
+# 	var direction = (to - from).normalized()
+# 	var hit_position: Vector3 = terrain_3d_node.get_intersection(from, direction, false)
+# 	var data = terrain_3d_node.data
+# 	var normal = data.get_normal(hit_position)
+# 	if is_nan(normal.x) or is_nan(normal.z) or is_nan(normal.y):
+# 		return res
 
-	res.position = hit_position
-	res.normal = normal
+# 	res.position = hit_position
+# 	res.normal = normal
 
-	return res
+# 	return res

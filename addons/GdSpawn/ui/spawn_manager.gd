@@ -54,6 +54,7 @@ class GdSpawnSnapInfo:
 
 class GdSpawnAddScenesAction:
 	var scene: PackedScene
+	var scenes: Array[PackedScene]
 	var transforms: Array
 	var parent: Node3D
 	var owner: Node
@@ -65,8 +66,14 @@ class GdSpawnAddScenesAction:
 		added_instances = []
 		if not parent:
 			return
-		for transform in transforms:
-			var instance = scene.instantiate()
+
+		for idx in transforms.size():
+			var transform = transforms[idx]
+			var instance
+			if not scenes.is_empty():
+				instance = scenes[idx].instantiate()
+			else:
+				instance = scene.instantiate()
 			parent.add_child(instance, true)
 			instance.global_transform = transform
 			instance.owner = owner
@@ -122,6 +129,8 @@ func _ready() -> void:
 		var ui_instance = placement_mode_to_ui_scene[placement_mode].instantiate()
 		spawn_option_parent.add_child(ui_instance)
 		ui_instance.signal_routing = signal_routing
+		if ui_instance.has_signal("add_scene_request"):
+			ui_instance.add_scene_request.connect(on_add_scene_request)
 		placement_mode_to_ui[placement_mode] = ui_instance
 	
 	on_spawn_option_selected(0)
@@ -394,6 +403,14 @@ func on_confirm(alt_pressed):
 		current_placement_state = PlacementState.Normal
 
 		return true
+
+func on_add_scene_request(action: GdSpawnAddScenesAction):
+	action.parent = spawn_node
+
+	undo_redo.create_action("Scene Added", 0, self)
+	undo_redo.add_do_method(action, "do")
+	undo_redo.add_undo_method(action, "undo")
+	undo_redo.commit_action()
 
 
 

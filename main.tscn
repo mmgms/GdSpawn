@@ -1,9 +1,38 @@
-[gd_scene load_steps=12 format=3 uid="uid://brjmlw33t6bld"]
+[gd_scene load_steps=21 format=3 uid="uid://brjmlw33t6bld"]
 
+[ext_resource type="Script" uid="uid://b121axrbqlcpk" path="res://addons/GdSpawn/scripts/custom_nodes/gd_spawn.gd" id="1_lquwl"]
 [ext_resource type="Script" uid="uid://b73vfhkn6shtb" path="res://addons/GdSpawn/scripts/custom_nodes/layer.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bl1jskfkvpl8h" path="res://addons/GdSpawn/scripts/spawn_profile_resources/random_spawn_profile_element.gd" id="2_272bh"]
 [ext_resource type="PackedScene" uid="uid://d4mj0o6m30s0t" path="res://scenes/suburban_modular/ExteriorWindowLarge.tscn" id="2_lquwl"]
+[ext_resource type="Script" uid="uid://dyrdpr1ikadrg" path="res://addons/GdSpawn/scripts/spawn_profile_resources/random_spawn_profile.gd" id="3_5vw27"]
 [ext_resource type="PackedScene" uid="uid://djgicjdvb4xif" path="res://scenes/suburban_modular/InnerFloor.tscn" id="4_getpj"]
+[ext_resource type="PackedScene" uid="uid://dbqcxixm17iik" path="res://scenes/test/BoxTest.tscn" id="4_kek77"]
+[ext_resource type="PackedScene" uid="uid://cl4rxgrwni3hw" path="res://scenes/test/CilinderTest.tscn" id="5_4c57u"]
 [ext_resource type="PackedScene" uid="uid://dna1hd47b3y8u" path="res://scenes/test/ExampleTerrain.tscn" id="12_dg77c"]
+
+[sub_resource type="Resource" id="Resource_kek77"]
+script = ExtResource("3_5vw27")
+elements = Array[ExtResource("2_272bh")]([])
+metadata/_custom_type_script = "uid://dyrdpr1ikadrg"
+
+[sub_resource type="Resource" id="Resource_efxa6"]
+script = ExtResource("2_272bh")
+scene = ExtResource("4_kek77")
+used = true
+spawn_chance = 1
+metadata/_custom_type_script = "uid://bl1jskfkvpl8h"
+
+[sub_resource type="Resource" id="Resource_dg77c"]
+script = ExtResource("2_272bh")
+scene = ExtResource("5_4c57u")
+used = true
+spawn_chance = 1
+metadata/_custom_type_script = "uid://bl1jskfkvpl8h"
+
+[sub_resource type="Resource" id="Resource_4c57u"]
+script = ExtResource("3_5vw27")
+elements = Array[ExtResource("2_272bh")]([SubResource("Resource_efxa6"), SubResource("Resource_dg77c")])
+metadata/_custom_type_script = "uid://dyrdpr1ikadrg"
 
 [sub_resource type="Gradient" id="Gradient_0xm2m"]
 offsets = PackedFloat32Array(0.2, 1)
@@ -70,6 +99,12 @@ lod0_range = 128.0
 mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_272bh")])
 
 [node name="Main" type="Node3D"]
+
+[node name="GdSpawn" type="Node3D" parent="."]
+script = ExtResource("1_lquwl")
+curve_spawn_profile = SubResource("Resource_kek77")
+random_spawn_profile = SubResource("Resource_4c57u")
+metadata/_custom_type_script = "uid://b121axrbqlcpk"
 
 [node name="Terrain3D" type="Terrain3D" parent="."]
 data_directory = "res://resources/terrains"

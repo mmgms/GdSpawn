@@ -1,5 +1,6 @@
 @tool
 extends PanelContainer
+class_name GdSpawnPhysicsPlacementOptions
 
 @export var drop_radius_spinbox: SpinBox
 @export var drop_height_spinbox: SpinBox
@@ -13,28 +14,176 @@ extends PanelContainer
 
 @export var stop_sim_button: Button
 
-@export var random_spawn_profile: GdSpawnRandomSpawnProfile
+signal add_scene_request(action: GdSpawnSpawnManager.GdSpawnAddScenesAction)
+var random_spawn_profile: GdSpawnRandomSpawnProfile
+
+class ShapeInfo:
+	var shape: ConvexPolygonShape3D
+	var transform: Transform3D
+
+class GdSpawnPhysicsSpawnJob:
+	var node: Node
+	var gizmo: Node3D
+	var current_simulated_rigid_bodies: Array
+
+	var max_sim_time = 10.0
+	var last_spawn_timestamp = 0.0
+	var first_timestamp = 0.0
+
+
+	var drop_height = 0.0
+	var drop_radius = 0.0
+	var drop_interval = 0.0
+	var out_of_bounds_y = -10
+	var min_y
+
+	var randomize_rotation = true
+	var weights: Array
+	var scenes: Array
+
+	var shapes_cache: Dictionary
+
+	var rng: RandomNumberGenerator
+
+	var force_stopped = false
+	var stopped = false
+	var stop_scene_spawn = false
+
+	var time_passed = 0.0
+
+	func start():
+		rng = RandomNumberGenerator.new()
+		first_timestamp = 0.0
+		last_spawn_timestamp = 0.0
+		time_passed = 0.0
+		min_y = gizmo.global_position.y + out_of_bounds_y
+		spawn_new_scene()
+		while not stopped:
+			await update()
+
+		if stopped:
+			var action = GdSpawnSpawnManager.GdSpawnAddScenesAction.new()
+			for rb in current_simulated_rigid_bodies:
+				var packed_scene = rb.get_meta("scene")
+				action.scenes.append(packed_scene)
+				action.transforms.append(rb.global_transform)
+				rb.queue_free()
+			action.owner = EditorInterface.get_edited_scene_root()
+			node.add_scene_request.emit(action)
+		
+
+	func update():
+		await node.get_tree().physics_frame
+		if force_stopped:
+			stopped = true
+			return
+
+		time_passed += node.get_physics_process_delta_time()
+		if not stop_scene_spawn:
+			if time_passed - last_spawn_timestamp > drop_interval:
+				last_spawn_timestamp = time_passed
+				spawn_new_scene()
+
+		stopped = true
+		for rb in current_simulated_rigid_bodies:
+			if not rb.sleeping:
+				stopped = false
+				break
+
+		var rb_to_keep = []
+		for rb in current_simulated_rigid_bodies:
+			if rb.global_position.y > min_y:
+				rb_to_keep.append(rb)
+			else:
+				rb.queue_free()
+
+		current_simulated_rigid_bodies = rb_to_keep
+		
+		if current_simulated_rigid_bodies.size() <= 0:
+			stopped = true
+		
+		if time_passed - first_timestamp > max_sim_time:
+			stopped = true
+
+	func spawn_new_scene():
+		var scene_idx = rng.rand_weighted(weights)
+		var sampled_scene = scenes[scene_idx]
+
+		#generate rigid body collision
+		var scene_root =  EditorInterface.get_edited_scene_root()
+		var instanced_scene = sampled_scene.instantiate()
+
+		scene_root.add_child(instanced_scene)
+
+		var rigid_body = RigidBody3D.new()
+		scene_root.add_child(rigid_body)
+
+		var shapes = []
+		if not shapes_cache.has(sampled_scene):
+			_collect_collisions(instanced_scene, shapes)
+			shapes_cache[sampled_scene] = shapes
+		else:
+			shapes = shapes_cache[sampled_scene]
+		
+		for shape_info in shapes:
+			var collision_shape = CollisionShape3D.new()
+			rigid_body.add_child(collision_shape)
+			collision_shape.shape = shape_info.shape
+			collision_shape.global_transform = shape_info.transform
+
+		instanced_scene.reparent(rigid_body)
+
+		#reposition rigid body
+		var center = gizmo.global_position + drop_height * Vector3.UP
+		var angle = randf_range(0, 2 * PI)
+		var radius = randf_range(0, drop_radius)
+		var random_pos = center + Vector3(radius * cos(angle), 0, radius * sin(angle))
+		rigid_body.global_position = random_pos
+		if randomize_rotation:
+			rigid_body.global_basis = GdSpawnUtilities.random_rotation()
+
+		current_simulated_rigid_bodies.append(rigid_body)
+		rigid_body.set_meta("scene", sampled_scene)
+
+	func _collect_collisions(root: Node, shapes) -> void:
+		
+		# Only process MeshInstance3D nodes with a mesh
+		if root is MeshInstance3D and root.mesh:
+			var mesh_instance := root as MeshInstance3D
+
+			# Generate convex shape from mesh
+			var shape = mesh_instance.mesh.create_convex_shape()
+
+			var coll_info = GdSpawnPhysicsPlacementOptions.ShapeInfo.new()
+			coll_info.shape = shape
+			coll_info.transform = mesh_instance.global_transform
+
+			shapes.append(coll_info)
+
+		if root is RigidBody3D or root is StaticBody3D:
+	
+			for coll_shape in root.get_children():
+				if coll_shape is CollisionShape3D:
+					var coll_info = GdSpawnPhysicsPlacementOptions.ShapeInfo.new()
+					coll_info.shape = coll_shape.shape
+					coll_info.transform = coll_shape.global_transform
+					shapes.append(coll_info)
+
+		for child in root.get_children():
+			# Recurse first
+			_collect_collisions(child, shapes)
+
 
 
 var signal_routing: GdSpawnSignalRouting:
 	set(value):
 		signal_routing = value
 		signal_routing.EditedSceneChanged.connect(update_gizmo)
-		signal_routing.PluginDisabled.connect(func(): if current_drop_gizmo: current_drop_gizmo.queue_free())
+		signal_routing.PluginDisabled.connect(on_plugin_disabled)
 
 var current_drop_gizmo: GdSpawnDropCircle
 
 func _ready() -> void:
-	var props = get_property_list()
-	var prop_to_edit
-	for prop in props:
-		if prop.name == "random_spawn_profile":
-			prop_to_edit = prop
-			break
-
-	var editor_property = EditorInspector.instantiate_property_editor(self, \
-		prop_to_edit.type, "random_spawn_profile", prop_to_edit.hint, prop_to_edit.hint_string, prop_to_edit.usage)
-	random_spawn_profile_parent.add_child(editor_property)
 
 	drop_height_spinbox.value_changed.connect(func(_x): update_gizmo_props())
 	drop_radius_spinbox.value_changed.connect(func(_x): update_gizmo_props())
@@ -43,16 +192,49 @@ func _ready() -> void:
 
 	stop_sim_button.pressed.connect(on_stop_sim_button)
 
+
+
+func _get_all_rigid_bodies_3d_in_children(node: Node, array : Array):
+	if node is RigidBody3D:
+		array.append(node)
+	for child in node.get_children():
+		_get_all_rigid_bodies_3d_in_children(child,array)
+
+var all_rbs = []
+var freeze_flags: Array[bool] = []
 func on_enter():
+	all_rbs = []
+	_get_all_rigid_bodies_3d_in_children(EditorInterface.get_edited_scene_root(), all_rbs)
+	for rb in all_rbs:
+		if rb:
+			freeze_flags.append(rb.freeze)
+			rb.freeze = true
+
 	current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
+	PhysicsServer3D.set_active(true)
 
 
 func on_exit():
+	restore_rbs()
 	current_drop_gizmo.hide_drop_circle()
+	PhysicsServer3D.set_active(false)
 
+func restore_rbs():
+	for i in all_rbs.size():
+		if all_rbs[i]:
+			all_rbs[i].freeze = freeze_flags[i]
+
+func on_plugin_disabled():
+	if current_drop_gizmo: 
+		current_drop_gizmo.queue_free()
+	PhysicsServer3D.set_active(false)
+	restore_rbs()
 
 func on_stop_sim_button():
-	pass
+	if spawn_jobs.size() == 0:
+		return
+
+	spawn_jobs[-1].force_stopped = true
 
 
 func update_gizmo(scene_root):
@@ -88,12 +270,80 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 
 	current_drop_gizmo.move_to(result.position)
 
+var current_spawn_job: GdSpawnPhysicsSpawnJob
+var spawn_jobs: Array
 
 func on_press():
+	update_random_spawn_profile()
 	if not random_spawn_profile:
 		return
-	return {}
 
+	#pick scene
+	var res = _get_scenes_and_weights()
+	if res.is_empty():
+		return
+
+	var weights = res.weights
+	var scenes = res.scenes
+
+	var spawn_job = GdSpawnPhysicsSpawnJob.new()
+
+	spawn_job.node = self
+	spawn_job.gizmo = current_drop_gizmo
+	spawn_job.weights = res.weights
+	spawn_job.scenes = res.scenes
+	spawn_job.drop_interval = drop_interval_spinbox.value
+	spawn_job.drop_radius = drop_radius_spinbox.value
+	spawn_job.drop_height = drop_height_spinbox.value
+	spawn_job.randomize_rotation = randomize_rotation_button.button_pressed
+	spawn_job.out_of_bounds_y = out_of_bound_y_spinbox.value
+
+	spawn_job.start()
+
+	spawn_jobs.append(spawn_job)
+
+	
 
 func on_release():
-	return {}
+	if spawn_jobs.size() == 0:
+		return
+
+	spawn_jobs[-1].stop_scene_spawn = true
+	return 
+
+
+func update_random_spawn_profile():
+	if not random_spawn_profile:
+		var scene_root = EditorInterface.get_edited_scene_root()
+		var matches = scene_root.find_children("*", "GdSpawn", false, true) 
+		if matches.size() == 0:
+			return
+		var gdspawn_node = matches[0] as GdSpawn
+		random_spawn_profile = gdspawn_node.random_spawn_profile
+
+
+
+func _get_scenes_and_weights():
+	var weights = []
+	var scenes = []
+	var used_elements = []
+
+	for element in random_spawn_profile.elements:
+		if element.used and element.scene:
+			weights.append(element.spawn_chance)
+			scenes.append(element.scene)
+			used_elements.append(element)
+
+	var res = {}
+
+	if weights.is_empty():
+		return null
+
+	res.weights = weights
+	res.scenes = scenes
+	res.elements = used_elements
+	return res
+
+
+
+

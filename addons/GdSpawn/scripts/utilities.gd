@@ -38,3 +38,21 @@ static func disable_collisions_recursive(root: Node) -> void:
 
 	for child in root.get_children():
 		disable_collisions_recursive(child)
+
+
+static func random_rotation() -> Basis:
+	var u1 = randf()
+	var u2 = randf()
+	var u3 = randf()
+
+	var sqrt1_minus_u1 = sqrt(1.0 - u1)
+	var sqrt_u1 = sqrt(u1)
+
+	var q = Quaternion(
+		sqrt1_minus_u1 * sin(TAU * u2),
+		sqrt1_minus_u1 * cos(TAU * u2),
+		sqrt_u1 * sin(TAU * u3),
+		sqrt_u1 * cos(TAU * u3)
+	)
+
+	return Basis(q)

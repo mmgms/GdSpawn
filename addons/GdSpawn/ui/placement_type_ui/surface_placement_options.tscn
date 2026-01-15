@@ -38,8 +38,23 @@ text = "Alignment Direction"
 
 [node name="AlignmentDirectionSelect" type="OptionButton" parent="VBoxContainer/VBoxContainer"]
 layout_mode = 2
+selected = 0
+item_count = 6
+popup/item_0/text = "+Y (Up)"
+popup/item_0/id = 0
+popup/item_1/text = "+Z (Forward)"
+popup/item_1/id = 1
+popup/item_2/text = "+X (Right)"
+popup/item_2/id = 2
+popup/item_3/text = "-Y (Down)"
+popup/item_3/id = 3
+popup/item_4/text = "-Z (Back)"
+popup/item_4/id = 4
+popup/item_5/text = "-X (Left)"
+popup/item_5/id = 5
 
 [node name="Terrain3d" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/Terrain3d"]

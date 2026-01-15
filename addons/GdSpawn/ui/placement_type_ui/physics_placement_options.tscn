@@ -23,6 +23,7 @@ stop_sim_button = NodePath("VBoxContainer/StopSimButton")
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
@@ -73,6 +74,7 @@ text = "Drop Interval:"
 [node name="DropIntervalSpinBox" type="SpinBox" parent="VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
+min_value = 0.01
 step = 0.01
 value = 0.05
 
