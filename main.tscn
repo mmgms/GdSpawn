@@ -127,6 +127,7 @@ mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_272bh")])
 
 [node name="GdSpawn" type="Node3D" parent="."]
 script = ExtResource("1_lquwl")
+surface_placement_collision_mask = 4294967294
 curve_spawn_profile = SubResource("Resource_074og")
 curve_spawn_settings = SubResource("Resource_vivmo")
 random_spawn_profile = SubResource("Resource_4c57u")

@@ -112,6 +112,19 @@ func add_all_settings():
 	_add_setting(GdSpawnConstants.FLIP_Z, flipz, TYPE_OBJECT)
 
 
+	var select_yz := InputEventKey.new()
+	select_yz.keycode = KEY_Z
+	_add_setting(GdSpawnConstants.SELECT_YZ_PLANE, select_yz, TYPE_OBJECT)
+
+	var select_xz := InputEventKey.new()
+	select_xz.keycode = KEY_X
+	_add_setting(GdSpawnConstants.SELECT_XZ_PLANE, select_xz, TYPE_OBJECT)
+	
+	var select_xy := InputEventKey.new()
+	select_xy.keycode = KEY_C
+	_add_setting(GdSpawnConstants.SELECT_XY_PLANE, select_xy, TYPE_OBJECT)
+
+
 func _add_setting(property_name: String, default: Variant, type = -1, hint = -1, hint_string = ""):
 	
 	if not ProjectSettings.has_setting(property_name):

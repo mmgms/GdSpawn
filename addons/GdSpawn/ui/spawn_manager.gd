@@ -230,6 +230,13 @@ func on_spawn_node_selected(node):
 func on_spawn_option_selected(idx):
 	if current_placement_mode_manager:
 		current_placement_mode_manager.on_exit()
+
+	if (current_placement_mode == GdSpawnPlacementMode.Plane or current_placement_mode == GdSpawnPlacementMode.Surface)\
+		 and idx > GdSpawnPlacementMode.Surface:
+			if preview_scene:
+				signal_routing.ItemSelect.emit(null)
+				if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
+					_cancel_move_plane()
 	current_placement_mode = idx
 
 	for child in spawn_option_parent.get_children():

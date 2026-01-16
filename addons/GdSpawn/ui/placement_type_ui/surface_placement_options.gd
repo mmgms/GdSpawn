@@ -19,11 +19,14 @@ var signal_routing: GdSpawnSignalRouting:
 
 var terrain_3d_node: Node = null
 
+var current_gd_spawn_node: GdSpawn = null
+
 func _ready() -> void:
 	alignment_options_select.item_selected.connect(on_aligment_option_selected)
 	align_to_surface_normal_check_box.toggled.connect(func(toggled_on): should_align_to_surface_normal = toggled_on)
 	terrain_3d_node_select.node_changed.connect(on_terrain3d_node_changed)
 	populate_alignment_options()
+	update_gd_spawn_node()
 
 
 func on_enter():
@@ -35,12 +38,23 @@ func on_exit():
 
 var root_to_terrain_3d_node_cache: Dictionary
 func on_scene_changed(root):
+	update_gd_spawn_node()
 	if root_to_terrain_3d_node_cache.has(root):
 		terrain_3d_node = root_to_terrain_3d_node_cache[root]
 		terrain_3d_node_select.set_node(terrain_3d_node)
 		return
 
 	terrain_3d_node_select.set_node(null)
+
+
+func update_gd_spawn_node():
+	current_gd_spawn_node = null
+	var scene_root = EditorInterface.get_edited_scene_root()
+	var matches = scene_root.find_children("*", "GdSpawn", false, true) 
+	if matches.size() == 0:
+		return
+	var gdspawn_node = matches[0] as GdSpawn
+	current_gd_spawn_node = gdspawn_node
 	
 
 func on_terrain3d_node_changed(node):
@@ -87,9 +101,13 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 	var space_state = camera.get_world_3d().direct_space_state
 
 	var params = PhysicsRayQueryParameters3D.new()
+	var coll_mask = GdSpawnConstants.DEFAULT_COLLISION_MASK
+	if current_gd_spawn_node:
+		coll_mask = current_gd_spawn_node.surface_placement_collision_mask
+
 	params.from = ray_origin
 	params.to = ray_origin + ray_dir * 4096
-	params.collision_mask = 0b1
+	params.collision_mask = coll_mask
 	var result = space_state.intersect_ray(params)
 
 	var res = {}

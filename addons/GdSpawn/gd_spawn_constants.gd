@@ -24,9 +24,15 @@ const ROTATE_90_X = BASE_SHORTCUTS % "Rotate 90 degrees around X"
 const ROTATE_90_Y = BASE_SHORTCUTS % "Rotate 90 degrees around Y"
 const ROTATE_90_Z = BASE_SHORTCUTS % "Rotate 90 degrees around Z"
 
+const SELECT_YZ_PLANE = BASE_SHORTCUTS % "Select YZ Plane"
+const SELECT_XZ_PLANE = BASE_SHORTCUTS % "Select XZ Plane"
+const SELECT_XY_PLANE = BASE_SHORTCUTS % "Select XY Plane"
+
 const FLIP_X = BASE_SHORTCUTS % "Flip on X axis"
 const FLIP_Y = BASE_SHORTCUTS % "Flip on Y axis"
 const FLIP_Z = BASE_SHORTCUTS % "Flip on Z axis"
 
+
+const DEFAULT_COLLISION_MASK: int = 0xFFFFFFFF 
 
 

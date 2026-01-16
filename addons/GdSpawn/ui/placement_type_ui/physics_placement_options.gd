@@ -46,6 +46,8 @@ class GdSpawnPhysicsSpawnJob:
 
 	var rng: RandomNumberGenerator
 
+	var collision_mask: int
+
 	var force_stopped = false
 	var force_erase = false
 	var stopped = false
@@ -130,6 +132,7 @@ class GdSpawnPhysicsSpawnJob:
 		scene_root.add_child(instanced_scene)
 
 		var rigid_body = RigidBody3D.new()
+		rigid_body.collision_mask = collision_mask
 		scene_root.add_child(rigid_body)
 
 		var shapes = []
@@ -360,6 +363,7 @@ func on_press():
 	spawn_job.drop_height = drop_height_spinbox.value
 	spawn_job.randomize_rotation = randomize_rotation_button.button_pressed
 	spawn_job.out_of_bounds_y = out_of_bound_y_spinbox.value
+	spawn_job.collision_mask = current_gd_spawn_node.physics_placement_collision_mask
 
 	spawn_job.start()
 
@@ -375,15 +379,18 @@ func on_release():
 	spawn_jobs[-1].stop_scene_spawn = true
 	return true
 
+var current_gd_spawn_node: GdSpawn = null
 
 func update_random_spawn_profile():
-	if not random_spawn_profile:
-		var scene_root = EditorInterface.get_edited_scene_root()
-		var matches = scene_root.find_children("*", "GdSpawn", false, true) 
-		if matches.size() == 0:
-			return
-		var gdspawn_node = matches[0] as GdSpawn
-		random_spawn_profile = gdspawn_node.random_spawn_profile
+	current_gd_spawn_node = null
+	random_spawn_profile = null
+	var scene_root = EditorInterface.get_edited_scene_root()
+	var matches = scene_root.find_children("*", "GdSpawn", false, true) 
+	if matches.size() == 0:
+		return
+	var gdspawn_node = matches[0] as GdSpawn
+	random_spawn_profile = gdspawn_node.random_spawn_profile
+	current_gd_spawn_node = gdspawn_node
 
 
 
