@@ -202,6 +202,7 @@ func on_scene_change(scene_root):
 		change_spawn_node(spawn_node_cache[scene_root])
 		add_or_update_grid(scene_root)
 		spawn_under_node_select.set_node(spawn_node_cache[scene_root])
+		hide_grid()
 		return
 
 	if not scene_root is Node3D:
