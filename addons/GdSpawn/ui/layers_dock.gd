@@ -22,7 +22,6 @@ class_name GdSpawnLayersDock
 @export var trees_parent: Control
 
 
-var trees_cache: Dictionary
 var current_tree: Tree
 
 enum ButttonIds {Visibility, Delete}
@@ -43,6 +42,7 @@ func _ready() -> void:
 
 	add_layer_button.pressed.connect(on_add_layer)
 	signal_routing.EditedSceneChanged.connect(on_scene_changed)
+	signal_routing.SceneSaved.connect(on_scene_saved)
 	on_scene_changed(EditorInterface.get_edited_scene_root())
 
 	batch_hide_button.pressed.connect(func (): on_batch_set_visibility_button(false))
@@ -149,16 +149,16 @@ func on_batch_delete():
 	return
 
 func on_scene_changed(scene_root):
+
+	for child in trees_parent.get_children():
+		child.queue_free()
+
 	if scene_root == null:
 		return
-	if trees_cache.has(scene_root):
-		current_tree.hide()
-		trees_cache[scene_root].show()
-		current_tree = trees_cache[scene_root]
+
+	if not scene_root is Node3D:
 		return
 
-	if current_tree:
-		current_tree.hide()
 
 	var tree = Tree.new()
 	tree.select_mode = Tree.SELECT_MULTI
@@ -168,7 +168,11 @@ func on_scene_changed(scene_root):
 	trees_parent.add_child(tree)
 	tree.show()
 	current_tree = tree
-	trees_cache[scene_root] = tree
+
+func on_scene_saved(scene_file):
+	var scene_root = EditorInterface.get_edited_scene_root()
+	if scene_root.scene_file_path == scene_file:
+		on_scene_changed(scene_root)
 	
 
 func on_add_layer():

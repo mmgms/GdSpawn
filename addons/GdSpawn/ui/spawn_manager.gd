@@ -298,6 +298,9 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 	if ctrl_pressed:
 		snap_enabled = false
 
+	if not spawn_node:
+		return false
+		
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
 		current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
 		return true
@@ -365,6 +368,8 @@ func on_item_basis_set(item: GdSpawnSceneLibraryItem):
 
 
 func on_press_start():
+	if not spawn_node:
+		return false
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
 		var consume_event = current_placement_mode_manager.on_press()
 		return consume_event

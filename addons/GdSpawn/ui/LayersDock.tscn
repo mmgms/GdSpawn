@@ -85,26 +85,32 @@ layout_mode = 2
 
 [node name="ShowButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Show Selected Layers"
 icon = SubResource("Texture2D_rehk0")
 
 [node name="HideButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Hide Selected Layers"
 icon = SubResource("Texture2D_ckm12")
 
 [node name="DeleteButton" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Delete Selected Layers (Children are not deleted)"
 icon = SubResource("Texture2D_3u6fm")
 
 [node name="SelectSpawnUnder" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Set Selected Layer as Spawn Parent"
 icon = SubResource("Texture2D_urax5")
 
 [node name="AssignSelectedToLayer" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Assign Selected Nodes to Layer"
 icon = SubResource("Texture2D_6d57e")
 
 [node name="ShowInScene" type="Button" parent="VBoxContainer/HBoxContainer"]
 layout_mode = 2
+tooltip_text = "Show Layer in Scene Tree"
 icon = SubResource("Texture2D_iqiku")
 
 [node name="FilterLayers" type="LineEdit" parent="VBoxContainer"]
