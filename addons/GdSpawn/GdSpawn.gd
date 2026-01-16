@@ -8,9 +8,13 @@ var layers_dock: GdSpawnLayersDock
 
 const BASE_SETTING = "GdSpawn/Settings/"
 
+const GdSpawnPath3DGizmo = preload("res://addons/GdSpawn/scripts/gizmos/path_gizmo.gd")
 
+var gizmo_plugin = GdSpawnPath3DGizmo.new()
 
 func _enter_tree() -> void:
+
+	#add_node_3d_gizmo_plugin(gizmo_plugin)
 
 	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate() as GdSpawnMainDockManager
 	main_dock.editor_plugin = self
@@ -30,9 +34,14 @@ func _enter_tree() -> void:
 
 	project_settings_changed.connect(on_project_settings_changed)
 	scene_changed.connect(func (root): main_dock.signal_routing.EditedSceneChanged.emit(root))
+	scene_saved.connect(func (file): main_dock.signal_routing.SceneSaved.emit(file))
+	
 
 
 func _exit_tree() -> void:
+
+	#remove_node_3d_gizmo_plugin(gizmo_plugin)
+
 	main_dock.signal_routing.PluginDisabled.emit()
 	remove_control_from_bottom_panel(main_dock)
 	remove_control_from_docks(layers_dock)
@@ -52,6 +61,7 @@ func remove_from_bottom_panel():
 	remove_control_from_bottom_panel(main_dock)
 
 func _add_setting(property_name: String, default: Variant, type = -1, hint = -1, hint_string = ""):
+	
 	if not ProjectSettings.has_setting(property_name):
 		ProjectSettings.set_setting(property_name, default)
 	ProjectSettings.set_initial_value(property_name, default)
@@ -91,8 +101,11 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 		var shift_pressed = false
 		if Input.is_key_pressed(KEY_SHIFT):
 			shift_pressed = true
-		main_dock.spawn_manager.on_move(viewport_camera, event.position, ctrl_pressed, shift_pressed)
-		return EditorPlugin.AFTER_GUI_INPUT_STOP
+		var should_stop = main_dock.spawn_manager.on_move(viewport_camera, event.position, ctrl_pressed, shift_pressed)
+		if should_stop:
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
@@ -171,4 +184,5 @@ func local_axis_flip(camera, axis):
 func _handles(object):
 	return object is Node3D
 	
+
 

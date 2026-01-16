@@ -1,19 +1,25 @@
 @tool
 extends Path3D
-class_name GdSpawnPath
+class_name GdSpawnPath3D
 
 @export var curve_spawn_profile: GdSpawnCurveSpawnProfile:
 	set(value):
 		curve_spawn_profile = value
+		_update()
 
 @export var curve_spawn_settings: GdSpawnCurveSpawnSettings:
 	set(value):
 		curve_spawn_settings = value
+		_update()
 
 @export_tool_button("Update", "Callable") var action = _update
 
 
+
 func _update():
+	if not curve:
+		return
+
 	if not curve_spawn_profile or not curve_spawn_settings:
 		return
 

@@ -23,6 +23,7 @@ class ShapeInfo:
 
 class GdSpawnPhysicsSpawnJob:
 	var node: Node
+	var owner: Node
 	var gizmo: Node3D
 	var current_simulated_rigid_bodies: Array
 
@@ -46,6 +47,7 @@ class GdSpawnPhysicsSpawnJob:
 	var rng: RandomNumberGenerator
 
 	var force_stopped = false
+	var force_erase = false
 	var stopped = false
 	var stop_scene_spawn = false
 
@@ -59,22 +61,34 @@ class GdSpawnPhysicsSpawnJob:
 		min_y = gizmo.global_position.y + out_of_bounds_y
 		spawn_new_scene()
 		while not stopped:
+			if force_erase:
+				stopped = true
+				for rb in current_simulated_rigid_bodies:
+					rb.queue_free()
 			await update()
 
-		if stopped:
+		if stopped and not force_erase:
+			if current_simulated_rigid_bodies.is_empty():
+				return
 			var action = GdSpawnSpawnManager.GdSpawnAddScenesAction.new()
 			for rb in current_simulated_rigid_bodies:
 				var packed_scene = rb.get_meta("scene")
 				action.scenes.append(packed_scene)
 				action.transforms.append(rb.global_transform)
 				rb.queue_free()
-			action.owner = EditorInterface.get_edited_scene_root()
+			action.owner = owner
 			node.add_scene_request.emit(action)
-		
 
 	func update():
 		await node.get_tree().physics_frame
+		if EditorInterface.get_edited_scene_root() != owner:
+			return
+			
 		if force_stopped:
+			stopped = true
+			return
+
+		if force_erase:
 			stopped = true
 			return
 
@@ -131,6 +145,7 @@ class GdSpawnPhysicsSpawnJob:
 			collision_shape.shape = shape_info.shape
 			collision_shape.global_transform = shape_info.transform
 
+		_freeze_scene_rbs(instanced_scene)
 		instanced_scene.reparent(rigid_body)
 
 		#reposition rigid body
@@ -173,18 +188,27 @@ class GdSpawnPhysicsSpawnJob:
 			# Recurse first
 			_collect_collisions(child, shapes)
 
+	func _freeze_scene_rbs(root):
+		if root is RigidBody3D:
+			root.freeze_mode = RigidBody3D.FREEZE_MODE_STATIC
+			root.freeze = true
+		
+		for child in root.get_children():
+			_freeze_scene_rbs(child)
 
 
 var signal_routing: GdSpawnSignalRouting:
 	set(value):
 		signal_routing = value
-		signal_routing.EditedSceneChanged.connect(update_gizmo)
+		signal_routing.EditedSceneChanged.connect(on_scene_change)
 		signal_routing.PluginDisabled.connect(on_plugin_disabled)
 
 var current_drop_gizmo: GdSpawnDropCircle
 
-func _ready() -> void:
+var all_rbs = []
+var freeze_flags: Array[bool] = []
 
+func _ready() -> void:
 	drop_height_spinbox.value_changed.connect(func(_x): update_gizmo_props())
 	drop_radius_spinbox.value_changed.connect(func(_x): update_gizmo_props())
 	update_gizmo(EditorInterface.get_edited_scene_root())
@@ -193,59 +217,96 @@ func _ready() -> void:
 	stop_sim_button.pressed.connect(on_stop_sim_button)
 
 
-
 func _get_all_rigid_bodies_3d_in_children(node: Node, array : Array):
 	if node is RigidBody3D:
 		array.append(node)
 	for child in node.get_children():
 		_get_all_rigid_bodies_3d_in_children(child,array)
 
-var all_rbs = []
-var freeze_flags: Array[bool] = []
+
+var active = false
 func on_enter():
+	active = true
 	all_rbs = []
+
+	current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
+
+	_stop_rbs()
+	PhysicsServer3D.set_active(true)
+
+
+func on_exit():
+	active = false
+	_erase_pending_spawn_jobs()
+	PhysicsServer3D.set_active(false)
+	_restore_rbs()
+	current_drop_gizmo.hide_drop_circle()
+
+
+func on_plugin_disabled():
+	_erase_pending_spawn_jobs()
+	if current_drop_gizmo: 
+		current_drop_gizmo.queue_free()
+	PhysicsServer3D.set_active(false)
+	_restore_rbs()
+
+func on_stop_sim_button():
+	if spawn_jobs.size() == 0:
+		return
+
+	_commit_pending_spawn_jobs()
+
+func on_scene_change(scene_root):
+	if current_drop_gizmo:
+		current_drop_gizmo.queue_free()
+	update_gizmo(scene_root)
+
+	if active:
+		_erase_pending_spawn_jobs()
+		_restore_rbs()
+		PhysicsServer3D.set_active(false)
+		_stop_rbs()
+		PhysicsServer3D.set_active(true)
+		current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
+	else:
+		current_drop_gizmo.hide_drop_circle()
+
+
+func _stop_rbs():
 	_get_all_rigid_bodies_3d_in_children(EditorInterface.get_edited_scene_root(), all_rbs)
 	for rb in all_rbs:
 		if rb:
 			freeze_flags.append(rb.freeze)
 			rb.freeze = true
 
-	current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
-	PhysicsServer3D.set_active(true)
-
-
-func on_exit():
-	restore_rbs()
-	current_drop_gizmo.hide_drop_circle()
-	PhysicsServer3D.set_active(false)
-
-func restore_rbs():
+func _restore_rbs():
 	for i in all_rbs.size():
 		if all_rbs[i]:
 			all_rbs[i].freeze = freeze_flags[i]
 
-func on_plugin_disabled():
-	if current_drop_gizmo: 
-		current_drop_gizmo.queue_free()
-	PhysicsServer3D.set_active(false)
-	restore_rbs()
+func _commit_pending_spawn_jobs():
+	for spawn_job in spawn_jobs:
+		if spawn_job:
+			spawn_job.force_stopped = true
 
-func on_stop_sim_button():
-	if spawn_jobs.size() == 0:
-		return
-
-	spawn_jobs[-1].force_stopped = true
-
+func _erase_pending_spawn_jobs():
+	for spawn_job in spawn_jobs:
+		if spawn_job and not spawn_job.stopped:
+			spawn_job.force_erase = true
 
 func update_gizmo(scene_root):
 	if not scene_root:
 		return
+
+	if not scene_root is Node3D:
+		return
+
 	if scene_root.has_node("GdSpawnDropCircle"):
 		current_drop_gizmo = scene_root.get_node("GdSpawnDropCircle")
 		return
-	if current_drop_gizmo == null:
-		current_drop_gizmo = drop_gizmo_scene.instantiate()
-		scene_root.add_child(current_drop_gizmo)
+
+	current_drop_gizmo = drop_gizmo_scene.instantiate()
+	scene_root.add_child(current_drop_gizmo)
 
 
 func update_gizmo_props():
@@ -276,12 +337,12 @@ var spawn_jobs: Array
 func on_press():
 	update_random_spawn_profile()
 	if not random_spawn_profile:
-		return
+		return false
 
 	#pick scene
 	var res = _get_scenes_and_weights()
 	if res.is_empty():
-		return
+		return false
 
 	var weights = res.weights
 	var scenes = res.scenes
@@ -289,6 +350,7 @@ func on_press():
 	var spawn_job = GdSpawnPhysicsSpawnJob.new()
 
 	spawn_job.node = self
+	spawn_job.owner = EditorInterface.get_edited_scene_root()
 	spawn_job.gizmo = current_drop_gizmo
 	spawn_job.weights = res.weights
 	spawn_job.scenes = res.scenes
@@ -301,15 +363,16 @@ func on_press():
 	spawn_job.start()
 
 	spawn_jobs.append(spawn_job)
+	return true
 
 	
 
 func on_release():
 	if spawn_jobs.size() == 0:
-		return
+		return false
 
 	spawn_jobs[-1].stop_scene_spawn = true
-	return 
+	return true
 
 
 func update_random_spawn_profile():

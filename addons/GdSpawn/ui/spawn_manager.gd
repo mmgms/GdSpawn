@@ -6,6 +6,9 @@ class_name GdSpawnSpawnManager
 
 @export var spawn_under_node_select: GdSpawnNodeSelect
 
+
+@export var snap_options_parent: Control
+
 @export var spawn_option_button: OptionButton
 @export var spawn_option_parent: Control
 
@@ -89,6 +92,39 @@ class GdSpawnAddScenesAction:
 		if select_last:
 			EditorInterface.edit_node(EditorInterface.get_edited_scene_root())
 
+
+class GdSpawnAddPathAction:
+	var path_name: String
+	var parent: Node3D
+	var owner: Node
+
+	var curve_profile: GdSpawnCurveSpawnProfile
+	var curve_settings: GdSpawnCurveSpawnSettings
+
+	var added_node = null
+
+	func do():
+		if not curve_profile or not curve_settings:
+			return
+		added_node = GdSpawnPath3D.new()
+		added_node.name = path_name
+		added_node.curve_spawn_profile = curve_profile
+		added_node.curve_spawn_settings = curve_settings
+		added_node.curve = Curve3D.new()
+		parent.add_child(added_node, true)
+		added_node.owner = owner
+		EditorInterface.edit_node(added_node)
+
+
+	func undo():
+		if not curve_profile or not curve_settings:
+			return
+		if not added_node:
+			return
+
+		added_node.queue_free()
+
+
 var current_snap_info = GdSpawnSnapInfo.new()
 
 func _ready() -> void:
@@ -131,6 +167,9 @@ func _ready() -> void:
 		ui_instance.signal_routing = signal_routing
 		if ui_instance.has_signal("add_scene_request"):
 			ui_instance.add_scene_request.connect(on_add_scene_request)
+
+		if ui_instance.has_signal("add_path_request"):
+			ui_instance.add_path_request.connect(on_add_path_request)
 		placement_mode_to_ui[placement_mode] = ui_instance
 	
 	on_spawn_option_selected(0)
@@ -151,6 +190,12 @@ func on_plugin_disabled():
 	painted_instances_transform_history.clear()
 
 func on_scene_change(scene_root):
+	if preview_scene:
+		signal_routing.ItemSelect.emit(null)
+
+	if current_grid:
+		current_grid.queue_free()
+
 	if spawn_node_cache.has(scene_root):
 		change_spawn_node(spawn_node_cache[scene_root])
 		add_or_update_grid(scene_root)
@@ -165,6 +210,7 @@ func on_scene_change(scene_root):
 	change_spawn_node(scene_root)
 	add_or_update_grid(scene_root)
 	spawn_under_node_select.set_node(scene_root)
+	hide_grid()
 
 
 func on_spawn_under_node_changed(node):
@@ -194,6 +240,11 @@ func on_spawn_option_selected(idx):
 		hide_grid()
 	if current_placement_mode_manager.should_show_grid() and preview_scene:
 		show_grid()
+
+	if current_placement_mode == GdSpawnPlacementMode.Plane:
+		snap_options_parent.show()
+	else:
+		snap_options_parent.hide()
 
 	
 func change_spawn_node(node):
@@ -249,19 +300,19 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
 		current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
-		return
+		return true
 
 	if current_placement_mode == GdSpawnPlacementMode.Curve:
-		return
+		return false
 
 	if not preview_scene:
-		return
+		return false
 
 	if current_placement_mode == GdSpawnPlacementMode.Plane and is_moving_plane:
 		current_placement_mode_manager.on_move_along_plane_normal(camera, mouse_position, step, snap_enabled)
 		var res = current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
 		preview_scene.global_transform = res.object_transform
-		return
+		return true
 
 	if current_placement_state == PlacementState.Normal:
 
@@ -274,7 +325,7 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 		var current_diff = mouse_position - mouse_pos_on_rotate_y_placement
 
 		if abs(current_diff.x) < 10:
-			return
+			return true
 
 		const ROTATE_SENSITIVITY := 0.01 
 
@@ -285,12 +336,14 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 		var object_transform = res["object_transform"] as Transform3D
 
 		if not check_can_place(spawn_node, current_selected_item.scene, object_transform):
-			return
+			return true
 		
 		var instanced_scene = current_selected_item.scene.instantiate()
 		spawn_node.add_child(instanced_scene, true)
 		instanced_scene.global_transform = object_transform
 		painted_instances_transform_history.append(instanced_scene)
+
+	return true
 
 	# if not current_grid:
 	# 	return
@@ -313,8 +366,11 @@ func on_item_basis_set(item: GdSpawnSceneLibraryItem):
 
 func on_press_start():
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
-		current_placement_mode_manager.on_press()
-		return true
+		var consume_event = current_placement_mode_manager.on_press()
+		return consume_event
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return false
 
 	if not preview_scene:
 		return false
@@ -326,8 +382,6 @@ func on_press_start():
 		return true
 
 
-	if current_placement_mode == GdSpawnPlacementMode.Curve:
-		return false
 
 	if current_snap_info.enabled and current_placement_mode == GdSpawnPlacementMode.Plane:
 		current_placement_state = PlacementState.Paint
@@ -349,15 +403,15 @@ func on_confirm(alt_pressed):
 		return false
 
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
-		current_placement_mode_manager.on_release()
-		return true
+		var consume_event = current_placement_mode_manager.on_release()
+		return consume_event
+
+	if current_placement_mode == GdSpawnPlacementMode.Curve:
+		return false
 
 	if not preview_scene:
 		return false
 
-
-	if current_placement_mode == GdSpawnPlacementMode.Curve:
-		return false
 
 	if current_placement_state == PlacementState.TransformLocalY: 
 
@@ -407,12 +461,18 @@ func on_confirm(alt_pressed):
 func on_add_scene_request(action: GdSpawnAddScenesAction):
 	action.parent = spawn_node
 
-	undo_redo.create_action("Scene Added", 0, self)
+	undo_redo.create_action("Scenes Added", 0, self)
 	undo_redo.add_do_method(action, "do")
 	undo_redo.add_undo_method(action, "undo")
 	undo_redo.commit_action()
 
+func on_add_path_request(action: GdSpawnAddPathAction):
+	action.parent = spawn_node
 
+	undo_redo.create_action("Path Added: %s" % action.path_name, 0, self)
+	undo_redo.add_do_method(action, "do")
+	undo_redo.add_undo_method(action, "undo")
+	undo_redo.commit_action()
 
 
 func on_cancel():
@@ -495,6 +555,7 @@ func on_match_selected_offset():
 		return
 
 func add_or_update_grid(scene_root):
+
 	if not scene_root:
 		return
 

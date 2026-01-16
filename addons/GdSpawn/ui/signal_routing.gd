@@ -11,7 +11,8 @@ signal ItemSelect(item: GdSpawnSceneLibraryItem)
 signal PluginDisabled()
 signal ProjectSettingsChanged()
 signal EditedSceneChanged(root)
-signal SceneSaved()
+
+signal SceneSaved(file_path)
 
 signal SpawnUnderNodeChanged(node)
 
