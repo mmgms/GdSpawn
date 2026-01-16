@@ -53,9 +53,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_m8qjy")
 detachable_node = NodePath("HBoxContainer")
-detach_button = NodePath("HBoxContainer/SpawnOptions/Header/DetachButton")
-help_button = NodePath("HBoxContainer/SpawnOptions/Header/HelpButton")
-about_button = NodePath("HBoxContainer/SpawnOptions/Header/About")
+detach_button = NodePath("HBoxContainer/ScrollContainer/SpawnOptions/Header/DetachButton")
+help_button = NodePath("HBoxContainer/ScrollContainer/SpawnOptions/Header/HelpButton")
+about_button = NodePath("HBoxContainer/ScrollContainer/SpawnOptions/Header/About")
 spawn_manager = NodePath("SpawnManager")
 libraries_manager = NodePath("LibrariesManager")
 signal_routing = NodePath("SignalRouting")
@@ -65,139 +65,143 @@ window_panel = NodePath("DetachWindow/PanelContainer")
 [node name="HBoxContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
 
-[node name="SpawnOptions" type="VBoxContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Header" type="HBoxContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="SpawnOptions" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions/Header"]
+[node name="Label2" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 text = "GdSpawn 0.1.0"
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions/Header"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ajnsn")
 
-[node name="HelpButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+[node name="HelpButton" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 icon = SubResource("Texture2D_43vh5")
 
-[node name="About" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+[node name="About" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 text = "About"
 
-[node name="DetachButton" type="Button" parent="HBoxContainer/SpawnOptions/Header"]
+[node name="DetachButton" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 icon = SubResource("Texture2D_m8qjy")
 
-[node name="SpawnParent" type="HBoxContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="SpawnParent" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SpawnParent"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SpawnParent"]
 layout_mode = 2
 text = "Spawn Under: "
 
-[node name="NodeSelect" parent="HBoxContainer/SpawnOptions/SpawnParent" instance=ExtResource("4_ycuyj")]
+[node name="NodeSelect" parent="HBoxContainer/ScrollContainer/SpawnOptions/SpawnParent" instance=ExtResource("4_ycuyj")]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Placement Mode:"
 
-[node name="PlacementOptions" type="OptionButton" parent="HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
+[node name="PlacementOptions" type="OptionButton" parent="HBoxContainer/ScrollContainer/SpawnOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PlacementModeOptionsParent" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="PlacementModeOptionsParent" type="PanelContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="PlanePlacementOptions" parent="HBoxContainer/SpawnOptions/PlacementModeOptionsParent" instance=ExtResource("4_k2ook")]
+[node name="PlanePlacementOptions" parent="HBoxContainer/ScrollContainer/SpawnOptions/PlacementModeOptionsParent" instance=ExtResource("4_k2ook")]
 layout_mode = 2
 
-[node name="SnapOptionParent" type="VBoxContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="SnapOptionParent" type="VBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent"]
+[node name="Label2" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent"]
 layout_mode = 2
 text = "Snapping"
 
-[node name="SnappingOptions" type="PanelContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent"]
+[node name="SnappingOptions" type="PanelContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions"]
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="CheckBox" type="CheckBox" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = " Enabled"
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "+SHIFT"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
 layout_mode = 2
 
-[node name="SnapStep" type="SpinBox" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2"]
+[node name="SnapStep" type="SpinBox" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 step = 0.01
 value = 1.0
 allow_greater = true
 
-[node name="SnapShiftStep" type="SpinBox" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2"]
+[node name="SnapShiftStep" type="SpinBox" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 step = 0.01
 value = 0.1
 allow_greater = true
 
-[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
 layout_mode = 2
 text = "Offset"
 
-[node name="ResetOffset" type="Button" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
+[node name="ResetOffset" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_64fbb")
 
-[node name="MatchSelectedOffset" type="Button" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
+[node name="MatchSelectedOffset" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer"]
 layout_mode = 2
 icon = SubResource("Texture2D_8seq1")
 
-[node name="OffsetInfo" type="HBoxContainer" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
+[node name="OffsetInfo" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer"]
 visible = false
 layout_mode = 2
 
-[node name="Label" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
+[node name="Label" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
 layout_mode = 2
 text = "x:"
 
-[node name="Xoffset" type="SpinBox" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
+[node name="Xoffset" type="SpinBox" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -10000.0
@@ -206,11 +210,11 @@ step = 0.01
 allow_greater = true
 allow_lesser = true
 
-[node name="Label2" type="Label" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
+[node name="Label2" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
 layout_mode = 2
 text = "z:"
 
-[node name="Zoffset" type="SpinBox" parent="HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
+[node name="Zoffset" type="SpinBox" parent="HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo"]
 layout_mode = 2
 size_flags_horizontal = 3
 min_value = -10000.0
@@ -219,7 +223,7 @@ step = 0.01
 allow_greater = true
 allow_lesser = true
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/SpawnOptions"]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_wbhi7")
@@ -293,17 +297,17 @@ preview_size_slider = NodePath("../HBoxContainer/AssetPalette/VBoxContainer/Libr
 [node name="SpawnManager" type="Node" parent="." node_paths=PackedStringArray("signal_routing", "spawn_under_node_select", "snap_options_parent", "spawn_option_button", "spawn_option_parent", "snap_enable", "snap_step", "snap_shift_step", "grid_offset_x", "grid_offset_z", "reset_grid_offset", "match_selected_offset", "spawn_node")]
 script = ExtResource("5_bu4qg")
 signal_routing = NodePath("../SignalRouting")
-spawn_under_node_select = NodePath("../HBoxContainer/SpawnOptions/SpawnParent/NodeSelect")
-snap_options_parent = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent")
-spawn_option_button = NodePath("../HBoxContainer/SpawnOptions/VBoxContainer/HBoxContainer/PlacementOptions")
-spawn_option_parent = NodePath("../HBoxContainer/SpawnOptions/PlacementModeOptionsParent")
-snap_enable = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer/CheckBox")
-snap_step = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2/SnapStep")
-snap_shift_step = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2/SnapShiftStep")
-grid_offset_x = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo/Xoffset")
-grid_offset_z = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo/Zoffset")
-reset_grid_offset = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer/ResetOffset")
-match_selected_offset = NodePath("../HBoxContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer/MatchSelectedOffset")
+spawn_under_node_select = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SpawnParent/NodeSelect")
+snap_options_parent = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent")
+spawn_option_button = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/VBoxContainer/HBoxContainer/PlacementOptions")
+spawn_option_parent = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/PlacementModeOptionsParent")
+snap_enable = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer/HBoxContainer/CheckBox")
+snap_step = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2/SnapStep")
+snap_shift_step = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HBoxContainer2/SnapShiftStep")
+grid_offset_x = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo/Xoffset")
+grid_offset_z = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/OffsetInfo/Zoffset")
+reset_grid_offset = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer/ResetOffset")
+match_selected_offset = NodePath("../HBoxContainer/ScrollContainer/SpawnOptions/SnapOptionParent/SnappingOptions/VBoxContainer/HFlowContainer/MatchSelectedOffset")
 spawn_node = NodePath("..")
 grid_scene = ExtResource("8_8seq1")
 placement_mode_to_ui_scene = Dictionary[int, PackedScene]({
