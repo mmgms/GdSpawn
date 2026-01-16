@@ -48,6 +48,7 @@ func _ready() -> void:
 	on_new_library()
 
 
+
 func update_save_library():
 	var library = get_selected_library()
 	if not library:

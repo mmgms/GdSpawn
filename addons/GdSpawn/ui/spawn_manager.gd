@@ -192,6 +192,8 @@ func on_plugin_disabled():
 func on_scene_change(scene_root):
 	if preview_scene:
 		signal_routing.ItemSelect.emit(null)
+		if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
+			_cancel_move_plane()
 
 	if current_grid:
 		current_grid.queue_free()
@@ -300,7 +302,7 @@ func on_move(camera: Camera3D, mouse_position: Vector2, ctrl_pressed, shift_pres
 
 	if not spawn_node:
 		return false
-		
+
 	if current_placement_mode == GdSpawnPlacementMode.Physics:
 		current_placement_mode_manager.on_move(camera, mouse_position, current_selected_item, step, snap_enabled)
 		return true
@@ -492,13 +494,17 @@ func on_cancel():
 		return
 
 	if is_moving_plane and current_placement_mode == GdSpawnPlacementMode.Plane:
-		is_moving_plane = false
-		current_placement_mode_manager.on_move_plane_cancel()
-		if current_grid:
-			current_grid.hide_line()
+		_cancel_move_plane()
 		return
 
 	signal_routing.ItemSelect.emit(null)
+
+
+func _cancel_move_plane():
+	is_moving_plane = false
+	current_placement_mode_manager.on_move_plane_cancel()
+	if current_grid:
+		current_grid.hide_line()
 
 
 func on_rotate(camera: Camera3D, shift_pressed, axis=Vector3.UP):

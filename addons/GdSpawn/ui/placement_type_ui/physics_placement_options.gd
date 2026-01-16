@@ -212,7 +212,8 @@ func _ready() -> void:
 	drop_height_spinbox.value_changed.connect(func(_x): update_gizmo_props())
 	drop_radius_spinbox.value_changed.connect(func(_x): update_gizmo_props())
 	update_gizmo(EditorInterface.get_edited_scene_root())
-	current_drop_gizmo.hide_drop_circle()
+	if current_drop_gizmo:
+		current_drop_gizmo.hide_drop_circle()
 
 	stop_sim_button.pressed.connect(on_stop_sim_button)
 
