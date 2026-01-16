@@ -164,7 +164,6 @@ transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0, 0, 0)
 [node name="OtherBuilding" type="Node3D" parent="."]
 
 [node name="base" type="Node3D" parent="."]
-visible = false
 script = ExtResource("2_0xm2m")
 
 [node name="ExteriorWindow3" parent="base" instance=ExtResource("2_lquwl")]
@@ -217,3 +216,9 @@ transform = Transform3D(-0.539631, 0, -0.841901, 0, 1, 0, 0.841901, 0, -0.539631
 
 [node name="Path3D" type="Path3D" parent="."]
 curve = SubResource("Curve3D_cegan")
+
+[node name="ExteriorWindow7" parent="." instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.796084, 0, 0.605186, 0, 1, 0, -0.605186, 0, 0.796084, -34.8495, 0, 18.2537)
+
+[node name="ExteriorWindow8" parent="." instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.872745, 0, 0.488177, 0, 1, 0, -0.488177, 0, 0.872745, -31.4429, 0, 19.512)

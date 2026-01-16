@@ -25,9 +25,6 @@ func _enter_tree() -> void:
 
 	add_control_to_bottom_panel(main_dock, "GdSpawn")
 	add_control_to_dock(DOCK_SLOT_LEFT_BR, layers_dock)
-	
-	_add_setting("%sPreview Perspective" % BASE_SETTING, GdSpawnSceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
-		", ".join(GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1)))
 
 	add_custom_type("GdSpawnLayer", "Node3D", preload("res://addons/GdSpawn/scripts/custom_nodes/layer.gd"), preload("res://addons/GdSpawn/icons/GdSpawnLayer.svg"))
 
@@ -35,8 +32,9 @@ func _enter_tree() -> void:
 	project_settings_changed.connect(on_project_settings_changed)
 	scene_changed.connect(func (root): main_dock.signal_routing.EditedSceneChanged.emit(root))
 	scene_saved.connect(func (file): main_dock.signal_routing.SceneSaved.emit(file))
-	
 
+	add_all_settings()
+	
 
 func _exit_tree() -> void:
 
@@ -54,11 +52,65 @@ func _exit_tree() -> void:
 func on_project_settings_changed():
 	main_dock.signal_routing.ProjectSettingsChanged.emit()
 
-func attach_to_bottom_panel():
-	add_control_to_bottom_panel(main_dock, "GdSpawn")
+func add_all_settings():
+	#settings
+	_add_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE, GdSpawnSceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
+		", ".join(GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1)))
 
-func remove_from_bottom_panel():
-	remove_control_from_bottom_panel(main_dock)
+	_add_setting(GdSpawnConstants.PREVIEW_ANGLE_HORIZONTAL, 20, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
+	
+	_add_setting(GdSpawnConstants.PREVIEW_ANGLE_VERTICAL, 20, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
+
+	_add_setting(GdSpawnConstants.SHIFT_ROTATION_STEP, 45, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
+
+	_add_setting(GdSpawnConstants.SHOW_TOOLTIPS, true, TYPE_BOOL)
+
+	#shortcuts
+	var reset_transform_event := InputEventKey.new()
+	reset_transform_event.keycode = KEY_E
+	reset_transform_event.shift_pressed = true
+	_add_setting(GdSpawnConstants.RESET_TRANSFORMATION, reset_transform_event, TYPE_OBJECT)
+
+	var prev_asset := InputEventKey.new()
+	prev_asset.keycode = KEY_SPACE
+	_add_setting(GdSpawnConstants.SELECT_PREVIOUS_ASSET, prev_asset, TYPE_OBJECT)
+	
+	var place_and_select := InputEventKey.new()
+	place_and_select.keycode = KEY_ALT
+	_add_setting(GdSpawnConstants.PLACE_AND_SELECT, place_and_select, TYPE_OBJECT)
+
+	var toggle_snapping := InputEventKey.new()
+	toggle_snapping.keycode = KEY_CTRL
+	_add_setting(GdSpawnConstants.TOGGLE_SNAPPING, toggle_snapping, TYPE_OBJECT)
+
+	var displace_plane := InputEventKey.new()
+	displace_plane.keycode = KEY_G
+	_add_setting(GdSpawnConstants.DISPLACE_PLANE, displace_plane, TYPE_OBJECT)
+
+	var rotate_90x := InputEventKey.new()
+	rotate_90x.keycode = KEY_A
+	_add_setting(GdSpawnConstants.ROTATE_90_X, rotate_90x, TYPE_OBJECT)
+
+	var rotate_90y := InputEventKey.new()
+	rotate_90y.keycode = KEY_S
+	_add_setting(GdSpawnConstants.ROTATE_90_Y, rotate_90y, TYPE_OBJECT)
+
+	var rotate_90z := InputEventKey.new()
+	rotate_90z.keycode = KEY_D
+	_add_setting(GdSpawnConstants.ROTATE_90_Z, rotate_90z, TYPE_OBJECT)
+
+	var flipx := InputEventKey.new()
+	flipx.keycode = KEY_1
+	_add_setting(GdSpawnConstants.FLIP_X, flipx, TYPE_OBJECT)
+
+	var flipy := InputEventKey.new()
+	flipy.keycode = KEY_2
+	_add_setting(GdSpawnConstants.FLIP_Y, flipy, TYPE_OBJECT)
+	
+	var flipz := InputEventKey.new()
+	flipz.keycode = KEY_3
+	_add_setting(GdSpawnConstants.FLIP_Z, flipz, TYPE_OBJECT)
+
 
 func _add_setting(property_name: String, default: Variant, type = -1, hint = -1, hint_string = ""):
 	
@@ -79,8 +131,17 @@ func _add_setting(property_name: String, default: Variant, type = -1, hint = -1,
 
 
 
+func attach_to_bottom_panel():
+	add_control_to_bottom_panel(main_dock, "GdSpawn")
+
+func remove_from_bottom_panel():
+	remove_control_from_bottom_panel(main_dock)
+
+
+
 func get_enum_hint_string(enum_dict):
 	return ", ".join(enum_dict.keys())
+
 
 
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:

@@ -23,4 +23,4 @@ internal/last_int=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GdSpawn/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/terrain_3d/plugin.cfg")

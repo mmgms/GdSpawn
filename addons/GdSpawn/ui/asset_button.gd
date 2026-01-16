@@ -55,7 +55,7 @@ func _ready():
 	reset_local_transform_button.hide()
 
 func on_proj_settings_change():
-	if ProjectSettings.get_setting("GdSpawn/Settings/Preview Perspective") != last_global_preview_mode:
+	if ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE) != last_global_preview_mode:
 		update_preview()
 
 func on_toggled(toggled_on):
@@ -131,7 +131,7 @@ func _get_preview_camera_position(library: GdSpawnSceneLibrary, library_item: Gd
 	var aabb_center = scene_aabb.get_center()
 	var max_size = max(scene_aabb.size.x, scene_aabb.size.y, scene_aabb.size.z)
 
-	var global_preview_mode = ProjectSettings.get_setting("GdSpawn/Settings/Preview Perspective") as GdSpawnSceneLibraryItem.PreviewMode
+	var global_preview_mode = ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE) as GdSpawnSceneLibraryItem.PreviewMode
 	last_global_preview_mode = global_preview_mode
 
 	var final_preview_mode: GdSpawnSceneLibraryItem.PreviewMode
