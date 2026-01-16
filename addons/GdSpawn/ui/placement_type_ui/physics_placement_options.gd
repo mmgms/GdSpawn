@@ -61,11 +61,11 @@ class GdSpawnPhysicsSpawnJob:
 		min_y = gizmo.global_position.y + out_of_bounds_y
 		spawn_new_scene()
 		while not stopped:
+			await update()
 			if force_erase:
 				stopped = true
 				for rb in current_simulated_rigid_bodies:
 					rb.queue_free()
-			await update()
 
 		if stopped and not force_erase:
 			if current_simulated_rigid_bodies.is_empty():
