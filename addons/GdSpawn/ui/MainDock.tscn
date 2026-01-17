@@ -90,6 +90,7 @@ layout_mode = 2
 icon = SubResource("Texture2D_43vh5")
 
 [node name="About" type="Button" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
+visible = false
 layout_mode = 2
 text = "About"
 

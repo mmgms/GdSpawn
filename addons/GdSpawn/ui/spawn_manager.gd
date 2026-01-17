@@ -649,3 +649,35 @@ func try_to_select_plane(plane):
 		return true
 
 	return false
+
+enum Tooltip {ClickToPlace, TransformTooltip,  ResetTransfom, DragToPaint, DragToRotateY, DragToPhysicsSpawn, EscToDeselect, EscToCancelMovePlane, ClickToConfirmMovePlane}
+
+func get_tooltips():
+	var tooltips = []
+	if current_placement_mode == GdSpawnPlacementMode.Plane or current_placement_mode == GdSpawnPlacementMode.Surface:
+		if is_moving_plane:
+			tooltips.append(Tooltip.ClickToConfirmMovePlane)
+			tooltips.append(Tooltip.EscToCancelMovePlane)
+			return tooltips
+
+		if not preview_scene:
+			return []
+
+		if current_placement_state == PlacementState.Normal:
+			tooltips.append(Tooltip.ClickToPlace)
+			tooltips.append(Tooltip.TransformTooltip)
+			tooltips.append(Tooltip.ResetTransfom)
+			tooltips.append(Tooltip.EscToDeselect)
+
+			if current_snap_info.enabled and current_placement_mode == GdSpawnPlacementMode.Plane:
+				tooltips.append(Tooltip.DragToPaint)
+			else:
+				tooltips.append(Tooltip.DragToRotateY)
+
+		return tooltips
+
+	if current_placement_mode == GdSpawnPlacementMode.Physics:
+		tooltips.append(Tooltip.DragToPhysicsSpawn)
+
+		return tooltips
+			

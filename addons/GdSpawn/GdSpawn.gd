@@ -35,7 +35,7 @@ func _enter_tree() -> void:
 
 	add_all_settings()
 
-	update_action_from_settings()
+	update_from_settings()
 	
 
 func _exit_tree() -> void:
@@ -68,12 +68,15 @@ var select_xy: InputEvent
 var select_xz: InputEvent
 var select_yz: InputEvent
 
+var show_tooltips = true
+
 
 func on_project_settings_changed():
 	main_dock.signal_routing.ProjectSettingsChanged.emit()
-	update_action_from_settings()
+	update_from_settings()
 
-func update_action_from_settings():
+func update_from_settings():
+	show_tooltips = ProjectSettings.get_setting(GdSpawnConstants.SHOW_TOOLTIPS)
 	reset_transformation = ProjectSettings.get_setting(GdSpawnConstants.RESET_TRANSFORMATION)
 	select_prev_asset = ProjectSettings.get_setting(GdSpawnConstants.SELECT_PREVIOUS_ASSET)
 	place_and_select = ProjectSettings.get_setting(GdSpawnConstants.PLACE_AND_SELECT)
@@ -204,7 +207,51 @@ func remove_from_bottom_panel():
 func get_enum_hint_string(enum_dict):
 	return ", ".join(enum_dict.keys())
 
+func _forward_3d_draw_over_viewport(viewport_control: Control) -> void:
+	if not show_tooltips:
+		return
 
+	var tooltips = main_dock.spawn_manager.get_tooltips()
+	if tooltips.is_empty():
+		return
+
+	var text = ""
+	for tooltip in tooltips:
+		match tooltip:
+			GdSpawnSpawnManager.Tooltip.ClickToPlace:
+				text += "Click To Place\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.TransformTooltip:
+				text += "%s/%s/%s to rotate x/y/z\n" % [rotate_90x.as_text(), rotate_90y.as_text(), rotate_90z.as_text()]
+				pass
+			GdSpawnSpawnManager.Tooltip.ResetTransfom:
+				text += "%s to reset transform\n" % [reset_transformation.as_text()]
+				pass
+			GdSpawnSpawnManager.Tooltip.DragToPaint:
+				text += "Drag to Paint\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.DragToRotateY:
+				text += "Drag to rotate Y\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.DragToPhysicsSpawn:
+				text += "Drag to Physics Spawn\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.EscToDeselect:
+				text += "Esc to Deselect\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.EscToCancelMovePlane:
+				text += "Esc to Cancel Move Plane\n"
+				pass
+			GdSpawnSpawnManager.Tooltip.ClickToConfirmMovePlane:
+				text += "Click to Confirm Move Plane\n"
+				pass
+
+	var font: Font = viewport_control.get_theme_default_font()
+	var font_size: int = viewport_control.get_theme_default_font_size()
+	var mouse_pos: Vector2 = viewport_control.get_local_mouse_position()
+
+	viewport_control.draw_multiline_string(font, mouse_pos, text, 0, -1, font_size)
+	
 
 
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
@@ -227,6 +274,7 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 		var shift_pressed = false
 		if Input.is_key_pressed(KEY_SHIFT):
 			shift_pressed = true
+		update_overlays()
 		var should_stop = main_dock.spawn_manager.on_move(viewport_camera, event.position, ctrl_pressed, shift_pressed)
 		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP

@@ -66,6 +66,7 @@ layout_mode = 2
 node_type = "Terrain3D"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2"]
