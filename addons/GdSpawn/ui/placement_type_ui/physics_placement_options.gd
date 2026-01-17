@@ -233,7 +233,8 @@ func on_enter():
 	active = true
 	all_rbs = []
 
-	current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
+	if current_drop_gizmo:
+		current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
 
 	_stop_rbs()
 	PhysicsServer3D.set_active(true)
@@ -244,7 +245,8 @@ func on_exit():
 	_erase_pending_spawn_jobs()
 	PhysicsServer3D.set_active(false)
 	_restore_rbs()
-	current_drop_gizmo.hide_drop_circle()
+	if current_drop_gizmo:
+		current_drop_gizmo.hide_drop_circle()
 
 
 func on_plugin_disabled():
@@ -261,6 +263,8 @@ func on_stop_sim_button():
 	_commit_pending_spawn_jobs()
 
 func on_scene_change(scene_root):
+	if scene_root == null:
+		return
 	if current_drop_gizmo:
 		current_drop_gizmo.queue_free()
 	update_gizmo(scene_root)
@@ -271,9 +275,11 @@ func on_scene_change(scene_root):
 		PhysicsServer3D.set_active(false)
 		_stop_rbs()
 		PhysicsServer3D.set_active(true)
-		current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
+		if current_drop_gizmo:
+			current_drop_gizmo.show_drop_circle(drop_radius_spinbox.value, drop_height_spinbox.value)
 	else:
-		current_drop_gizmo.hide_drop_circle()
+		if current_drop_gizmo:
+			current_drop_gizmo.hide_drop_circle()
 
 
 func _stop_rbs():
@@ -333,7 +339,8 @@ func on_move(camera: Camera3D, mouse_pos: Vector2, library_item: GdSpawnSceneLib
 	if result.is_empty():
 		return
 
-	current_drop_gizmo.move_to(result.position)
+	if current_drop_gizmo:
+		current_drop_gizmo.move_to(result.position)
 
 var current_spawn_job: GdSpawnPhysicsSpawnJob
 var spawn_jobs: Array

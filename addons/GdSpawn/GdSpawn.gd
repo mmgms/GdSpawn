@@ -34,6 +34,8 @@ func _enter_tree() -> void:
 	scene_saved.connect(func (file): main_dock.signal_routing.SceneSaved.emit(file))
 
 	add_all_settings()
+
+	update_action_from_settings()
 	
 
 func _exit_tree() -> void:
@@ -48,9 +50,49 @@ func _exit_tree() -> void:
 
 	remove_custom_type("GdSpawnLayer")
 
+var reset_transformation: InputEvent
+var select_prev_asset: InputEvent
+var place_and_select: InputEvent
+var toggle_snapping: InputEvent
+var displace_plane: InputEvent
+
+var rotate_90x: InputEvent
+var rotate_90y: InputEvent
+var rotate_90z: InputEvent
+
+var flipx: InputEvent
+var flipy: InputEvent
+var flipz: InputEvent
+
+var select_xy: InputEvent
+var select_xz: InputEvent
+var select_yz: InputEvent
+
 
 func on_project_settings_changed():
 	main_dock.signal_routing.ProjectSettingsChanged.emit()
+	update_action_from_settings()
+
+func update_action_from_settings():
+	reset_transformation = ProjectSettings.get_setting(GdSpawnConstants.RESET_TRANSFORMATION)
+	select_prev_asset = ProjectSettings.get_setting(GdSpawnConstants.SELECT_PREVIOUS_ASSET)
+	place_and_select = ProjectSettings.get_setting(GdSpawnConstants.PLACE_AND_SELECT)
+	toggle_snapping = ProjectSettings.get_setting(GdSpawnConstants.TOGGLE_SNAPPING)
+	displace_plane = ProjectSettings.get_setting(GdSpawnConstants.DISPLACE_PLANE)
+
+	rotate_90x = ProjectSettings.get_setting(GdSpawnConstants.ROTATE_90_X)
+	rotate_90y = ProjectSettings.get_setting(GdSpawnConstants.ROTATE_90_Y)
+	rotate_90z = ProjectSettings.get_setting(GdSpawnConstants.ROTATE_90_Z)
+
+	flipx = ProjectSettings.get_setting(GdSpawnConstants.FLIP_X)
+	flipy = ProjectSettings.get_setting(GdSpawnConstants.FLIP_Y)
+	flipz = ProjectSettings.get_setting(GdSpawnConstants.FLIP_Z)
+
+	select_xy = ProjectSettings.get_setting(GdSpawnConstants.SELECT_XY_PLANE)
+	select_xz = ProjectSettings.get_setting(GdSpawnConstants.SELECT_XZ_PLANE)
+	select_yz = ProjectSettings.get_setting(GdSpawnConstants.SELECT_YZ_PLANE)
+
+	
 
 func add_all_settings():
 	#settings
@@ -129,7 +171,14 @@ func _add_setting(property_name: String, default: Variant, type = -1, hint = -1,
 	
 	if not ProjectSettings.has_setting(property_name):
 		ProjectSettings.set_setting(property_name, default)
-	ProjectSettings.set_initial_value(property_name, default)
+
+	if default is InputEvent:
+		var old = ProjectSettings.get_setting(property_name)
+		if not old.is_match(default):
+			ProjectSettings.set_initial_value(property_name, default)
+	else:
+		ProjectSettings.set_initial_value(property_name, default)
+
 
 	if type != -1:
 		var property_info = {
@@ -157,19 +206,22 @@ func get_enum_hint_string(enum_dict):
 
 
 
+
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 
-	if event is InputEventKey and event.is_pressed():
-		if event.keycode == KEY_SPACE and main_dock.signal_routing.current_item_selected == null:
-			if main_dock.signal_routing.last_item_selected == null:
-				return EditorPlugin.AFTER_GUI_INPUT_PASS
-			main_dock.signal_routing.ItemSelect.emit(main_dock.signal_routing.last_item_selected)
+	if event.is_match(select_prev_asset) and main_dock.signal_routing.current_item_selected == null:
+		if main_dock.signal_routing.last_item_selected == null:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
+		var should_stop = main_dock.spawn_manager.try_to_select_prev_scene(main_dock.signal_routing.last_item_selected)
+		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 
 	if event is InputEventMouseMotion and not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var ctrl_pressed = false
-		if Input.is_key_pressed(KEY_CTRL):
+		if Input.is_key_pressed(toggle_snapping.keycode):
 			ctrl_pressed = true
 
 		var shift_pressed = false
@@ -207,39 +259,70 @@ func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 			main_dock.spawn_manager.on_cancel()
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
 
-		elif event.keycode == KEY_S:# rotate y
-			local_axis_rotation(viewport_camera, Vector3.UP)
+	if event.is_match(rotate_90y) and event.is_pressed():
+		local_axis_rotation(viewport_camera, Vector3.UP)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event.is_match(rotate_90x) and event.is_pressed():
+		local_axis_rotation(viewport_camera, Vector3.RIGHT)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event.is_match(rotate_90z) and event.is_pressed():
+		local_axis_rotation(viewport_camera, Vector3.FORWARD)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event.is_match(select_xy) and event.is_pressed():
+		var should_stop = main_dock.spawn_manager.try_to_select_plane(GdSpawnConstants.SELECT_XY_PLANE)
+		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
-		elif event.keycode == KEY_A:# rotate x
-			local_axis_rotation(viewport_camera, Vector3.RIGHT)
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+	
+	if event.is_match(select_xz) and event.is_pressed():
+		var should_stop = main_dock.spawn_manager.try_to_select_plane(GdSpawnConstants.SELECT_XZ_PLANE)
+		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
-		elif event.keycode == KEY_D:# rotate z
-			local_axis_rotation(viewport_camera, Vector3.FORWARD)
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
+
+	
+	if event.is_match(select_yz) and event.is_pressed():
+		var should_stop = main_dock.spawn_manager.try_to_select_plane(GdSpawnConstants.SELECT_YZ_PLANE)
+		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 		
-		elif event.keycode == KEY_1:
-			local_axis_flip(viewport_camera, Vector3.RIGHT)
-			return EditorPlugin.AFTER_GUI_INPUT_STOP
-		elif event.keycode == KEY_2:
-			local_axis_flip(viewport_camera, Vector3.UP)
-			return EditorPlugin.AFTER_GUI_INPUT_STOP
-		elif event.keycode == KEY_3:
-			local_axis_flip(viewport_camera, Vector3.BACK)
-			return EditorPlugin.AFTER_GUI_INPUT_STOP
+	if event.is_match(flipx) and event.is_pressed():
+		local_axis_flip(viewport_camera, Vector3.RIGHT)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event.is_match(flipy) and event.is_pressed():
+		local_axis_flip(viewport_camera, Vector3.UP)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+
+	if event.is_match(flipz) and event.is_pressed():
+		local_axis_flip(viewport_camera, Vector3.BACK)
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
 
 
-		elif event.keycode == KEY_G:
-			main_dock.spawn_manager.on_move_plane_start()
+	if event.is_match(displace_plane) and event.is_pressed():
+		var should_stop = main_dock.spawn_manager.on_move_plane_start()
+		if should_stop:
 			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 
-		elif event.keycode == KEY_E:
-			if Input.is_key_pressed(KEY_SHIFT):
-				if main_dock.signal_routing.current_item_selected:
-					main_dock.signal_routing.current_item_selected.item_placement_basis = Basis.IDENTITY
-					main_dock.signal_routing.ItemPlacementBasisSet.emit(main_dock.signal_routing.current_item_selected)
-					return EditorPlugin.AFTER_GUI_INPUT_STOP
+	if event.is_match(reset_transformation) and event.is_pressed():
+		if main_dock.signal_routing.current_item_selected:
+			main_dock.signal_routing.current_item_selected.item_placement_basis = Basis.IDENTITY
+			main_dock.signal_routing.ItemPlacementBasisSet.emit(main_dock.signal_routing.current_item_selected)
+			return EditorPlugin.AFTER_GUI_INPUT_STOP
+		else:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 
 
 	return EditorPlugin.AFTER_GUI_INPUT_PASS

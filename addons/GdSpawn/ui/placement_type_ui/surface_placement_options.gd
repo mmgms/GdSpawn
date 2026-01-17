@@ -50,6 +50,8 @@ func on_scene_changed(root):
 func update_gd_spawn_node():
 	current_gd_spawn_node = null
 	var scene_root = EditorInterface.get_edited_scene_root()
+	if scene_root == null:
+		return
 	var matches = scene_root.find_children("*", "GdSpawn", false, true) 
 	if matches.size() == 0:
 		return

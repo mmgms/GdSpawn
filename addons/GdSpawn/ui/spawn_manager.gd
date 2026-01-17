@@ -624,3 +624,28 @@ func on_move_plane_start():
 		current_placement_mode_manager.on_move_plane_start()
 		if current_grid:
 			current_grid.show_line()
+		return true
+	return false
+
+
+func try_to_select_prev_scene(item):
+	if current_placement_mode == GdSpawnPlacementMode.Plane or current_placement_mode == GdSpawnPlacementMode.Surface:
+		signal_routing.ItemSelect.emit(item)
+		return true
+
+	return false
+
+
+func try_to_select_plane(plane):
+	if current_placement_mode == GdSpawnPlacementMode.Plane:
+		if plane == GdSpawnConstants.SELECT_XZ_PLANE:
+			current_placement_mode_manager.on_plane_type_selected(0)
+		elif plane == GdSpawnConstants.SELECT_XY_PLANE:
+			current_placement_mode_manager.on_plane_type_selected(1)
+
+		elif plane == GdSpawnConstants.SELECT_YZ_PLANE:
+			current_placement_mode_manager.on_plane_type_selected(2)
+
+		return true
+
+	return false

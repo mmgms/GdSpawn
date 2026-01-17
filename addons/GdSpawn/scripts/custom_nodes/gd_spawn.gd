@@ -6,7 +6,7 @@ class_name GdSpawn
 @export_category("Surface Placement")
 @export_flags_3d_physics var surface_placement_collision_mask: int = 0xFFFFFFFF
 
-@export_category("Curve")
+@export_category("Curve Placement")
 @export var curve_spawn_profile: GdSpawnCurveSpawnProfile
 @export var curve_spawn_settings: GdSpawnCurveSpawnSettings
 

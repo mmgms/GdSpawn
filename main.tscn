@@ -127,7 +127,6 @@ mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_272bh")])
 
 [node name="GdSpawn" type="Node3D" parent="."]
 script = ExtResource("1_lquwl")
-surface_placement_collision_mask = 4294967294
 curve_spawn_profile = SubResource("Resource_074og")
 curve_spawn_settings = SubResource("Resource_vivmo")
 random_spawn_profile = SubResource("Resource_4c57u")
@@ -199,6 +198,58 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.9997, 4, 28.0002)
 
 [node name="InnerFloor10" parent="base" instance=ExtResource("4_getpj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.9997, 4, 30.0002)
+
+[node name="rotated" type="Node3D" parent="base"]
+transform = Transform3D(0.807269, 0, -0.590183, 0, 1, 0, 0.590183, 0, 0.807269, 0, 0, 51.5118)
+script = ExtResource("2_0xm2m")
+
+[node name="sec_floor" type="Node3D" parent="base/rotated"]
+script = ExtResource("2_0xm2m")
+
+[node name="InnerFloor3" parent="base/rotated" instance=ExtResource("4_getpj")]
+transform = Transform3D(-0.00338602, 0, 0.999994, 0, 1, 0, -0.999994, 0, -0.00338602, 1.00349, 0, 0.996765)
+
+[node name="InnerFloor4" parent="base/rotated" instance=ExtResource("4_getpj")]
+transform = Transform3D(-0.00338602, 0, 0.999994, 0, 1, 0, -0.999994, 0, -0.00338602, 1.01027, 0, 2.99675)
+
+[node name="InnerFloor5" parent="base/rotated" instance=ExtResource("4_getpj")]
+transform = Transform3D(-0.00338602, 0, 0.999994, 0, 1, 0, -0.999994, 0, -0.00338602, 1.01705, 0, 4.99674)
+
+[node name="ExteriorWindow3" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.999994, 0, 0.00338617, 0, 1, 0, -0.00338617, 0, 0.999994, 1.02043, 0, 5.99674)
+
+[node name="ExteriorWindow4" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.999994, 0, 0.00338641, 0, 1, 0, -0.00338641, 0, 0.999994, 3.02041, 0, 5.98996)
+
+[node name="ExteriorWindow5" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.999994, 0, 0.00338641, 0, 1, 0, -0.00338641, 0, 0.999994, 5.0204, 0, 5.9832)
+
+[node name="ExteriorWindow6" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.00338653, 0, -0.999994, 0, 1, 0, 0.999994, 0, 0.00338653, 0.017046, 0, 5.00013)
+
+[node name="ExteriorWindow7" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.00338653, 0, -0.999994, 0, 1, 0, 0.999994, 0, 0.00338653, 0.010273, 0, 3.00013)
+
+[node name="ExteriorWindow8" parent="base/rotated" instance=ExtResource("14_2cqfq")]
+transform = Transform3D(0.00338653, 0, -0.999994, 0, 1, 0, 0.999994, 0, 0.00338653, 0.00349808, 0, 1.00015)
+
+[node name="ExteriorWindow9" parent="base/rotated" instance=ExtResource("2_lquwl")]
+transform = Transform3D(0.999995, 0, 0.00328121, 0, 1, 0, -0.00328121, 0, 0.999995, 8.01967, 0, 5.97391)
+
+[node name="InnerFloor6" parent="base/rotated" instance=ExtResource("4_getpj")]
+transform = Transform3D(-0.00296712, 0, 0.999996, 0, 1, 0, -0.999996, 0, -0.00296712, 3.01494, 0, 4.99123)
+
+[node name="InnerFloor7" parent="base/rotated" instance=ExtResource("4_getpj")]
+transform = Transform3D(-0.00296712, 0, 0.999996, 0, 1, 0, -0.999996, 0, -0.00296712, 3.00901, 0, 2.99125)
+
+[node name="ExteriorWindow10" parent="base/rotated" instance=ExtResource("2_lquwl")]
+transform = Transform3D(0.999996, 0, 0.00296706, 0, 1, 0, -0.00296706, 0, 0.999996, 12.0179, 0, 5.96453)
+
+[node name="ExteriorWindow11" parent="base/rotated" instance=ExtResource("2_lquwl")]
+transform = Transform3D(0.999996, 0, 0.00296932, 0, 1, 0, -0.00296932, 0, 0.999996, 16.0178, 0, 5.95266)
+
+[node name="ExteriorWindow12" parent="base/rotated" instance=ExtResource("2_lquwl")]
+transform = Transform3D(0.999996, 0, 0.0029695, 0, 1, 0, -0.0029695, 0, 0.999996, 20.0178, 0, 5.94079)
 
 [node name="ExteriorWindow2" parent="." instance=ExtResource("14_2cqfq")]
 transform = Transform3D(0.881958, 0, -0.471328, 0, 1, 0, 0.471328, 0, 0.881958, -59.5229, 0, 11.2627)
