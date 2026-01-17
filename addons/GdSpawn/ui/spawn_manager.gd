@@ -524,7 +524,7 @@ func on_rotate(camera: Camera3D, shift_pressed, axis=Vector3.UP):
 
 	var rotation_amount = 90
 	if shift_pressed:
-		rotation_amount = 45
+		rotation_amount = ProjectSettings.get_setting(GdSpawnConstants.SHIFT_ROTATION_STEP)
 	
 	current_selected_item.item_placement_basis = current_selected_item.item_placement_basis.rotated(axis, deg_to_rad(rotation_amount))
 	signal_routing.ItemPlacementBasisSet.emit(current_selected_item)

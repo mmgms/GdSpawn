@@ -55,7 +55,9 @@ func _ready():
 	reset_local_transform_button.hide()
 
 func on_proj_settings_change():
-	if ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE) != last_global_preview_mode:
+	if ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE) != last_global_preview_mode\
+		or not is_equal_approx(ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_ANGLE_HORIZONTAL), last_angle_horizontal)\
+		or not is_equal_approx(ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_ANGLE_VERTICAL), last_angle_vertical):
 		update_preview()
 
 func on_toggled(toggled_on):
@@ -126,6 +128,14 @@ func get_preview_camera_position():
 	return _get_preview_camera_position(library, library_item, aabb)
 
 var last_global_preview_mode = 0
+var last_angle_vertical: float = 20.0
+var last_angle_horizontal: float = 20.0
+
+func unit_vector_from_angles(theta: float, phi: float) -> Vector3:
+	var x = cos(phi) * cos(theta)
+	var y = sin(phi)
+	var z = cos(phi) * sin(theta)
+	return Vector3(x, y, z)
 
 func _get_preview_camera_position(library: GdSpawnSceneLibrary, library_item: GdSpawnSceneLibraryItem, scene_aabb: AABB):
 	var aabb_center = scene_aabb.get_center()
@@ -133,13 +143,17 @@ func _get_preview_camera_position(library: GdSpawnSceneLibrary, library_item: Gd
 
 	var global_preview_mode = ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE) as GdSpawnSceneLibraryItem.PreviewMode
 	last_global_preview_mode = global_preview_mode
+	last_angle_horizontal = ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_ANGLE_HORIZONTAL)
+	last_angle_vertical = ProjectSettings.get_setting(GdSpawnConstants.PREVIEW_ANGLE_VERTICAL)
+
+	var vector = unit_vector_from_angles(deg_to_rad(last_angle_horizontal), deg_to_rad(last_angle_vertical))
 
 	var final_preview_mode: GdSpawnSceneLibraryItem.PreviewMode
 
 	if library_item.preview_mode == GdSpawnSceneLibraryItem.PreviewMode.Default:
 		if library.preview_mode == GdSpawnSceneLibraryItem.PreviewMode.Default:
 			if global_preview_mode == GdSpawnSceneLibraryItem.PreviewMode.Default:
-				return aabb_center + Vector3.ONE.normalized() * max_size * size_multiplier
+				return aabb_center + vector * max_size * size_multiplier
 			final_preview_mode = global_preview_mode
 		else:
 			final_preview_mode = library.preview_mode

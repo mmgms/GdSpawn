@@ -99,7 +99,7 @@ func add_all_settings():
 	_add_setting(GdSpawnConstants.PREVIEW_PERSPECTIVE, GdSpawnSceneLibraryItem.PreviewMode.Default, TYPE_INT, PROPERTY_HINT_ENUM,\
 		", ".join(GdSpawnSceneLibraryItem.PreviewMode.keys().slice(0, -1)))
 
-	_add_setting(GdSpawnConstants.PREVIEW_ANGLE_HORIZONTAL, 20, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
+	_add_setting(GdSpawnConstants.PREVIEW_ANGLE_HORIZONTAL, 70, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
 	
 	_add_setting(GdSpawnConstants.PREVIEW_ANGLE_VERTICAL, 20, TYPE_FLOAT, PROPERTY_HINT_RANGE, "0,360,1")
 
