@@ -1,6 +1,8 @@
 @tool
-extends Path3D
+extends Node3D
 class_name GdSpawnPath3D
+
+@export_flags_3d_physics var collision_mask: int = GdSpawnConstants.DEFAULT_COLLISION_MASK
 
 @export var curve_spawn_profile: GdSpawnCurveSpawnProfile:
 	set(value):
@@ -14,9 +16,15 @@ class_name GdSpawnPath3D
 
 @export_tool_button("Update", "Callable") var action = _update
 
+@export var curve: Curve3D
+
 
 
 func _update():
+
+	for child in get_children():
+		child.queue_free()
+
 	if not curve:
 		return
 
@@ -37,9 +45,6 @@ func _update():
 
 	if is_zero_approx(curve_length):
 		return
-
-	for child in get_children():
-		child.queue_free()
 
 	var weights = res.weights
 	var scenes = res.scenes
@@ -72,7 +77,7 @@ func _update():
 
 		instanced_scene.global_transform = global_transform * object_transform * reorient_transform
 		
-		offset_along_curve += get_forward_axis_size(element, scene_aabb)
+		offset_along_curve += get_forward_axis_size(element, scene_aabb) + curve_spawn_settings.padding
 
 func get_forward_axis_size(element:GdSpawnCurveSpawnProfileElement, aabb: AABB):
 	match element.forward_axis:

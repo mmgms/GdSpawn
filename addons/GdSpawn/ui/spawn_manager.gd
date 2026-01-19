@@ -100,6 +100,7 @@ class GdSpawnAddPathAction:
 
 	var curve_profile: GdSpawnCurveSpawnProfile
 	var curve_settings: GdSpawnCurveSpawnSettings
+	var curve_collision: int
 
 	var added_node = null
 
@@ -110,6 +111,7 @@ class GdSpawnAddPathAction:
 		added_node.name = path_name
 		added_node.curve_spawn_profile = curve_profile
 		added_node.curve_spawn_settings = curve_settings
+		added_node.collision_mask = curve_collision
 		added_node.curve = Curve3D.new()
 		parent.add_child(added_node, true)
 		added_node.owner = owner

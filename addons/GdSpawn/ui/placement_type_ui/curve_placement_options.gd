@@ -13,6 +13,7 @@ var signal_routing: GdSpawnSignalRouting:
 
 var current_curve_spawn_settings: GdSpawnCurveSpawnSettings
 var current_curve_spawn_profile: GdSpawnCurveSpawnProfile
+var current_collision_mask: int
 
 signal add_path_request(action: GdSpawnSpawnManager.GdSpawnAddPathAction)
 
@@ -28,6 +29,7 @@ func on_create_curve():
 
 	var action = GdSpawnSpawnManager.GdSpawnAddPathAction.new()
 	action.path_name = curve_name_line_edit.text
+	action.curve_collision = current_collision_mask
 	action.curve_profile = current_curve_spawn_profile
 	action.curve_settings = current_curve_spawn_settings
 	action.owner = EditorInterface.get_edited_scene_root() 
@@ -77,3 +79,4 @@ func update_spawn_profile(scene_root):
 		var gdspawn_node = matches[0] as GdSpawn
 		current_curve_spawn_profile = gdspawn_node.curve_spawn_profile
 		current_curve_spawn_settings = gdspawn_node.curve_spawn_settings
+		current_collision_mask = gdspawn_node.curve_placement_collision_mask

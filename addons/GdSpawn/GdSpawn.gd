@@ -6,16 +6,19 @@ var main_dock: GdSpawnMainDockManager
 
 var layers_dock: GdSpawnLayersDock
 
+var path_edit_panel: GdSpawnPathEditToolBar
+
 const BASE_SETTING = "GdSpawn/Settings/"
 
 const GdSpawnPath3DGizmo = preload("res://addons/GdSpawn/scripts/gizmos/path_gizmo.gd")
 
-var gizmo_plugin = GdSpawnPath3DGizmo.new()
+var gizmo_plugin = null
+
+var last_object = null
 
 func _enter_tree() -> void:
 
-	#add_node_3d_gizmo_plugin(gizmo_plugin)
-
+	#ui
 	main_dock = preload("res://addons/GdSpawn/ui/MainDock.tscn").instantiate() as GdSpawnMainDockManager
 	main_dock.editor_plugin = self
 
@@ -23,31 +26,59 @@ func _enter_tree() -> void:
 	layers_dock = preload("res://addons/GdSpawn/ui/LayersDock.tscn").instantiate() as GdSpawnLayersDock
 	layers_dock.signal_routing = main_dock.signal_routing
 
+	path_edit_panel = preload("res://addons/GdSpawn/ui/EditPathToolBar.tscn").instantiate() as GdSpawnPathEditToolBar
+
+
+	add_control_to_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, path_edit_panel)
+	path_edit_panel.visible = false
+
+
 	add_control_to_bottom_panel(main_dock, "GdSpawn")
 	add_control_to_dock(DOCK_SLOT_LEFT_BR, layers_dock)
 
+	#custom types
 	add_custom_type("GdSpawnLayer", "Node3D", preload("res://addons/GdSpawn/scripts/custom_nodes/layer.gd"), preload("res://addons/GdSpawn/icons/GdSpawnLayer.svg"))
 
 
-	project_settings_changed.connect(on_project_settings_changed)
-	scene_changed.connect(func (root): main_dock.signal_routing.EditedSceneChanged.emit(root))
-	scene_saved.connect(func (file): main_dock.signal_routing.SceneSaved.emit(file))
+	#gizmos
+	gizmo_plugin = GdSpawnPath3DGizmo.new()
+	add_node_3d_gizmo_plugin(gizmo_plugin)
+	gizmo_plugin.gizmo_panel = path_edit_panel
+	gizmo_plugin.undo_redo = get_undo_redo()
 
+	#settings
 	add_all_settings()
 
 	update_from_settings()
+
+	#signals
+	project_settings_changed.connect(on_project_settings_changed)
+	scene_changed.connect(func (root): main_dock.signal_routing.EditedSceneChanged.emit(root))
+	scene_saved.connect(func (file): main_dock.signal_routing.SceneSaved.emit(file))
+	EditorInterface.get_selection().selection_changed.connect(on_selection_change)
+	on_selection_change()
 	
 
 func _exit_tree() -> void:
-
-	#remove_node_3d_gizmo_plugin(gizmo_plugin)
-
+	#emit signals
 	main_dock.signal_routing.PluginDisabled.emit()
+
+	#remove gizmo
+	if gizmo_plugin:
+		remove_node_3d_gizmo_plugin(gizmo_plugin)
+		gizmo_plugin = null
+
+	#remove ui
 	remove_control_from_bottom_panel(main_dock)
 	remove_control_from_docks(layers_dock)
+	remove_control_from_container(EditorPlugin.CONTAINER_SPATIAL_EDITOR_MENU, path_edit_panel)
+
+	#free ui
 	layers_dock.free()
 	main_dock.free()
+	path_edit_panel.free()
 
+	#remove custom type
 	remove_custom_type("GdSpawnLayer")
 
 var reset_transformation: InputEvent
@@ -70,6 +101,10 @@ var select_yz: InputEvent
 
 var show_tooltips = true
 
+
+func on_selection_change():
+	var selected = EditorInterface.get_selection().get_selected_nodes()
+	path_edit_panel.selection_changed(selected)
 
 func on_project_settings_changed():
 	main_dock.signal_routing.ProjectSettingsChanged.emit()
@@ -255,6 +290,8 @@ func _forward_3d_draw_over_viewport(viewport_control: Control) -> void:
 
 
 func _forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
+	if last_object is GdSpawnPath3D:
+		return gizmo_plugin.forward_3d_gui_input(viewport_camera, event)
 
 	if event.is_match(select_prev_asset) and main_dock.signal_routing.current_item_selected == null:
 		if main_dock.signal_routing.last_item_selected == null:
@@ -387,6 +424,7 @@ func local_axis_flip(camera, axis):
 
 
 func _handles(object):
+	last_object = object
 	return object is Node3D
 	
 

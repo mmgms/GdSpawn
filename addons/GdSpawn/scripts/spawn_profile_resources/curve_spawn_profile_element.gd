@@ -16,6 +16,14 @@ enum Axis {X, Y, Z}
 @export var forward_axis: Axis = Axis.Z
 @export var invert_forward_axis: bool = false
 
+enum ProjectionMode {
+	NONE,
+	PROJECT_TO_COLLIDERS
+}
+
+@export var projection_mode: ProjectionMode
+@export var align_up_with_collision_normal: bool
+
 
 func get_up_axis() -> Vector3:
 	return _get_axis(up_axis, invert_up_axis)

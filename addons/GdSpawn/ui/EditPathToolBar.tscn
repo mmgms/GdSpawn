@@ -1,0 +1,136 @@
+[gd_scene load_steps=8 format=3 uid="uid://c4qhexqj0y7xb"]
+
+[ext_resource type="Script" uid="uid://dq0okhrsr2302" path="res://addons/GdSpawn/ui/edit_path_tool_bar.gd" id="1_8rae2"]
+[ext_resource type="Script" uid="uid://dmicn3kmr620j" path="res://addons/GdSpawn/scripts/system_icon.gd" id="1_cs3cl"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_8rae2"]
+
+[sub_resource type="Texture2D" id="Texture2D_8rae2"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_cs3cl")
+icon_name = &"CurveEdit"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_cs3cl"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_cs3cl")
+icon_name = &"CurveCreate"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_jxrsb"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_cs3cl")
+icon_name = &"CurveDelete"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[sub_resource type="Texture2D" id="Texture2D_r825g"]
+resource_local_to_scene = false
+resource_name = ""
+script = ExtResource("1_cs3cl")
+icon_name = &"GuiTabMenuHl"
+metadata/_custom_type_script = "uid://dmicn3kmr620j"
+
+[node name="EditPathToolBar" type="PanelContainer" node_paths=PackedStringArray("edit_button", "add_button", "delete_button", "options_button", "options_panel", "mirror_angle_button", "mirror_length_button", "snap_to_colliders_button", "closed_path_button")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -621.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8rae2")
+edit_button = NodePath("HBoxContainer/SelectControlPoint")
+add_button = NodePath("HBoxContainer/AddControlPoint")
+delete_button = NodePath("HBoxContainer/DeleteControlPoint")
+options_button = NodePath("HBoxContainer/Options")
+options_panel = NodePath("OptionsPanel")
+mirror_angle_button = NodePath("OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer/MirrorAngle")
+mirror_length_button = NodePath("OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer/MirrorLength")
+snap_to_colliders_button = NodePath("OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer/SnapToColliders")
+closed_path_button = NodePath("OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer/ClosedPath")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SelectControlPoint" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_8rae2")
+icon = SubResource("Texture2D_8rae2")
+
+[node name="AddControlPoint" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_8rae2")
+icon = SubResource("Texture2D_cs3cl")
+
+[node name="DeleteControlPoint" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_8rae2")
+icon = SubResource("Texture2D_jxrsb")
+
+[node name="Options" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_8rae2")
+icon = SubResource("Texture2D_r825g")
+
+[node name="OptionsPanel" type="PopupPanel" parent="."]
+size = Vector2i(229, 179)
+
+[node name="AdvancedOptionsPanel" type="MarginContainer" parent="OptionsPanel"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 225.0
+offset_bottom = 175.0
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+metadata/_edit_use_custom_anchors = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OptionsPanel/AdvancedOptionsPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer"]
+layout_mode = 2
+
+[node name="MirrorAngle" type="CheckButton" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Mirror handles angle"
+
+[node name="MirrorLength" type="CheckButton" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Mirror handles length"
+
+[node name="ClosedPath" type="CheckButton" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+text = "Closed path"
+
+[node name="LockToPlane" type="CheckButton" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Lock to plane"
+
+[node name="SnapToColliders" type="CheckButton" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+focus_mode = 0
+button_pressed = true
+text = "Snap to colliders"
+
+[node name="VSeparator" type="VSeparator" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="OptionsPanel/AdvancedOptionsPanel/HBoxContainer"]
+layout_mode = 2
