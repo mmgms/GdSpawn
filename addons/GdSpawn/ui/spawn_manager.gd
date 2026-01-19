@@ -682,4 +682,7 @@ func get_tooltips():
 		tooltips.append(Tooltip.DragToPhysicsSpawn)
 
 		return tooltips
+
+
+	return tooltips
 			

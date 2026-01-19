@@ -25,23 +25,25 @@ class GdSpawnPathEditAction:
 		path3d.update_gizmos()
 		path3d._update()
 
+var handle_icon
+var secondary_handle_icon
 func _init():
 
-	var handle_icon = EditorIconTexture2D.new()
+	handle_icon = EditorIconTexture2D.new()
 	handle_icon.icon_name = "EditorPathSmoothHandle"
-	var secondary_handle_icon = EditorIconTexture2D.new()
-	handle_icon.icon_name = "EditorPathSharpHandle"
+	
+	secondary_handle_icon = EditorIconTexture2D.new()
+	secondary_handle_icon.icon_name = "EditorPathSharpHandle"
 
-	# TODO: Replace hardcoded colors by a setting fetch
-	create_material("primary", Color(1, 0.4, 0))
-	create_material("secondary", Color(0.4, 0.7, 1.0))
-	create_material("tertiary", Color(Color.STEEL_BLUE, 0.2))
+	#create_material("primary", Color(1, 0.4, 0))
+	#create_material("secondary", Color(0.4, 0.7, 1.0))
+	#create_material("tertiary", Color(Color.STEEL_BLUE, 0.2))
 	create_custom_material("primary_top", Color(1, 0.4, 0))
 	create_custom_material("secondary_top", Color(0.4, 0.7, 1.0))
-	create_custom_material("tertiary_top", Color(Color.STEEL_BLUE, 0.1))
+	#create_custom_material("tertiary_top", Color(Color.STEEL_BLUE, 0.1))
 
-	create_material("inclusive", Color(0.9, 0.7, 0.2, 0.15))
-	create_material("exclusive", Color(0.9, 0.1, 0.2, 0.15))
+	#create_material("inclusive", Color(0.9, 0.7, 0.2, 0.15))
+	#create_material("exclusive", Color(0.9, 0.1, 0.2, 0.15))
 
 	create_handle_material("default_handle")
 	create_handle_material("primary_handle", false, handle_icon)
@@ -87,7 +89,7 @@ func _redraw(gizmo):
 		points_2d.push_back(Vector2(p.x, p.z))
 
 	var line_material: StandardMaterial3D = get_material("primary_top", gizmo)
-	var mesh_material: StandardMaterial3D = get_material("inclusive", gizmo)
+	#var mesh_material: StandardMaterial3D = get_material("inclusive", gizmo)
 
 	# ------ Main line along the path curve ------
 	var lines := PackedVector3Array()
@@ -282,6 +284,7 @@ func _intersect_with(path: Node3D, camera: Camera3D, screen_point: Vector2, hand
 		var parameters := PhysicsRayQueryParameters3D.new()
 		parameters.from = from
 		parameters.to = from + (dir * 4096)
+		parameters.collision_mask = path.collision_mask
 		var hit := space_state.intersect_ray(parameters)
 		if not hit.is_empty():
 			return hit.position

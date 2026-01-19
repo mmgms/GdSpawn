@@ -243,6 +243,9 @@ func get_enum_hint_string(enum_dict):
 	return ", ".join(enum_dict.keys())
 
 func _forward_3d_draw_over_viewport(viewport_control: Control) -> void:
+	if last_object is GdSpawnPath3D:
+		return
+		
 	if not show_tooltips:
 		return
 
