@@ -29,11 +29,8 @@ var handle_icon
 var secondary_handle_icon
 func _init():
 
-	handle_icon = EditorIconTexture2D.new()
-	handle_icon.icon_name = "EditorPathSmoothHandle"
-	
-	secondary_handle_icon = EditorIconTexture2D.new()
-	secondary_handle_icon.icon_name = "EditorPathSharpHandle"
+	handle_icon = preload("res://addons/GdSpawn/icons/EditorPathSharpHandle.svg")
+	secondary_handle_icon = preload("res://addons/GdSpawn/icons/EditorPathSmoothHandle.svg")
 
 	#create_material("primary", Color(1, 0.4, 0))
 	#create_material("secondary", Color(0.4, 0.7, 1.0))

@@ -6,6 +6,7 @@ class_name GdSpawnMainDockManager
 @export var detach_button: Button
 @export var help_button: Button
 @export var about_button: Button
+@export var help_popup: PopupPanel
 
 
 @export var editor_plugin: EditorPlugin
@@ -64,10 +65,7 @@ func attach_to_dock():
 
 
 func on_help_button_pressed():
-	var help_dialogue = PopupPanel.new()
-	#EditorInterface.popup_dialog(options_menu, Rect2(mouse_pos, options_menu.get_contents_minimum_size()))
-	"https://mmgms.github.io/gdspawn-docs/"
-	pass
+	help_popup.popup_centered(help_popup.get_contents_minimum_size())
 
 func on_plugin_disabled():
 	return

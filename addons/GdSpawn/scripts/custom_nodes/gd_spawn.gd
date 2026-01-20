@@ -1,5 +1,5 @@
-
 @tool
+@icon("res://addons/GdSpawn/icons/GdSpawn.svg")
 extends Node3D
 class_name GdSpawn
 
