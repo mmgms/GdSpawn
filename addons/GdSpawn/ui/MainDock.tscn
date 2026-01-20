@@ -45,7 +45,7 @@ metadata/_custom_type_script = "uid://dmicn3kmr620j"
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wbhi7"]
 
-[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("detachable_node", "detach_button", "help_button", "about_button", "spawn_manager", "libraries_manager", "signal_routing", "detached_window", "window_panel")]
+[node name="MainDock" type="PanelContainer" node_paths=PackedStringArray("detachable_node", "detach_button", "help_button", "about_button", "spawn_manager", "libraries_manager", "signal_routing", "detached_window", "window_panel", "version_label")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -61,6 +61,7 @@ libraries_manager = NodePath("LibrariesManager")
 signal_routing = NodePath("SignalRouting")
 detached_window = NodePath("DetachWindow")
 window_panel = NodePath("DetachWindow/PanelContainer")
+version_label = NodePath("HBoxContainer/ScrollContainer/SpawnOptions/Header/VersionLabel")
 
 [node name="HBoxContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
@@ -76,7 +77,7 @@ size_flags_horizontal = 3
 [node name="Header" type="HBoxContainer" parent="HBoxContainer/ScrollContainer/SpawnOptions"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
+[node name="VersionLabel" type="Label" parent="HBoxContainer/ScrollContainer/SpawnOptions/Header"]
 layout_mode = 2
 text = "GdSpawn 0.1.0"
 
@@ -239,7 +240,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="HBoxContainer/AssetPalette/VBoxContainer"]
 layout_mode = 2
-text = "Assets"
+text = "Scenes Libraries"
 
 [node name="TabContainer" type="TabContainer" parent="HBoxContainer/AssetPalette/VBoxContainer"]
 layout_mode = 2

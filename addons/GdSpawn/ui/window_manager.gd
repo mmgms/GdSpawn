@@ -16,6 +16,8 @@ class_name GdSpawnMainDockManager
 @export var detached_window: Window
 @export var window_panel: PanelContainer
 
+@export var version_label: Label
+
 var is_detached: bool = false
 
 
@@ -29,6 +31,18 @@ func _ready() -> void:
 	help_button.pressed.connect(on_help_button_pressed)
 	signal_routing.PluginDisabled.connect(on_plugin_disabled)
 	detached_window.close_requested.connect(attach_to_dock)
+	version_label.text = "GdSpawn %s" % get_plugin_version()
+
+
+func get_plugin_version() -> String:
+	var cfg := ConfigFile.new()
+	var err := cfg.load("res://addons/GdSpawn/plugin.cfg")
+	if err != OK:
+		push_error("Failed to load plugin.cfg")
+		return ""
+
+	return cfg.get_value("plugin", "version", "")
+
 
 
 func on_detach_button_pressed():
@@ -50,6 +64,9 @@ func attach_to_dock():
 
 
 func on_help_button_pressed():
+	var help_dialogue = PopupPanel.new()
+	#EditorInterface.popup_dialog(options_menu, Rect2(mouse_pos, options_menu.get_contents_minimum_size()))
+	"https://mmgms.github.io/gdspawn-docs/"
 	pass
 
 func on_plugin_disabled():
