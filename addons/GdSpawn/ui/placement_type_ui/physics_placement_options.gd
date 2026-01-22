@@ -8,6 +8,8 @@ class_name GdSpawnPhysicsPlacementOptions
 @export var randomize_rotation_button: CheckBox
 @export var out_of_bound_y_spinbox: SpinBox
 
+@export var max_simulation_time_spinbox: SpinBox
+
 @export var random_spawn_profile_parent: Control
 
 @export var drop_gizmo_scene: PackedScene
@@ -370,6 +372,7 @@ func on_press():
 	spawn_job.drop_height = drop_height_spinbox.value
 	spawn_job.randomize_rotation = randomize_rotation_button.button_pressed
 	spawn_job.out_of_bounds_y = out_of_bound_y_spinbox.value
+	spawn_job.max_sim_time = max_simulation_time_spinbox.value
 	spawn_job.collision_mask = current_gd_spawn_node.physics_placement_collision_mask
 
 	spawn_job.start()

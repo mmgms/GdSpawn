@@ -211,9 +211,7 @@ func _add_setting(property_name: String, default: Variant, type = -1, hint = -1,
 		ProjectSettings.set_setting(property_name, default)
 
 	if default is InputEvent:
-		var old = ProjectSettings.get_setting(property_name)
-		if not old.is_match(default):
-			ProjectSettings.set_initial_value(property_name, default)
+		ProjectSettings.set_initial_value(property_name, default)
 	else:
 		ProjectSettings.set_initial_value(property_name, default)
 
