@@ -32,15 +32,8 @@ func _init():
 	handle_icon = preload("res://addons/GdSpawn/icons/EditorPathSharpHandle.svg")
 	secondary_handle_icon = preload("res://addons/GdSpawn/icons/EditorPathSmoothHandle.svg")
 
-	#create_material("primary", Color(1, 0.4, 0))
-	#create_material("secondary", Color(0.4, 0.7, 1.0))
-	#create_material("tertiary", Color(Color.STEEL_BLUE, 0.2))
-	create_custom_material("primary_top", Color(1, 0.4, 0))
-	create_custom_material("secondary_top", Color(0.4, 0.7, 1.0))
-	#create_custom_material("tertiary_top", Color(Color.STEEL_BLUE, 0.1))
-
-	#create_material("inclusive", Color(0.9, 0.7, 0.2, 0.15))
-	#create_material("exclusive", Color(0.9, 0.1, 0.2, 0.15))
+	create_custom_material("line", Color.ORANGE)
+	create_custom_material("handle", Color.ALICE_BLUE)
 
 	create_handle_material("default_handle")
 	create_handle_material("primary_handle", false, handle_icon)
@@ -85,8 +78,7 @@ func _redraw(gizmo):
 	for p in points:
 		points_2d.push_back(Vector2(p.x, p.z))
 
-	var line_material: StandardMaterial3D = get_material("primary_top", gizmo)
-	#var mesh_material: StandardMaterial3D = get_material("inclusive", gizmo)
+	var line_material: StandardMaterial3D = get_material("line", gizmo)
 
 	# ------ Main line along the path curve ------
 	var lines := PackedVector3Array()
@@ -121,10 +113,7 @@ func _redraw(gizmo):
 
 	gizmo.add_handles(main_handles, get_material("primary_handle", gizmo), ids)
 	gizmo.add_handles(in_out_handles, get_material("secondary_handle", gizmo), ids, false, true)
-	gizmo.add_lines(handle_lines, get_material("secondary_top", gizmo))
-
-	
-
+	gizmo.add_lines(handle_lines, get_material("handle", gizmo))
 
 	var handles = PackedVector3Array()
 	if curve:
@@ -140,7 +129,7 @@ func _set_handle(gizmo: EditorNode3DGizmo, handle_id: int, secondary: bool, \
 	camera: Camera3D, screen_pos: Vector2):
 
 
-	if not gizmo_panel.is_select_mode_enabled():
+	if not gizmo_panel.is_select_mode_enabled() and not gizmo_panel.is_create_mode_enabled():
 		return
 
 
@@ -243,7 +232,9 @@ func forward_3d_gui_input(viewport_camera: Camera3D, event: InputEvent) -> int:
 	action.new_curve = curve.duplicate()
 	action.path3d = path3d
 	if gizmo_panel.is_create_mode_enabled():
-		_add_point_to_curve(action.new_curve, point_local_position)
+		var point_added = _add_point_to_curve(action.new_curve, point_local_position)
+		if not point_added:
+			return EditorPlugin.AFTER_GUI_INPUT_PASS
 		undo_redo.create_action("Edit Path: %s" % path3d.name, 0, self)
 		undo_redo.add_do_method(action, "do")
 		undo_redo.add_undo_method(action, "undo")
@@ -300,13 +291,13 @@ func _intersect_with(path: Node3D, camera: Camera3D, screen_point: Vector2, hand
 
 	return origin
 
-func _add_point_to_curve(curve: Curve3D, pos: Vector3) -> void:
+func _add_point_to_curve(curve: Curve3D, pos: Vector3) -> bool:
 	var count := curve.get_point_count()
 
 	# 0–1 points → just append
 	if count < 2:
 		curve.add_point(pos)
-		return
+		return true
 
 	var segment_index := _get_closest_segment_index(curve, pos)
 
@@ -314,12 +305,17 @@ func _add_point_to_curve(curve: Curve3D, pos: Vector3) -> void:
 	var b := curve.get_point_position((segment_index + 1) % count)
 	var segment_distance := _distance_point_to_segment(pos, a, b)
 
+	const POINT_MIN_DISTANCE := 1.0
+
+	if pos.distance_to(a) < POINT_MIN_DISTANCE or pos.distance_to(b) < POINT_MIN_DISTANCE:
+		return false
+
 	const SEGMENT_INSERT_DISTANCE := 1.0
 
 	# Close enough → insert into segment
 	if segment_distance <= SEGMENT_INSERT_DISTANCE:
 		curve.add_point(pos, Vector3.ZERO, Vector3.ZERO, segment_index + 1)
-		return
+		return true
 
 	# Not close to a segment
 	if not curve.closed:
@@ -333,6 +329,10 @@ func _add_point_to_curve(curve: Curve3D, pos: Vector3) -> void:
 	else:
 		# Closed curve → always insert into closest segment
 		curve.add_point(pos, Vector3.ZERO, Vector3.ZERO, segment_index + 1)
+
+	return true
+
+
 
 
 

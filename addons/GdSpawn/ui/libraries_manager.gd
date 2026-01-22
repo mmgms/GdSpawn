@@ -105,7 +105,7 @@ func save_library(path: String, copy: bool=false):
 	library.resource_path = path
 	ResourceSaver.save(library, path)
 	if not copy:
-		libraries_container.get_child(libraries_container.current_tab).set_library(library)
+		libraries_container.get_child(libraries_container.current_tab).set_library(library, signal_routing)
 
 func load_library(path):
 

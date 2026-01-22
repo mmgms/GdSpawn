@@ -8,7 +8,7 @@ enum Axis {X, Y, Z}
 @export var scene: PackedScene
 
 @export var used: bool = true
-@export var spawn_chance: int = 1
+@export_range(0, 100) var spawn_chance: int = 50
 
 @export var up_axis: Axis = Axis.Y
 @export var invert_up_axis: bool = false

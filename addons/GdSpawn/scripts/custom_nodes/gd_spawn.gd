@@ -13,7 +13,7 @@ class_name GdSpawn
 
 
 @export_category("Physics Placement")
-@export var random_spawn_profile: GdSpawnRandomSpawnProfile
 @export_flags_3d_physics var physics_placement_collision_mask: int = 0xFFFFFFFF
+@export var random_spawn_profile: GdSpawnRandomSpawnProfile
 
 

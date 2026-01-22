@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://b0b1x4oaym7hr"]
+
+[ext_resource type="Script" uid="uid://b121axrbqlcpk" path="res://addons/GdSpawn/scripts/custom_nodes/gd_spawn.gd" id="1_dvrxo"]
+[ext_resource type="Resource" uid="uid://0aejr6i8b4jh" path="res://resources/libraries/curve_spawn_profile/metal_fence.tres" id="2_4wlwm"]
+[ext_resource type="Script" uid="uid://b011ame8q4oxk" path="res://addons/GdSpawn/scripts/spawn_profile_resources/curve_spawn_settings.gd" id="3_sbix0"]
+[ext_resource type="Resource" uid="uid://dni8nblcbcsfg" path="res://resources/libraries/random_spawn_profile/sewer_big_props.tres" id="4_3xmv3"]
+
+[sub_resource type="Resource" id="Resource_p8w7n"]
+script = ExtResource("3_sbix0")
+avoid_overlaps = true
+padding = 0.0
+metadata/_custom_type_script = "uid://b011ame8q4oxk"
+
+[node name="MainNature" type="Node3D"]
+
+[node name="GdSpawn" type="Node3D" parent="."]
+script = ExtResource("1_dvrxo")
+curve_spawn_profile = ExtResource("2_4wlwm")
+curve_spawn_settings = SubResource("Resource_p8w7n")
+random_spawn_profile = ExtResource("4_3xmv3")
+metadata/_custom_type_script = "uid://b121axrbqlcpk"
