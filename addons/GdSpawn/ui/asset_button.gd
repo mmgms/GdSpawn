@@ -104,6 +104,7 @@ func update_preview():
 
 	setup_preview_scene()
 	subviewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	on_item_basis_change(library_item)
 
 
 func update_size(size):
