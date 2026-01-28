@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://bndrgab7hyowg"]
+
+[ext_resource type="PackedScene" uid="uid://bgnsowmvpmeng" path="res://scenes/sewers/Corner.tscn" id="1_csi8y"]
+[ext_resource type="PackedScene" uid="uid://dqnqrje1qtmch" path="res://scenes/sewers/Straigth.tscn" id="2_fje67"]
+[ext_resource type="PackedScene" uid="uid://cbk1h3jo1o1pn" path="res://scenes/sewers/4join.tscn" id="3_am00n"]
+[ext_resource type="PackedScene" uid="uid://cujn1d1sh1fv" path="res://scenes/sewers/tjoin.tscn" id="4_758as"]
+[ext_resource type="PackedScene" uid="uid://emhs8c720cli" path="res://scenes/sewers/curve_large.tscn" id="5_i1xgr"]
+[ext_resource type="PackedScene" uid="uid://ckw0jgudu4sum" path="res://scenes/sewers/curve_small.tscn" id="6_ohtdi"]
+
+[node name="AssetZoo" type="Node3D"]
+
+[node name="Corner" type="Node3D" parent="." instance=ExtResource("1_csi8y")]
+
+[node name="Straigth" type="Node3D" parent="." instance=ExtResource("2_fje67")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5059, 0, 0)
+
+[node name="4Join" type="Node3D" parent="." instance=ExtResource("3_am00n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.5177, 0, 0)
+
+[node name="Tjoin" type="Node3D" parent="." instance=ExtResource("4_758as")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
+
+[node name="CurveLarge" type="Node3D" parent="." instance=ExtResource("5_i1xgr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.0118, 0, 15)
+
+[node name="CurveSmall" type="Node3D" parent="." instance=ExtResource("6_ohtdi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5059, 0, 15)

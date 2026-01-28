@@ -19,10 +19,6 @@ func add_element(path: String):
 	var item = GdSpawnSceneLibraryItem.new()
 	item.scene = scene
 
-	var preview = SceneTexture.new()
-	preview.scene = scene
-
-
 	elements.append(item)
 
 
